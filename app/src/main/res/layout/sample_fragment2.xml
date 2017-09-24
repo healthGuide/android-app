@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/content"
+    android:background="#fff">
+
+    <ImageView
+        android:id="@+id/fromcalbt"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/calendar"
+        android:layout_toStartOf="@+id/frombt"
+        android:layout_marginTop="15dp"
+      android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:id="@+id/frombt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose Date"
+        android:layout_marginTop="40dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:layout_centerHorizontal="true"
+        android:background="#fff"
+        />
+
+    <TextView
+        android:id="@+id/fromdt"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="70dp"
+        android:textStyle="italic"
+        android:textSize="20sp"
+        android:textColor="#000"
+        />
+
+    <ImageView
+        android:id="@+id/tocalbt"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/calendar"
+        android:layout_below="@+id/fromcalbt"
+        android:layout_toStartOf="@+id/tobt"
+        android:layout_marginTop="15dp"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:id="@+id/tobt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose Date"
+        android:layout_marginTop="40dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/frombt"
+        android:background="#fff"
+        />
+
+    <TextView
+        android:id="@+id/todt"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="60dp"
+        android:textStyle="italic"
+        android:textSize="20sp"
+        android:layout_below="@+id/fromdt"
+        android:textColor="#000"
+       />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:text="NEW RECORD"
+        android:id="@+id/nr"
+        android:textStyle="bold|italic"
+        android:textSize="20sp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="13dp" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:text="CHECK"
+        android:id="@+id/chk"
+        android:textStyle="bold|italic"
+        android:textSize="20sp"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/nr"
+        android:layout_marginBottom="20dp" />
+
+</RelativeLayout>

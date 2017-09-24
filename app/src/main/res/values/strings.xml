@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">healthGuide</string>
+    <string name="drawer_close">Close</string>
+    <string name="drawer_open">Open</string>
+    <string name="title_activity_newrecord">newrecord</string>
+    <string-array name="comments">
+        <item>before Breakfast</item>
+        <item>after Breakfast</item>
+        <item>before Lunch</item>
+        <item>after Lunch</item>
+        <item>before Dinner</item>
+        <item>after Dinner</item>
+    </string-array>
+</resources>
