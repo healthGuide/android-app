@@ -16,17 +16,18 @@
         android:layout_marginTop="15dp"
       android:layout_centerHorizontal="true"/>
 
-    <Button
+    <TextView
         android:id="@+id/frombt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Choose Date"
         android:layout_marginTop="40dp"
-        android:textSize="20sp"
+        android:textSize="22sp"
         android:textStyle="bold"
         android:textColor="#000"
         android:layout_centerHorizontal="true"
         android:background="#fff"
+        android:clickable="true"
         />
 
     <TextView
@@ -50,18 +51,19 @@
         android:layout_marginTop="15dp"
         android:layout_centerHorizontal="true"/>
 
-    <Button
+    <TextView
         android:id="@+id/tobt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Choose Date"
-        android:layout_marginTop="40dp"
-        android:textSize="20sp"
+        android:layout_marginTop="60dp"
+        android:textSize="22sp"
         android:textStyle="bold"
         android:textColor="#000"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/frombt"
         android:background="#fff"
+        android:clickable="true"
         />
 
     <TextView

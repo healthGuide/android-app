@@ -63,7 +63,7 @@ public class MySampleFragment2 extends Fragment{
         tdt=(TextView)mView.findViewById(R.id.todt);
         tdt.setText(datetoshow);
 
-        Button fbt=(Button)mView.findViewById(R.id.frombt);
+        TextView fbt=(TextView) mView.findViewById(R.id.frombt);
         fbt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,7 +81,7 @@ public class MySampleFragment2 extends Fragment{
             }
         });
 
-        Button tbt=(Button) mView.findViewById(R.id.tobt);
+        TextView tbt=(TextView) mView.findViewById(R.id.tobt);
         tbt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

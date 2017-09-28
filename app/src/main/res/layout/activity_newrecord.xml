@@ -23,7 +23,7 @@
         android:textColor="#000"
         android:textStyle="bold"
         android:layout_marginTop="20dp"
-        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
         android:id="@+id/cmtv"/>
 
     <Spinner
@@ -66,7 +66,6 @@
             android:inputType="textEmailAddress"
             android:textSize="20sp"
             android:textColor="#f00"
-            android:textStyle="bold"
             />
     </android.support.design.widget.TextInputLayout>
 
