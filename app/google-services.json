@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "508803329198",
+    "firebase_url": "https://healthguidenitj.firebaseio.com",
+    "project_id": "healthguidenitj",
+    "storage_bucket": "healthguidenitj.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:508803329198:android:3fc2a58807964e14",
+        "android_client_info": {
+          "package_name": "rkapoors.healthguide"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "508803329198-fjce2sla8ranhf7fn1p7mmq7jmnbnav6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAV-tHmez7WtuablBfSg1If-Libpn9EDuA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

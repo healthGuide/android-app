@@ -2,13 +2,11 @@ package rkapoors.healthguide;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import android.app.ActionBar;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -24,11 +22,17 @@ import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class MainActivity extends FragmentActivity implements OnTabChangeListener, OnPageChangeListener {
 
     MyPageAdapter pageAdapter;
     private ViewPager mViewPager;
     private TabHost mTabHost;
+
+    private FirebaseAuth.AuthStateListener authListener;
+    private FirebaseAuth auth;
 
     boolean doubleBackToExitPressedOnce = false;
 
@@ -37,6 +41,29 @@ public class MainActivity extends FragmentActivity implements OnTabChangeListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        auth = FirebaseAuth.getInstance();
+
+        //get current user
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        authListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user == null) {
+                    // user auth state is changed - user is null
+                    // launch login activity
+                    startActivity(new Intent(MainActivity.this, signup.class));
+                    finish();
+                }
+            }
+        };
+
+
+
+       // TextView usermail=(TextView)findViewById(R.id.useremail);
+        //usermail.setText(user.getEmail());
 
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
 
@@ -49,7 +76,7 @@ public class MainActivity extends FragmentActivity implements OnTabChangeListene
         mViewPager.setAdapter(pageAdapter);
         mViewPager.setOnPageChangeListener(MainActivity.this);
 
-        String[] data={"new record","","",""};
+        String[] data={"new record","sign out","",""};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data);
 
         final DrawerLayout drawer = (DrawerLayout)findViewById(R.id.drawerLayout);
@@ -63,6 +90,9 @@ public class MainActivity extends FragmentActivity implements OnTabChangeListene
                     case 0:
                         Intent nra=new Intent(MainActivity.this,newrecord.class);
                         startActivity(nra);
+                        break;
+                    case 1:
+                        signOut();
                         break;
                 }
 
@@ -171,6 +201,25 @@ public class MainActivity extends FragmentActivity implements OnTabChangeListene
                 doubleBackToExitPressedOnce=false;
             }
         }, 2000);
+    }
+
+    //sign out method
+    public void signOut() {
+        auth.signOut();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        auth.addAuthStateListener(authListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (authListener != null) {
+            auth.removeAuthStateListener(authListener);
+        }
     }
 
 }

@@ -101,12 +101,12 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/desc"
+                android:id="@+id/useremail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginTop="4dp"
-                android:text="View Profile"
+                android:text=""
                 android:textColor="#fff"
                 android:textSize="12sp" />
         </LinearLayout>
