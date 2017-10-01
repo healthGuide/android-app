@@ -3,6 +3,8 @@ package rkapoors.healthguide;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -19,10 +21,11 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 
 public class signup extends AppCompatActivity {
 
-    private EditText inputEmail, inputPassword;
+    private EditText inputEmail, inputPassword, inputrePassword;
     private Button btnSignIn, btnSignUp;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
+    private CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +39,10 @@ public class signup extends AppCompatActivity {
         btnSignUp = (Button) findViewById(R.id.signup_button);
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
+        inputrePassword = (EditText) findViewById(R.id.repassword);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,19 +58,24 @@ public class signup extends AppCompatActivity {
 
                 String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
+                String repass = inputrePassword.getText().toString().trim();
 
                 if (TextUtils.isEmpty(email)) {
-                    Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(coordinatorLayout, "Enter email address", Snackbar.LENGTH_LONG).show();
                     return;
                 }
 
                 if (TextUtils.isEmpty(password)) {
-                    Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(coordinatorLayout, "Enter Password", Snackbar.LENGTH_LONG).show();
                     return;
                 }
 
                 if (password.length() < 6) {
-                    Toast.makeText(getApplicationContext(), "Password too short, enter minimum 6 characters!", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(coordinatorLayout, "Password too short. Minimum 6 characters reqd.", Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+                if(!password.equals(repass)){
+                    Snackbar.make(coordinatorLayout, "Passwords donot match. Try again.", Snackbar.LENGTH_LONG).show();
                     return;
                 }
 
@@ -79,13 +90,16 @@ public class signup extends AppCompatActivity {
                                 // the auth state listener will be notified and logic to handle the
                                 // signed in user can be handled in the listener.
                                 if (!task.isSuccessful()) {
-                                    Toast.makeText(signup.this, "Request failed. Try again", Toast.LENGTH_SHORT).show();
                                     if(task.getException() instanceof FirebaseAuthUserCollisionException)
                                     {
-                                        Toast.makeText(signup.this, "email already registered", Toast.LENGTH_SHORT).show();
+                                        Snackbar.make(coordinatorLayout, "User already exists", Snackbar.LENGTH_LONG).show();
+                                    }
+                                    else
+                                    {
+                                        Snackbar.make(coordinatorLayout, "Request FAILED. Try again.", Snackbar.LENGTH_LONG).show();
                                     }
                                 } else {
-                                    Toast.makeText(signup.this, "Welcome to healthGuide", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(signup.this, "WELCOME to healthGuide", Toast.LENGTH_SHORT).show();
                                     startActivity(new Intent(signup.this, MainActivity.class));
                                     finish();
                                 }

@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -36,6 +37,8 @@ public class MainActivity extends FragmentActivity implements OnTabChangeListene
 
     boolean doubleBackToExitPressedOnce = false;
 
+    private DrawerLayout drawerLayout;
+
     @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +63,6 @@ public class MainActivity extends FragmentActivity implements OnTabChangeListene
             }
         };
 
-
-
-       // TextView usermail=(TextView)findViewById(R.id.useremail);
-        //usermail.setText(user.getEmail());
-
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
 
         // Tab Initialization
@@ -79,7 +77,8 @@ public class MainActivity extends FragmentActivity implements OnTabChangeListene
         String[] data={"new record","sign out","",""};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data);
 
-        final DrawerLayout drawer = (DrawerLayout)findViewById(R.id.drawerLayout);
+        drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);
+
         final ListView navList = (ListView) findViewById(R.id.navList);
         navList.setAdapter(adapter);
         navList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
@@ -193,7 +192,12 @@ public class MainActivity extends FragmentActivity implements OnTabChangeListene
         }
 
         this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        Snackbar snackbar=Snackbar.make(drawerLayout, "Click back again to EXIT.", Snackbar.LENGTH_LONG);
+        View sbView = snackbar.getView();
+        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(Color.WHITE);
+        snackbar.show();
 
         new Handler().postDelayed(new Runnable() {
             @Override

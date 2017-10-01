@@ -3,6 +3,8 @@ package rkapoors.healthguide;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -21,6 +23,7 @@ public class resetpassword extends AppCompatActivity {
     private Button btnReset, btnBack;
     private FirebaseAuth auth;
     private ProgressBar progressBar;
+    private CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,7 @@ public class resetpassword extends AppCompatActivity {
         btnReset = (Button) findViewById(R.id.btn_reset_password);
         btnBack = (Button) findViewById(R.id.btn_back);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
         auth = FirebaseAuth.getInstance();
 
@@ -49,7 +53,7 @@ public class resetpassword extends AppCompatActivity {
                 String email = inputEmail.getText().toString().trim();
 
                 if (TextUtils.isEmpty(email)) {
-                    Toast.makeText(getApplication(), "Enter your registered email id", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(coordinatorLayout, "Enter registered email address.", Snackbar.LENGTH_LONG).show();
                     return;
                 }
 
@@ -59,9 +63,9 @@ public class resetpassword extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(resetpassword.this, "We have sent you instructions to reset your password!", Toast.LENGTH_SHORT).show();
+                                    Snackbar.make(coordinatorLayout, "Passwords reset instructions sent.", Snackbar.LENGTH_LONG).show();
                                 } else {
-                                    Toast.makeText(resetpassword.this, "Failed to send reset email!", Toast.LENGTH_SHORT).show();
+                                    Snackbar.make(coordinatorLayout, "FAILED to send password reset instructions.", Snackbar.LENGTH_LONG).show();
                                 }
 
                                 progressBar.setVisibility(View.GONE);

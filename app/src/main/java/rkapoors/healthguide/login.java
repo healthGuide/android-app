@@ -3,6 +3,8 @@ package rkapoors.healthguide;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -23,6 +25,7 @@ public class login extends AppCompatActivity {
     private FirebaseAuth auth;
     private ProgressBar progressBar;
     private Button btnSignup, btnLogin, btnReset;
+    private CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,7 @@ public class login extends AppCompatActivity {
         btnSignup = (Button) findViewById(R.id.signup_button);
         btnLogin = (Button) findViewById(R.id.login_button);
         btnReset = (Button) findViewById(R.id.btn_reset_password);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
@@ -72,12 +76,12 @@ public class login extends AppCompatActivity {
                 final String password = inputPassword.getText().toString();
 
                 if (TextUtils.isEmpty(email)) {
-                    Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(coordinatorLayout, "Enter email address", Snackbar.LENGTH_LONG).show();
                     return;
                 }
 
                 if (TextUtils.isEmpty(password)) {
-                    Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(coordinatorLayout, "Enter password", Snackbar.LENGTH_LONG).show();
                     return;
                 }
 
@@ -94,7 +98,7 @@ public class login extends AppCompatActivity {
                                 progressBar.setVisibility(View.GONE);
                                 if (!task.isSuccessful()) {
                                     // there was an error
-                                    Toast.makeText(login.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                                    Snackbar.make(coordinatorLayout, "AUTHENTICATION failed", Snackbar.LENGTH_LONG).show();
                                 } else {
                                     Intent intent = new Intent(login.this, MainActivity.class);
                                     startActivity(intent);
