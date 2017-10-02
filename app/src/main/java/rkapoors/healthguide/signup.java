@@ -2,8 +2,6 @@ package rkapoors.healthguide;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
@@ -11,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -36,8 +35,6 @@ public class signup extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
 
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
-
-        if(!haveNetworkConnection()) Snackbar.make(coordinatorLayout,"Check Internet Connection",Snackbar.LENGTH_LONG).show();
 
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
@@ -66,20 +63,34 @@ public class signup extends AppCompatActivity {
                 String repass = inputrePassword.getText().toString().trim();
 
                 if (TextUtils.isEmpty(email)) {
+                    //hide keyboard when snackbar appears
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
+
                     Snackbar.make(coordinatorLayout, "Enter email address", Snackbar.LENGTH_LONG).show();
                     return;
                 }
 
                 if (TextUtils.isEmpty(password)) {
-                    Snackbar.make(coordinatorLayout, "Enter Password", Snackbar.LENGTH_LONG).show();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
+
+                    Snackbar passsnackbar = Snackbar.make(coordinatorLayout, "Enter password", Snackbar.LENGTH_LONG);
+                    passsnackbar.show();
                     return;
                 }
 
                 if (password.length() < 6) {
-                    Snackbar.make(coordinatorLayout, "Password too short. Minimum 6 characters reqd.", Snackbar.LENGTH_LONG).show();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
+
+                    Snackbar.make(coordinatorLayout, "Password too short. Minimum 6 characters.", Snackbar.LENGTH_LONG).show();
                     return;
                 }
                 if(!password.equals(repass)){
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
+
                     Snackbar.make(coordinatorLayout, "Passwords donot match. Try again.", Snackbar.LENGTH_LONG).show();
                     return;
                 }
@@ -97,10 +108,16 @@ public class signup extends AppCompatActivity {
                                 if (!task.isSuccessful()) {
                                     if(task.getException() instanceof FirebaseAuthUserCollisionException)
                                     {
+                                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                                        imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
+
                                         Snackbar.make(coordinatorLayout, "User already exists", Snackbar.LENGTH_LONG).show();
                                     }
                                     else
                                     {
+                                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                                        imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
+
                                         Snackbar.make(coordinatorLayout, "Request FAILED. Try again.", Snackbar.LENGTH_LONG).show();
                                     }
                                 } else {
@@ -113,24 +130,6 @@ public class signup extends AppCompatActivity {
 
             }
         });
-    }
-
-    @SuppressWarnings("deprecation")
-    private boolean haveNetworkConnection() {
-        boolean haveConnectedWifi = false;
-        boolean haveConnectedMobile = false;
-
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
-        for (NetworkInfo ni : netInfo) {
-            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
-                if (ni.isConnected())
-                    haveConnectedWifi = true;
-            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
-                if (ni.isConnected())
-                    haveConnectedMobile = true;
-        }
-        return haveConnectedWifi || haveConnectedMobile;
     }
 
     @Override

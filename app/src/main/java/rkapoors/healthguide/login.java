@@ -1,5 +1,6 @@
 package rkapoors.healthguide;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -108,11 +110,17 @@ public class login extends AppCompatActivity {
                 final String password = inputPassword.getText().toString();
 
                 if (TextUtils.isEmpty(email)) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
+
                     Snackbar.make(coordinatorLayout, "Enter email address", Snackbar.LENGTH_LONG).show();
                     return;
                 }
 
                 if (TextUtils.isEmpty(password)) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
+
                     Snackbar.make(coordinatorLayout, "Enter password", Snackbar.LENGTH_LONG).show();
                     return;
                 }
@@ -130,6 +138,9 @@ public class login extends AppCompatActivity {
                                 progressBar.setVisibility(View.GONE);
                                 if (!task.isSuccessful()) {
                                     // there was an error
+                                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                                    imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
+
                                     Snackbar.make(coordinatorLayout, "AUTHENTICATION failed", Snackbar.LENGTH_LONG).show();
                                 } else {
                                     Intent intent = new Intent(login.this, MainActivity.class);

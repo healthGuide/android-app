@@ -34,22 +34,26 @@
         <activity
             android:name=".newrecord"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".checkrecord"
             android:screenOrientation="portrait" />
         <activity
             android:name=".signup"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".login"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".resetpassword"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".changepassword"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"/>
 
     </application>
 

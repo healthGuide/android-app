@@ -1,5 +1,6 @@
 package rkapoors.healthguide;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -53,6 +55,9 @@ public class resetpassword extends AppCompatActivity {
                 String email = inputEmail.getText().toString().trim();
 
                 if (TextUtils.isEmpty(email)) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
+
                     Snackbar.make(coordinatorLayout, "Enter registered email address.", Snackbar.LENGTH_LONG).show();
                     return;
                 }
@@ -63,8 +68,14 @@ public class resetpassword extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
+                                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                                    imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
+
                                     Snackbar.make(coordinatorLayout, "Passwords reset instructions sent.", Snackbar.LENGTH_LONG).show();
                                 } else {
+                                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                                    imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
+
                                     Snackbar.make(coordinatorLayout, "FAILED to send password reset instructions.", Snackbar.LENGTH_LONG).show();
                                 }
 
