@@ -2,8 +2,12 @@ package rkapoors.healthguide;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -21,7 +25,6 @@ import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,6 +39,7 @@ public class MainActivity extends FragmentActivity implements OnTabChangeListene
     private FirebaseAuth auth;
 
     boolean doubleBackToExitPressedOnce = false;
+    private TextView maildesc;
 
     private DrawerLayout drawerLayout;
 
@@ -44,6 +48,9 @@ public class MainActivity extends FragmentActivity implements OnTabChangeListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);
+        if(!haveNetworkConnection()) Snackbar.make(drawerLayout,"Check Internet Connection",Snackbar.LENGTH_LONG).show();
 
         auth = FirebaseAuth.getInstance();
 
@@ -63,6 +70,11 @@ public class MainActivity extends FragmentActivity implements OnTabChangeListene
             }
         };
 
+        String mailaddr="";
+        if(user!=null) mailaddr=user.getEmail();
+        maildesc = (TextView)findViewById(R.id.useremail);
+        maildesc.setText(mailaddr);
+
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
 
         // Tab Initialization
@@ -74,10 +86,8 @@ public class MainActivity extends FragmentActivity implements OnTabChangeListene
         mViewPager.setAdapter(pageAdapter);
         mViewPager.setOnPageChangeListener(MainActivity.this);
 
-        String[] data={"new record","sign out","",""};
+        String[] data={"new record","change password","sign out","",""};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data);
-
-        drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);
 
         final ListView navList = (ListView) findViewById(R.id.navList);
         navList.setAdapter(adapter);
@@ -91,6 +101,10 @@ public class MainActivity extends FragmentActivity implements OnTabChangeListene
                         startActivity(nra);
                         break;
                     case 1:
+                        Intent changepass=new Intent(MainActivity.this,changepassword.class);
+                        startActivity(changepass);
+                        break;
+                    case 2:
                         signOut();
                         break;
                 }
@@ -210,6 +224,24 @@ public class MainActivity extends FragmentActivity implements OnTabChangeListene
     //sign out method
     public void signOut() {
         auth.signOut();
+    }
+
+    @SuppressWarnings("deprecation")
+    private boolean haveNetworkConnection() {
+        boolean haveConnectedWifi = false;
+        boolean haveConnectedMobile = false;
+
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+        for (NetworkInfo ni : netInfo) {
+            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+                if (ni.isConnected())
+                    haveConnectedWifi = true;
+            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+                if (ni.isConnected())
+                    haveConnectedMobile = true;
+        }
+        return haveConnectedWifi || haveConnectedMobile;
     }
 
     @Override

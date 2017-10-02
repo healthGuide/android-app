@@ -1,6 +1,7 @@
 package rkapoors.healthguide;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
@@ -8,7 +9,10 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -19,13 +23,22 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class login extends AppCompatActivity {
 
-    private EditText inputEmail, inputPassword;
+    private EditText inputPassword;
+    private AutoCompleteTextView inputEmail;
     private FirebaseAuth auth;
     private ProgressBar progressBar;
     private Button btnSignup, btnLogin, btnReset;
     private CoordinatorLayout coordinatorLayout;
+
+    public static final String USERNAME="username";
+    public static final String SEARCHHISTORY="searchhistory";
+    private SharedPreferences settings;
+    private Set<String> history;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +55,29 @@ public class login extends AppCompatActivity {
         // set the view now
         setContentView(R.layout.activity_login);
 
-        inputEmail = (EditText) findViewById(R.id.email);
+        inputEmail = (AutoCompleteTextView) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         btnSignup = (Button) findViewById(R.id.signup_button);
         btnLogin = (Button) findViewById(R.id.login_button);
         btnReset = (Button) findViewById(R.id.btn_reset_password);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+
+        settings=getSharedPreferences(USERNAME,0);
+        history = new HashSet<String>(settings.getStringSet(SEARCHHISTORY, new HashSet<String>()));
+        setautocompletesource();
+
+        inputEmail.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if((event.getAction()==KeyEvent.ACTION_DOWN)&&(keyCode==KeyEvent.KEYCODE_ENTER))
+                {
+                    addsearchinput(inputEmail.getText().toString());
+                    return true;
+                }
+                return false;
+            }
+        });
 
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
@@ -72,6 +101,9 @@ public class login extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                history.add(inputEmail.getText().toString());
+
                 String email = inputEmail.getText().toString();
                 final String password = inputPassword.getText().toString();
 
@@ -109,4 +141,32 @@ public class login extends AppCompatActivity {
             }
         });
     }
+
+    private void setautocompletesource()
+    {
+        ArrayAdapter<String> adapter=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,history.toArray(new String[history.size()]));
+        inputEmail.setAdapter(adapter);
+    }
+    private void addsearchinput(String input)
+    {
+        if(!history.contains(input))
+        {
+            history.add(input);
+            setautocompletesource();
+        }
+    }
+    private void saveprefs()
+    {
+        settings=getSharedPreferences(USERNAME,0);
+        SharedPreferences.Editor editor=settings.edit();
+        editor.putStringSet(SEARCHHISTORY,history);
+        editor.apply();
+    }
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+        saveprefs();
+    }
+
 }

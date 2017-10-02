@@ -83,8 +83,8 @@
         android:id="@+id/nr"
         android:textStyle="bold|italic"
         android:textSize="20sp"
-        android:background="#f00"
-        android:textColor="#fff"
+        android:background="@null"
+        android:textColor="#f00"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="13dp" />
@@ -95,9 +95,9 @@
         android:text="CHECK"
         android:id="@+id/chk"
         android:textStyle="bold"
-        android:textColor="#fff"
-        android:background="#f00"
-        android:textSize="20sp"
+        android:textColor="#f00"
+        android:background="@null"
+        android:textSize="22sp"
         android:layout_alignParentStart="true"
         android:layout_above="@+id/nr"
         android:layout_marginBottom="20dp" />

@@ -1,6 +1,9 @@
 package rkapoors.healthguide;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
@@ -32,6 +35,10 @@ public class signup extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+
+        if(!haveNetworkConnection()) Snackbar.make(coordinatorLayout,"Check Internet Connection",Snackbar.LENGTH_LONG).show();
+
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
 
@@ -41,8 +48,6 @@ public class signup extends AppCompatActivity {
         inputPassword = (EditText) findViewById(R.id.password);
         inputrePassword = (EditText) findViewById(R.id.repassword);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,6 +113,24 @@ public class signup extends AppCompatActivity {
 
             }
         });
+    }
+
+    @SuppressWarnings("deprecation")
+    private boolean haveNetworkConnection() {
+        boolean haveConnectedWifi = false;
+        boolean haveConnectedMobile = false;
+
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+        for (NetworkInfo ni : netInfo) {
+            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+                if (ni.isConnected())
+                    haveConnectedWifi = true;
+            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+                if (ni.isConnected())
+                    haveConnectedMobile = true;
+        }
+        return haveConnectedWifi || haveConnectedMobile;
     }
 
     @Override

@@ -40,8 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
-
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -49,7 +48,8 @@
                 android:hint="email"
                 android:inputType="textEmailAddress"
                 android:textColor="#fff"
-                android:textColorHint="#fff" />
+                android:textColorHint="#fff"
+                />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -61,7 +61,6 @@
                 android:id="@+id/password"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:hint="password"
                 android:inputType="textPassword"
                 android:textColor="#fff"
