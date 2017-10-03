@@ -2,8 +2,12 @@ package rkapoors.healthguide;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -47,6 +51,19 @@ public class MainActivity extends FragmentActivity implements OnTabChangeListene
 
         drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);
 
+        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        if(!isConnected)
+        {
+            Snackbar snackbar=Snackbar.make(drawerLayout, "Check Internet Connection", Snackbar.LENGTH_LONG);
+            View sbView = snackbar.getView();
+            TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(Color.YELLOW);
+            snackbar.show();
+        }
+
         auth = FirebaseAuth.getInstance();
 
         //get current user
@@ -81,7 +98,7 @@ public class MainActivity extends FragmentActivity implements OnTabChangeListene
         mViewPager.setAdapter(pageAdapter);
         mViewPager.setOnPageChangeListener(MainActivity.this);
 
-        String[] data={"new record","change password","sign out","",""};
+        String[] data={"New record","","","Change password","Log out"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data);
 
         final ListView navList = (ListView) findViewById(R.id.navList);
@@ -95,11 +112,11 @@ public class MainActivity extends FragmentActivity implements OnTabChangeListene
                         Intent nra=new Intent(MainActivity.this,newrecord.class);
                         startActivity(nra);
                         break;
-                    case 1:
+                    case 3:
                         Intent changepass=new Intent(MainActivity.this,changepassword.class);
                         startActivity(changepass);
                         break;
-                    case 2:
+                    case 4:
                         signOut();
                         break;
                 }

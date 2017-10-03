@@ -3,6 +3,8 @@ package rkapoors.healthguide;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
@@ -65,6 +67,12 @@ public class login extends AppCompatActivity {
         btnReset = (Button) findViewById(R.id.btn_reset_password);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
+        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        if(!isConnected) Snackbar.make(coordinatorLayout,"Check Internet Connection",Snackbar.LENGTH_LONG).show();
+
         settings=getSharedPreferences(USERNAME,0);
         history = new HashSet<String>(settings.getStringSet(SEARCHHISTORY, new HashSet<String>()));
         setautocompletesource();
@@ -109,18 +117,15 @@ public class login extends AppCompatActivity {
                 String email = inputEmail.getText().toString();
                 final String password = inputPassword.getText().toString();
 
-                if (TextUtils.isEmpty(email)) {
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
 
+                if (TextUtils.isEmpty(email)) {
                     Snackbar.make(coordinatorLayout, "Enter email address", Snackbar.LENGTH_LONG).show();
                     return;
                 }
 
                 if (TextUtils.isEmpty(password)) {
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
-
                     Snackbar.make(coordinatorLayout, "Enter password", Snackbar.LENGTH_LONG).show();
                     return;
                 }
@@ -138,9 +143,6 @@ public class login extends AppCompatActivity {
                                 progressBar.setVisibility(View.GONE);
                                 if (!task.isSuccessful()) {
                                     // there was an error
-                                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                                    imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
-
                                     Snackbar.make(coordinatorLayout, "AUTHENTICATION failed", Snackbar.LENGTH_LONG).show();
                                 } else {
                                     Intent intent = new Intent(login.this, MainActivity.class);

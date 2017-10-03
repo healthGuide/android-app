@@ -2,6 +2,8 @@ package rkapoors.healthguide;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
@@ -38,6 +40,12 @@ public class resetpassword extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
+        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        if(!isConnected) Snackbar.make(coordinatorLayout,"Check Internet Connection",Snackbar.LENGTH_LONG).show();
+
         auth = FirebaseAuth.getInstance();
 
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -54,10 +62,10 @@ public class resetpassword extends AppCompatActivity {
 
                 String email = inputEmail.getText().toString().trim();
 
-                if (TextUtils.isEmpty(email)) {
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
 
+                if (TextUtils.isEmpty(email)) {
                     Snackbar.make(coordinatorLayout, "Enter registered email address.", Snackbar.LENGTH_LONG).show();
                     return;
                 }
@@ -68,14 +76,8 @@ public class resetpassword extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-                                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                                    imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
-
                                     Snackbar.make(coordinatorLayout, "Passwords reset instructions sent.", Snackbar.LENGTH_LONG).show();
                                 } else {
-                                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                                    imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
-
                                     Snackbar.make(coordinatorLayout, "FAILED to send password reset instructions.", Snackbar.LENGTH_LONG).show();
                                 }
 

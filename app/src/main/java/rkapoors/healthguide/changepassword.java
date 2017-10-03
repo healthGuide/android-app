@@ -1,6 +1,8 @@
 package rkapoors.healthguide;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -40,6 +42,13 @@ public class changepassword extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         coordinatorLayout = (CoordinatorLayout)findViewById(R.id.coordinatorLayout);
 
+        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        if(!isConnected) Snackbar.make(coordinatorLayout,"Check Internet Connection",Snackbar.LENGTH_LONG).show();
+
+
         //auth = FirebaseAuth.getInstance();
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -47,13 +56,14 @@ public class changepassword extends AppCompatActivity {
         changepassbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
+
                 progressBar.setVisibility(View.VISIBLE);
                 if (user != null && !newpass.getText().toString().trim().equals("") && !oldpass.getText().toString().trim().equals(""))
                 {
                     if (newpass.getText().toString().trim().length() < 6) {
-                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
-
                         Snackbar.make(coordinatorLayout,"New Password too short. Minimum 6 characters",Snackbar.LENGTH_LONG).show();
                         progressBar.setVisibility(View.GONE);
                     }
@@ -69,16 +79,10 @@ public class changepassword extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if(!task.isSuccessful()){
-                                                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                                                imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
-
-                                                Snackbar snackbar_fail = Snackbar.make(coordinatorLayout, "Something went wrong. Please try again later", Snackbar.LENGTH_LONG);
+                                                Snackbar snackbar_fail = Snackbar.make(coordinatorLayout, "Something went wrong. Please try again", Snackbar.LENGTH_LONG);
                                                 snackbar_fail.show();
                                                 progressBar.setVisibility(View.GONE);
                                             }else {
-                                                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                                                imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
-
                                                 Snackbar snackbar_su = Snackbar.make(coordinatorLayout, "Password Successfully UPDATED", Snackbar.LENGTH_LONG);
                                                 snackbar_su.show();
                                                 progressBar.setVisibility(View.GONE);
@@ -87,9 +91,6 @@ public class changepassword extends AppCompatActivity {
                                     });
                                 }
                                 else {
-                                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                                    imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
-
                                     Snackbar snackbar_su = Snackbar.make(coordinatorLayout, "Authentication FAILED", Snackbar.LENGTH_LONG);
                                     snackbar_su.show();
                                     progressBar.setVisibility(View.GONE);
@@ -100,17 +101,11 @@ public class changepassword extends AppCompatActivity {
                 }
                 else if (oldpass.getText().toString().trim().equals(""))
                 {
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
-
                     Snackbar.make(coordinatorLayout,"Enter current Password",Snackbar.LENGTH_LONG).show();
                     progressBar.setVisibility(View.GONE);
                 }
                 else if (newpass.getText().toString().trim().equals(""))
                 {
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
-
                     Snackbar.make(coordinatorLayout,"Enter new Password",Snackbar.LENGTH_LONG).show();
                     progressBar.setVisibility(View.GONE);
                 }

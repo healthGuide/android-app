@@ -2,6 +2,8 @@ package rkapoors.healthguide;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
@@ -36,6 +38,12 @@ public class signup extends AppCompatActivity {
 
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
+        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        if(!isConnected) Snackbar.make(coordinatorLayout,"Check Internet Connection",Snackbar.LENGTH_LONG).show();
+
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
 
@@ -62,35 +70,26 @@ public class signup extends AppCompatActivity {
                 String password = inputPassword.getText().toString().trim();
                 String repass = inputrePassword.getText().toString().trim();
 
-                if (TextUtils.isEmpty(email)) {
-                    //hide keyboard when snackbar appears
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
+                //hide keyboard when snackbar appears
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
 
+                if (TextUtils.isEmpty(email)) {
                     Snackbar.make(coordinatorLayout, "Enter email address", Snackbar.LENGTH_LONG).show();
                     return;
                 }
 
                 if (TextUtils.isEmpty(password)) {
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
-
                     Snackbar passsnackbar = Snackbar.make(coordinatorLayout, "Enter password", Snackbar.LENGTH_LONG);
                     passsnackbar.show();
                     return;
                 }
 
                 if (password.length() < 6) {
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
-
                     Snackbar.make(coordinatorLayout, "Password too short. Minimum 6 characters.", Snackbar.LENGTH_LONG).show();
                     return;
                 }
                 if(!password.equals(repass)){
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
-
                     Snackbar.make(coordinatorLayout, "Passwords donot match. Try again.", Snackbar.LENGTH_LONG).show();
                     return;
                 }
@@ -108,16 +107,10 @@ public class signup extends AppCompatActivity {
                                 if (!task.isSuccessful()) {
                                     if(task.getException() instanceof FirebaseAuthUserCollisionException)
                                     {
-                                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                                        imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
-
                                         Snackbar.make(coordinatorLayout, "User already exists", Snackbar.LENGTH_LONG).show();
                                     }
                                     else
                                     {
-                                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                                        imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
-
                                         Snackbar.make(coordinatorLayout, "Request FAILED. Try again.", Snackbar.LENGTH_LONG).show();
                                     }
                                 } else {
