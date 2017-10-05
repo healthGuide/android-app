@@ -31,6 +31,8 @@ public class signup extends AppCompatActivity {
     private FirebaseAuth auth;
     private CoordinatorLayout coordinatorLayout;
 
+    private String userId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,8 +68,8 @@ public class signup extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String email = inputEmail.getText().toString().trim();
-                String password = inputPassword.getText().toString().trim();
+                final String email = inputEmail.getText().toString().trim();
+                final String password = inputPassword.getText().toString().trim();
                 String repass = inputrePassword.getText().toString().trim();
 
                 //hide keyboard when snackbar appears
