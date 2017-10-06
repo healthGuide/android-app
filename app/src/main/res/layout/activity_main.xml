@@ -105,10 +105,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:layout_marginTop="4dp"
                 android:text=""
                 android:textColor="#fff"
-                android:textSize="13sp" />
+                android:textSize="14sp" />
         </LinearLayout>
     </RelativeLayout>
 

@@ -1,7 +1,6 @@
 package rkapoors.healthguide;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -16,20 +15,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.support.annotation.NonNull;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class newrecord extends AppCompatActivity {
 
@@ -40,12 +35,16 @@ public class newrecord extends AppCompatActivity {
     private String glucoval="";
     private String dosageval="";
 
+    int selectedYear;
+    int selectedMonth;
+    int selectedDayOfMonth;
+    private SimpleDateFormat dateFormatter;
+
     CoordinatorLayout coordinatorLayout;
 
-    private FirebaseAuth.AuthStateListener authListener;
-    private FirebaseAuth auth;
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
+    private String readid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,21 +65,6 @@ public class newrecord extends AppCompatActivity {
             textView.setTextColor(Color.YELLOW);
             snackbar.show();
         }
-
-        auth = FirebaseAuth.getInstance();
-
-        authListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user == null) {
-                    // user auth state is changed - user is null
-                    // launch login activity
-                    startActivity(new Intent(newrecord.this, signup.class));
-                    finish();
-                }
-            }
-        };
 
         mFirebaseInstance = FirebaseDatabase.getInstance();
 
@@ -128,7 +112,12 @@ public class newrecord extends AppCompatActivity {
 
                 Calendar c=Calendar.getInstance(TimeZone.getTimeZone("GMT+5:30"));
 
-                dt=Integer.toString(c.get(Calendar.DAY_OF_MONTH))+"-"+Integer.toString(c.get(Calendar.MONTH)+1)+"-"+Integer.toString(c.get(Calendar.YEAR));
+                dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+                selectedYear=c.get(Calendar.YEAR);
+                selectedMonth=c.get(Calendar.MONTH);
+                selectedDayOfMonth=c.get(Calendar.DAY_OF_MONTH);
+                c.set(selectedYear,selectedMonth,selectedDayOfMonth);
+                dt=dateFormatter.format(c.getTime());;
 
                 Date currentLocalTime = c.getTime();
                 DateFormat date = new SimpleDateFormat("hh:mm a");
@@ -137,27 +126,14 @@ public class newrecord extends AppCompatActivity {
 
                 ans.setText(dt+" "+tm+" "+comm+" "+glucoval);
 
-                Userdata uservals = new Userdata(tm,comm,glucoval,dosageval);
+                final Userdata uservals = new Userdata(tm,comm,glucoval,dosageval);
 
-                DatabaseReference temp = mFirebaseDatabase.child(mailofuser).child(dt);
+                final DatabaseReference temp = mFirebaseDatabase.child(mailofuser).child(dt);
 
-                temp.child("1 reading").setValue(uservals);                            // IMPLEMENT this size of date node referred
+                readid=temp.push().getKey();
+                temp.child(readid).setValue(uservals);
             }
         });
 
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        auth.addAuthStateListener(authListener);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (authListener != null) {
-            auth.removeAuthStateListener(authListener);
-        }
     }
 }

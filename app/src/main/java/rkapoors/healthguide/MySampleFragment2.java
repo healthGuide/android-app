@@ -47,11 +47,13 @@ public class MySampleFragment2 extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         Calendar c = Calendar.getInstance();
+        dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
         selectedYear=c.get(Calendar.YEAR);
         selectedMonth=c.get(Calendar.MONTH);
         selectedDayOfMonth=c.get(Calendar.DAY_OF_MONTH);
+        c.set(selectedYear,selectedMonth,selectedDayOfMonth);
 
-        String datetoshow=Integer.toString(selectedDayOfMonth)+"-"+Integer.toString(selectedMonth+1)+"-"+Integer.toString(selectedYear);
+        String datetoshow=dateFormatter.format(c.getTime());
 
         mView = inflater.inflate(R.layout.sample_fragment2, container, false);
 
@@ -113,6 +115,8 @@ public class MySampleFragment2 extends Fragment{
             @Override
             public void onClick(View view) {
                 Intent chka=new Intent(getActivity(),checkrecord.class);
+                chka.putExtra("fromdate",fdt.getText().toString());
+                chka.putExtra("todate",tdt.getText().toString());
                 startActivity(chka);
             }
         });

@@ -14,17 +14,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class CardFragment extends Fragment {
 
     ArrayList<checkrecorddata> listitems = new ArrayList<>();
     RecyclerView MyRecyclerView;
-    String dtarr[] = {"3-9-17","4-9-17","5-9-17","6-9-17","16-9-17","16-9-17","17-9-17","19-9-17","26-9-17"};
-    String tmarr[] = {"10:00","11:00","12:00","13:00","13:00","13:00","13:00","13:00","13:00"};
-    String cmarr[] = {"before lunch","after dinner","before breakfast","before dinner","before breakfast","before breakfast","before breakfast","before breakfast","before breakfast"};
-    String grarr[] = {"113","123","230","150","189","156","163","145","169"};
-    String othercomm[]={"-","-","took 20 units @ night","took 10 units @ noon","took 15 units @ night","-","took 10 units","-","-"};
+    ArrayList<String> dtarr = new ArrayList<>();
+    ArrayList<String> tmarr = new ArrayList<>();
+    ArrayList<String> cmarr = new ArrayList<>();
+    ArrayList<String> grarr = new ArrayList<>();
+    ArrayList<String> dgarr = new ArrayList<>();
+
+    private DatabaseReference mFirebaseDatabase;
+    private FirebaseDatabase mFirebaseInstance;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,15 +110,65 @@ public class CardFragment extends Fragment {
         }}
 
                 public void initializeList() {
-                    listitems.clear();
+                    Bundle arguments = getArguments();
+                    final String fromdate = arguments.getString("fromdate");
+                    String todate = arguments.getString("todate");
 
-                    for(int i =0;i<9;i++){                                          //set Counter here
+                    listitems.clear();dtarr.clear();tmarr.clear();cmarr.clear();grarr.clear();dgarr.clear();
+
+                    mFirebaseInstance = FirebaseDatabase.getInstance();
+                    // get reference to 'users' node
+                    mFirebaseDatabase = mFirebaseInstance.getReference("users");
+
+                    // String mailofuser=FirebaseAuth.getInstance().getCurrentUser().getEmail();     IMPLEMENT this NULL point exception
+                    String mailofuser="kapoorkimail";
+
+                    final DatabaseReference temp = mFirebaseDatabase.child(mailofuser);
+
+                    temp.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for(DataSnapshot ds : dataSnapshot.getChildren()){
+                                String dateval = ds.getKey();
+                                if(dateval.equals(fromdate)){
+                                    dtarr.add(dateval);
+                                    DatabaseReference vals = temp.child(dateval);
+                                    vals.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot1) {
+                                            for(DataSnapshot ds1 : dataSnapshot1.getChildren()){
+                                                Userdata useread = ds1.getValue(Userdata.class);
+                                                tmarr.add(useread.time);
+                                                cmarr.add(useread.comment);
+                                                grarr.add(useread.value);
+                                                dgarr.add(useread.dosage);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+                                }
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+                    int lenofdata=dtarr.size();
+                    for(int i =0;i<lenofdata;i++){                                          //set Counter here
                         checkrecorddata item = new checkrecorddata();
-                        item.setdt(dtarr[i]);
-                        item.settm(tmarr[i]);
-                        item.setcomment(cmarr[i]);
-                        item.setglucoreading(grarr[i]);
-                        item.setothercm(othercomm[i]);
+                        item.setdt(dtarr.get(i));
+                        item.settm(tmarr.get(i));
+                        item.setcomment(cmarr.get(i));
+                        item.setglucoreading(grarr.get(i));
+                        item.setothercm(dgarr.get(i));
                         listitems.add(item);
                     }
                 }

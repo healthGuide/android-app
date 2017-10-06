@@ -82,12 +82,12 @@
         android:text="NEW RECORD"
         android:id="@+id/nr"
         android:textStyle="bold|italic"
-        android:textSize="20sp"
+        android:textSize="22sp"
         android:background="@null"
         android:textColor="#f00"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="13dp" />
+        android:layout_marginBottom="30dp" />
 
     <Button
         android:layout_width="fill_parent"
@@ -97,9 +97,8 @@
         android:textStyle="bold"
         android:textColor="#f00"
         android:background="@null"
-        android:textSize="22sp"
+        android:textSize="24sp"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/nr"
-        android:layout_marginBottom="20dp" />
+        android:layout_above="@+id/nr" />
 
 </RelativeLayout>
