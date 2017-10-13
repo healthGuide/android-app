@@ -40,11 +40,11 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".signup"
-            android:windowSoftInputMode="adjustResize"
+            android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".login"
-            android:windowSoftInputMode="adjustResize"
+            android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".resetpassword"

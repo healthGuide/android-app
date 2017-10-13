@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,9 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class CardFragment extends Fragment {
 
@@ -38,9 +37,50 @@ public class CardFragment extends Fragment {
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
 
+    private String fromdate;
+    private String todate;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Bundle arguments = getArguments();
+        fromdate = arguments.getString("fromdate");
+        todate = arguments.getString("todate");
+
+        //dtarr.clear();tmarr.clear();cmarr.clear();grarr.clear();dgarr.clear();
+
+        mFirebaseInstance = FirebaseDatabase.getInstance();
+        // get reference to 'users' node
+        mFirebaseDatabase = mFirebaseInstance.getReference("users");
+
+        // String mailofuser=FirebaseAuth.getInstance().getCurrentUser().getEmail();     IMPLEMENT this NULL point exception
+        String mailofuser="kapoorkimail";
+
+        final DatabaseReference temp = mFirebaseDatabase.child(mailofuser);
+
+        temp.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                    String dateval = ds.getKey();
+                    dtarr.add(dateval);
+                            for(DataSnapshot ds1 : ds.getChildren()){
+                                Userdata useread = ds1.getValue(Userdata.class);
+                                tmarr.add(useread.time);
+                                cmarr.add(useread.comment);
+                                grarr.add(useread.value);
+                                dgarr.add(useread.dosage);
+                            }
+                        }
+                }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         initializeList();
         getActivity().setTitle("Records");
     }
@@ -110,58 +150,11 @@ public class CardFragment extends Fragment {
         }}
 
                 public void initializeList() {
-                    Bundle arguments = getArguments();
-                    final String fromdate = arguments.getString("fromdate");
-                    String todate = arguments.getString("todate");
 
-                    listitems.clear();dtarr.clear();tmarr.clear();cmarr.clear();grarr.clear();dgarr.clear();
-
-                    mFirebaseInstance = FirebaseDatabase.getInstance();
-                    // get reference to 'users' node
-                    mFirebaseDatabase = mFirebaseInstance.getReference("users");
-
-                    // String mailofuser=FirebaseAuth.getInstance().getCurrentUser().getEmail();     IMPLEMENT this NULL point exception
-                    String mailofuser="kapoorkimail";
-
-                    final DatabaseReference temp = mFirebaseDatabase.child(mailofuser);
-
-                    temp.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            for(DataSnapshot ds : dataSnapshot.getChildren()){
-                                String dateval = ds.getKey();
-                                if(dateval.equals(fromdate)){
-                                    dtarr.add(dateval);
-                                    DatabaseReference vals = temp.child(dateval);
-                                    vals.addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot1) {
-                                            for(DataSnapshot ds1 : dataSnapshot1.getChildren()){
-                                                Userdata useread = ds1.getValue(Userdata.class);
-                                                tmarr.add(useread.time);
-                                                cmarr.add(useread.comment);
-                                                grarr.add(useread.value);
-                                                dgarr.add(useread.dosage);
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
-
-                                        }
-                                    });
-                                }
-                            }
-
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
+                    listitems.clear();
 
                     int lenofdata=dtarr.size();
+                    Toast.makeText(getActivity(),lenofdata+" "+todate+" "+fromdate, Toast.LENGTH_SHORT).show();
                     for(int i =0;i<lenofdata;i++){                                          //set Counter here
                         checkrecorddata item = new checkrecorddata();
                         item.setdt(dtarr.get(i));

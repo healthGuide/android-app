@@ -5,14 +5,20 @@ package rkapoors.healthguide;
  */
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -31,6 +37,7 @@ public class MySampleFragment2 extends Fragment{
     private DatePickerDialog datePickerDialog;
     private SimpleDateFormat dateFormatter;
 
+    private RelativeLayout relativeLayout;
     /*CONSTRUCTOR
 
     public static final MySampleFragment newInstance(String sampleText) {
@@ -58,6 +65,7 @@ public class MySampleFragment2 extends Fragment{
         mView = inflater.inflate(R.layout.sample_fragment2, container, false);
 
         //String sampleText = getArguments().getString("bString");      GET from args
+        relativeLayout=(RelativeLayout)mView.findViewById(R.id.content);
 
         fdt=(TextView)mView.findViewById(R.id.fromdt);
         fdt.setText(datetoshow);
@@ -114,10 +122,26 @@ public class MySampleFragment2 extends Fragment{
         chk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent chka=new Intent(getActivity(),checkrecord.class);
-                chka.putExtra("fromdate",fdt.getText().toString());
-                chka.putExtra("todate",tdt.getText().toString());
-                startActivity(chka);
+
+                ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+                boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+                if(!isConnected)
+                {
+                    Snackbar snackbar=Snackbar.make(relativeLayout, "Check Internet Connection", Snackbar.LENGTH_LONG);
+                    View sbView = snackbar.getView();
+                    TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+                    textView.setTextColor(Color.YELLOW);
+                    snackbar.show();
+                }
+                else{
+                    Intent chka = new Intent(getActivity(), checkrecord.class);
+                    chka.putExtra("fromdate", fdt.getText().toString());
+                    chka.putExtra("todate", tdt.getText().toString());
+                    startActivity(chka);
+                }
             }
         });
 

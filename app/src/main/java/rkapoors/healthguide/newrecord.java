@@ -1,11 +1,5 @@
 package rkapoors.healthguide;
 
-import android.content.Context;
-import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -40,8 +34,6 @@ public class newrecord extends AppCompatActivity {
     int selectedDayOfMonth;
     private SimpleDateFormat dateFormatter;
 
-    CoordinatorLayout coordinatorLayout;
-
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
     private String readid;
@@ -50,21 +42,6 @@ public class newrecord extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newrecord);
-
-        coordinatorLayout = (CoordinatorLayout)findViewById(R.id.coordinatorLayout);
-
-        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-
-        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-        if(!isConnected)
-        {
-            Snackbar snackbar=Snackbar.make(coordinatorLayout, "Check Internet Connection", Snackbar.LENGTH_LONG);
-            View sbView = snackbar.getView();
-            TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-            textView.setTextColor(Color.YELLOW);
-            snackbar.show();
-        }
 
         mFirebaseInstance = FirebaseDatabase.getInstance();
 

@@ -169,13 +169,11 @@ public class MainActivity extends FragmentActivity implements OnTabChangeListene
         MySampleFragment1 f2 = new MySampleFragment1();
         MySampleFragment2 f3 = new MySampleFragment2();
         MySampleFragment3 f4 = new MySampleFragment3();
-        MySampleFragment4 f5 = new MySampleFragment4();
 
         fList.add(f1);
         fList.add(f2);
         fList.add(f3);
         fList.add(f4);
-        fList.add(f5);
 
         return fList;
     }
@@ -185,11 +183,10 @@ public class MainActivity extends FragmentActivity implements OnTabChangeListene
         mTabHost.setup();
 
         // TODO Put here your Tabs
-        MainActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("Tab1").setIndicator("<<  Schedule"));
+        MainActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("Tab1").setIndicator(":::  Schedule"));
         MainActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("Tab2").setIndicator("Notifications"));
         MainActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("Tab3").setIndicator("Records"));
         MainActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("Tab4").setIndicator("Emergency"));
-        MainActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("Tab5").setIndicator("Locator"));
 
         //Text color of tabs
         int kk=mTabHost.getTabWidget().getChildCount();
@@ -210,7 +207,7 @@ public class MainActivity extends FragmentActivity implements OnTabChangeListene
 
         this.doubleBackToExitPressedOnce = true;
 
-        Snackbar snackbar=Snackbar.make(drawerLayout, "Click back again to EXIT.", Snackbar.LENGTH_LONG);
+        Snackbar snackbar=Snackbar.make(drawerLayout, "Tap back again to exit.", Snackbar.LENGTH_LONG);
         View sbView = snackbar.getView();
         TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
         textView.setTextColor(Color.WHITE);

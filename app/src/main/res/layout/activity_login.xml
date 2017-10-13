@@ -99,7 +99,7 @@
             android:text="Not a member ?   REGISTER"
             android:textAllCaps="false"
             android:textColor="#fff"
-            android:textSize="15sp"
+            android:textSize="16sp"
             android:textStyle="bold"/>
     </LinearLayout>
     </ScrollView>

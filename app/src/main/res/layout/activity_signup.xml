@@ -107,10 +107,10 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:text="Already a member ? LOGIN"
+            android:text="Already a member ?   LOGIN"
             android:textAllCaps="false"
             android:textColor="#fff"
-            android:textSize="15sp"
+            android:textSize="16sp"
             android:textStyle="bold"/>
     </LinearLayout>
     </ScrollView>
