@@ -9,15 +9,6 @@
     android:layout_height="match_parent"
     tools:context="rkapoors.healthguide.newrecord">
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:visibility="gone"
-        android:layout_gravity="center|bottom"
-        android:layout_marginBottom="10dp"
-        />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

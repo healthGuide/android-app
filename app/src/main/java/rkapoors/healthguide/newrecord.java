@@ -1,9 +1,7 @@
 package rkapoors.healthguide;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,7 +10,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,13 +40,11 @@ public class newrecord extends AppCompatActivity {
     int selectedDayOfMonth;
     private SimpleDateFormat dateFormatter;
 
-    //private FirebaseAuth.AuthStateListener authListener;
-    //private FirebaseAuth auth;
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
     private String readid;
     String mailofuser="";
-    String userkimail="";
+    String uidofuser="";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,14 +60,12 @@ public class newrecord extends AppCompatActivity {
         setTitle("New Record");
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if(user!=null) mailofuser=user.getEmail();
-        //Toast.makeText(this, "loggged in "+mailofuser, Toast.LENGTH_SHORT).show();
+        if(user!=null) {mailofuser=user.getEmail();uidofuser=user.getUid();}
 
         final Spinner spinner= (Spinner)findViewById(R.id.comspinner);
         final EditText val=(EditText)findViewById(R.id.glucolevel);
         final EditText dosageet = (EditText)findViewById(R.id.others);
         final Button rbt=(Button)findViewById(R.id.rbt);
-        final ProgressBar pb = (ProgressBar)findViewById(R.id.progressBar);
         final CoordinatorLayout coordinatorLayout = (CoordinatorLayout)findViewById(R.id.coordinatorLayout);
         final TextView mailuser = (TextView)findViewById(R.id.usermail);
 
@@ -100,7 +93,7 @@ public class newrecord extends AppCompatActivity {
         rbt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pb.setVisibility(View.VISIBLE);
+                //pb.setVisibility(View.VISIBLE);
 
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
@@ -124,31 +117,16 @@ public class newrecord extends AppCompatActivity {
 
                 final Userdata uservals = new Userdata(tm,comm,glucoval,dosageval);
 
-                userkimail="paraskimail";                   // Prevent hardcode IMPLEMENT this NULL point exception
-                DatabaseReference temp = mFirebaseDatabase.child("users").child(userkimail).child(dt);
+                //Donot use email id for child   as characters . * ,   etc. are not allowed for database reference
+                DatabaseReference temp = mFirebaseDatabase.child("users").child(uidofuser).child(dt);
 
                 readid=temp.push().getKey();
                 temp.child(readid).setValue(uservals);
 
-                pb.setVisibility(View.GONE);
-
-                Snackbar.make(coordinatorLayout,"Recorded Successfully.",Snackbar.LENGTH_SHORT);
-
+                rbt.setEnabled(false);
+                Toast.makeText(newrecord.this, "Recorded successfully", Toast.LENGTH_SHORT).show();
             }
         });
 
     }
-    /*@Override
-    public void onStart() {
-        super.onStart();
-        auth.addAuthStateListener(authListener);
-    }*/
-
-   /* @Override
-    public void onStop() {
-        super.onStop();
-        if (authListener != null) {
-            auth.removeAuthStateListener(authListener);
-        }
-    }*/
 }
