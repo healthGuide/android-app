@@ -48,7 +48,6 @@ public class changepassword extends AppCompatActivity {
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
         if(!isConnected) Snackbar.make(coordinatorLayout,"Check Internet Connection",Snackbar.LENGTH_LONG).show();
 
-
         //auth = FirebaseAuth.getInstance();
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 

@@ -112,8 +112,6 @@ public class login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                history.add(inputEmail.getText().toString());
-
                 String email = inputEmail.getText().toString();
                 final String password = inputPassword.getText().toString();
 
@@ -145,6 +143,7 @@ public class login extends AppCompatActivity {
                                     // there was an error
                                     Snackbar.make(coordinatorLayout, "AUTHENTICATION failed", Snackbar.LENGTH_LONG).show();
                                 } else {
+                                    history.add(inputEmail.getText().toString());
                                     Intent intent = new Intent(login.this, MainActivity.class);
                                     startActivity(intent);
                                     finish();

@@ -1,8 +1,10 @@
+// Animation can be added by using viskaaskool awesome splash library.
+//here we have got animation utility of android
+
 package rkapoors.healthguide;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;

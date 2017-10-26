@@ -9,6 +9,15 @@
     android:layout_height="match_parent"
     tools:context="rkapoors.healthguide.newrecord">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:visibility="gone"
+        android:layout_gravity="center|bottom"
+        android:layout_marginBottom="10dp"
+        />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -20,10 +29,22 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/usermail"
+        android:textColor="#f00"
+        android:textStyle="italic"
+        android:text="userkimail"
+        android:textAllCaps="false"
+        android:layout_gravity="end"
+        android:textSize="15sp"
+        android:padding="5dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="1. Comments"
         android:textColor="#000"
         android:textStyle="bold"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:layout_marginStart="5dp"
         android:id="@+id/cmtv"/>
 
@@ -62,7 +83,7 @@
             android:id="@+id/others"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="3. other comments"
+            android:hint="3. dosage"
             android:focusableInTouchMode="true"
             android:inputType="textEmailAddress"
             android:textSize="20sp"
@@ -76,16 +97,10 @@
         android:layout_height="60dp"
         android:layout_marginTop="20dp"
         android:text="RECORD"
-        android:textSize="20sp"
-        android:textStyle="bold|italic"/>
-
-    <TextView
-        android:id="@+id/dummy"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textAlignment="center"
-        android:layout_marginTop="20dp"/>
+        android:textSize="22sp"
+        android:textStyle="bold|italic"
+        android:background="@null"
+        android:textColor="#f00"/>
 </LinearLayout>
     </ScrollView>
 </android.support.design.widget.CoordinatorLayout>

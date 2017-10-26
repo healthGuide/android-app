@@ -1,14 +1,21 @@
 package rkapoors.healthguide;
 
+import android.content.Context;
+import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -17,6 +24,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -34,31 +43,43 @@ public class newrecord extends AppCompatActivity {
     int selectedDayOfMonth;
     private SimpleDateFormat dateFormatter;
 
+    //private FirebaseAuth.AuthStateListener authListener;
+    //private FirebaseAuth auth;
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
     private String readid;
+    String mailofuser="";
+    String userkimail="";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newrecord);
 
         mFirebaseInstance = FirebaseDatabase.getInstance();
 
+        //mFirebaseInstance.setPersistenceEnabled(true);
         // get reference to 'users' node
-        mFirebaseDatabase = mFirebaseInstance.getReference("users");
+        mFirebaseDatabase = mFirebaseInstance.getReference();
 
         setTitle("New Record");
+
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user!=null) mailofuser=user.getEmail();
+        //Toast.makeText(this, "loggged in "+mailofuser, Toast.LENGTH_SHORT).show();
 
         final Spinner spinner= (Spinner)findViewById(R.id.comspinner);
         final EditText val=(EditText)findViewById(R.id.glucolevel);
         final EditText dosageet = (EditText)findViewById(R.id.others);
-        final TextView ans=(TextView)findViewById(R.id.dummy);
         final Button rbt=(Button)findViewById(R.id.rbt);
+        final ProgressBar pb = (ProgressBar)findViewById(R.id.progressBar);
+        final CoordinatorLayout coordinatorLayout = (CoordinatorLayout)findViewById(R.id.coordinatorLayout);
+        final TextView mailuser = (TextView)findViewById(R.id.usermail);
+
+        mailuser.setText(mailofuser);
 
         ArrayAdapter<CharSequence> staticAdapter = ArrayAdapter
-                .createFromResource(this, R.array.comments,
-                        android.R.layout.simple_spinner_item);
+                .createFromResource(this, R.array.comments, android.R.layout.simple_spinner_item);
 
         staticAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -79,10 +100,10 @@ public class newrecord extends AppCompatActivity {
         rbt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ans.setText("");
+                pb.setVisibility(View.VISIBLE);
 
-               // String mailofuser=FirebaseAuth.getInstance().getCurrentUser().getEmail();     IMPLEMENT this NULL point exception
-                String mailofuser="kapoorkimail";
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
 
                 glucoval=val.getText().toString();
                 dosageval=dosageet.getText().toString();
@@ -101,16 +122,33 @@ public class newrecord extends AppCompatActivity {
                 date.setTimeZone(TimeZone.getTimeZone("GMT+5:30"));
                 tm = date.format(currentLocalTime);
 
-                ans.setText(dt+" "+tm+" "+comm+" "+glucoval);
-
                 final Userdata uservals = new Userdata(tm,comm,glucoval,dosageval);
 
-                final DatabaseReference temp = mFirebaseDatabase.child(mailofuser).child(dt);
+                userkimail="paraskimail";                   // Prevent hardcode IMPLEMENT this NULL point exception
+                DatabaseReference temp = mFirebaseDatabase.child("users").child(userkimail).child(dt);
 
                 readid=temp.push().getKey();
                 temp.child(readid).setValue(uservals);
+
+                pb.setVisibility(View.GONE);
+
+                Snackbar.make(coordinatorLayout,"Recorded Successfully.",Snackbar.LENGTH_SHORT);
+
             }
         });
 
     }
+    /*@Override
+    public void onStart() {
+        super.onStart();
+        auth.addAuthStateListener(authListener);
+    }*/
+
+   /* @Override
+    public void onStop() {
+        super.onStop();
+        if (authListener != null) {
+            auth.removeAuthStateListener(authListener);
+        }
+    }*/
 }
