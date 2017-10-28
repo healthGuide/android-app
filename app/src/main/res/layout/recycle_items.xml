@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     card_view:cardCornerRadius="0dp"
-    card_view:cardElevation="5sp"
+    card_view:cardElevation="5dp"
     card_view:cardBackgroundColor="#fff"
     card_view:cardUseCompatPadding="true"
     >
@@ -14,6 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:paddingStart="2dp"
+        android:paddingEnd="0dp"
         >
                     <TextView
                         android:id="@+id/dttv"

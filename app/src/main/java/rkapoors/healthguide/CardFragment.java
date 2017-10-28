@@ -5,6 +5,7 @@ package rkapoors.healthguide;
 /**
  * Created by KAPOOR's on 16-09-2017.
  */
+
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,8 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,6 +41,7 @@ public class CardFragment extends Fragment {
 
     private String fromdate;
     private String todate;
+    String uidofuser = "";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,32 +51,41 @@ public class CardFragment extends Fragment {
         fromdate = arguments.getString("fromdate");
         todate = arguments.getString("todate");
 
-        //dtarr.clear();tmarr.clear();cmarr.clear();grarr.clear();dgarr.clear();
-
         mFirebaseInstance = FirebaseDatabase.getInstance();
-        // get reference to 'users' node
-        mFirebaseDatabase = mFirebaseInstance.getReference("users");
+        mFirebaseDatabase = mFirebaseInstance.getReference();
 
-        // String mailofuser=FirebaseAuth.getInstance().getCurrentUser().getEmail();     IMPLEMENT this NULL point exception
-        String mailofuser="kapoorkimail";
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) uidofuser = user.getUid();
 
-        final DatabaseReference temp = mFirebaseDatabase.child(mailofuser);
+        dtarr.add("first");
+        tmarr.add("time");
+        cmarr.add("cm");
+        grarr.add("ghh");
+        dgarr.add("kjklj");
 
-        temp.addValueEventListener(new ValueEventListener() {
+        dtarr.add("first");
+        tmarr.add("time");
+        cmarr.add("cm");
+        grarr.add("ghh");
+        dgarr.add("kjklj");
+
+        DatabaseReference userref = mFirebaseDatabase.child("users");
+
+        DatabaseReference idRef = userref.child(uidofuser);
+        idRef.addListenerForSingleValueEvent(new ValueEventListener() {    // change this
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot ds : dataSnapshot.getChildren()){
-                    String dateval = ds.getKey();
-                    dtarr.add(dateval);
-                            for(DataSnapshot ds1 : ds.getChildren()){
-                                Userdata useread = ds1.getValue(Userdata.class);
-                                tmarr.add(useread.time);
-                                cmarr.add(useread.comment);
-                                grarr.add(useread.value);
-                                dgarr.add(useread.dosage);
-                            }
-                        }
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    dtarr.add(ds.getKey());
+                    for (DataSnapshot dts : ds.getChildren()) {
+                        Userdata uservals = dts.getValue(Userdata.class);
+                        tmarr.add(uservals.time);
+                        cmarr.add(uservals.comment);
+                        grarr.add(uservals.value);
+                        dgarr.add(uservals.dosage);
+                    }
                 }
+            }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -84,10 +96,10 @@ public class CardFragment extends Fragment {
         initializeList();
         getActivity().setTitle("Records");
     }
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        //initializeList();
         View view = inflater.inflate(R.layout.fragment_card, container, false);
         MyRecyclerView = (RecyclerView) view.findViewById(R.id.cardView);
         MyRecyclerView.setHasFixedSize(true);
@@ -100,6 +112,7 @@ public class CardFragment extends Fragment {
 
         return view;
     }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -114,13 +127,14 @@ public class CardFragment extends Fragment {
         }
 
         @Override
-        public MyViewHolder onCreateViewHolder(ViewGroup parent,int viewType) {
+        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             // create a new view
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.recycle_items, parent, false);
             MyViewHolder holder = new MyViewHolder(view);
             return holder;
         }
+
         @Override
         public void onBindViewHolder(final MyViewHolder holder, int position) {
 
@@ -136,9 +150,10 @@ public class CardFragment extends Fragment {
             return list.size();
         }
     }
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView dtTextView,tmTextView,cmTextView,grTextView,othercmTextView;
+        public TextView dtTextView, tmTextView, cmTextView, grTextView, othercmTextView;
 
         public MyViewHolder(View v) {
             super(v);
@@ -147,22 +162,23 @@ public class CardFragment extends Fragment {
             cmTextView = (TextView) v.findViewById(R.id.cmtv);
             grTextView = (TextView) v.findViewById(R.id.grtv);
             othercmTextView = (TextView) v.findViewById(R.id.othercmtv);
-        }}
+        }
+    }
 
-                public void initializeList() {
+    public void initializeList() {
 
-                    listitems.clear();
+        listitems.clear();
 
-                    int lenofdata=dtarr.size();
-                    Toast.makeText(getActivity(),lenofdata+" "+todate+" "+fromdate, Toast.LENGTH_SHORT).show();
-                    for(int i =0;i<lenofdata;i++){                                          //set Counter here
-                        checkrecorddata item = new checkrecorddata();
-                        item.setdt(dtarr.get(i));
-                        item.settm(tmarr.get(i));
-                        item.setcomment(cmarr.get(i));
-                        item.setglucoreading(grarr.get(i));
-                        item.setothercm(dgarr.get(i));
-                        listitems.add(item);
-                    }
-                }
-            }
+        int lenofdata = dtarr.size();
+        //Toast.makeText(getActivity(),lenofdata+" "+todate+" "+fromdate, Toast.LENGTH_SHORT).show();
+        for (int i = 0; i < lenofdata; i++) {                                          //set Counter here
+            checkrecorddata item = new checkrecorddata();
+            item.setdt(dtarr.get(i));
+            item.settm(tmarr.get(i));
+            item.setcomment(cmarr.get(i));
+            item.setglucoreading(grarr.get(i));
+            item.setothercm(dgarr.get(i));
+            listitems.add(item);
+        }
+    }
+}

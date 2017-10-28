@@ -2,6 +2,7 @@ package rkapoors.healthguide;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -25,13 +26,13 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 
 public class signup extends AppCompatActivity {
 
-    private EditText inputEmail, inputPassword, inputrePassword;
+    private EditText inputEmail, inputPassword, inputrePassword, inputName;
     private Button btnSignIn, btnSignUp;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
     private CoordinatorLayout coordinatorLayout;
 
-    private String userId;
+    public static final String PREFS_NAME = "MyApp_Settings";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,7 @@ public class signup extends AppCompatActivity {
 
         btnSignIn = (Button) findViewById(R.id.login_button);
         btnSignUp = (Button) findViewById(R.id.signup_button);
+        inputName = (EditText)findViewById(R.id.username);
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
         inputrePassword = (EditText) findViewById(R.id.repassword);
@@ -68,6 +70,7 @@ public class signup extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                String name = inputName.getText().toString().trim();
                 final String email = inputEmail.getText().toString().trim();
                 final String password = inputPassword.getText().toString().trim();
                 String repass = inputrePassword.getText().toString().trim();
@@ -75,6 +78,11 @@ public class signup extends AppCompatActivity {
                 //hide keyboard when snackbar appears
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
+
+                if(TextUtils.isEmpty(name)){
+                    Snackbar.make(coordinatorLayout,"Enter your name",Snackbar.LENGTH_LONG).show();
+                    return;
+                }
 
                 if (TextUtils.isEmpty(email)) {
                     Snackbar.make(coordinatorLayout, "Enter email address", Snackbar.LENGTH_LONG).show();
@@ -95,6 +103,11 @@ public class signup extends AppCompatActivity {
                     Snackbar.make(coordinatorLayout, "Passwords donot match. Try again.", Snackbar.LENGTH_LONG).show();
                     return;
                 }
+
+                SharedPreferences settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString(email,name);
+                editor.apply();
 
                 progressBar.setVisibility(View.VISIBLE);
                 //create user

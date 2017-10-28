@@ -1,7 +1,9 @@
 package rkapoors.healthguide;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -93,7 +94,6 @@ public class newrecord extends AppCompatActivity {
         rbt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //pb.setVisibility(View.VISIBLE);
 
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
@@ -124,7 +124,8 @@ public class newrecord extends AppCompatActivity {
                 temp.child(readid).setValue(uservals);
 
                 rbt.setEnabled(false);
-                Toast.makeText(newrecord.this, "Recorded successfully", Toast.LENGTH_SHORT).show();
+                rbt.setTextColor(Color.parseColor("#A9A9A9"));
+                Snackbar.make(coordinatorLayout,"Recorded Successfully",Snackbar.LENGTH_LONG).show();
             }
         });
 
