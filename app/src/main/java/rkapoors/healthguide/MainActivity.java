@@ -3,9 +3,11 @@ package rkapoors.healthguide;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -20,6 +22,8 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -50,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
     android.support.v7.widget.Toolbar myToolbar;
 
     private DrawerLayout drawerLayout;
+    ActionBarDrawerToggle actionBarDrawerToggle;
 
     public static final String PREFS_NAME = "MyApp_Settings";
 
@@ -64,6 +69,22 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
         myToolbar.setTitleTextColor(android.graphics.Color.WHITE);
 
         drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);
+
+        final ActionBar actionBar = getSupportActionBar();
+        if(actionBar!=null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawerLayout,myToolbar,R.string.drawer_open,R.string.drawer_close){
+                public void onDrawerClosed(View view){
+                    supportInvalidateOptionsMenu();
+                }
+                public void onDrawerOpened(View drawerView){
+                    supportInvalidateOptionsMenu();
+                }
+            };
+            actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
+            drawerLayout.setDrawerListener(actionBarDrawerToggle);
+            actionBarDrawerToggle.syncState();
+        }
 
         ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
@@ -103,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
 
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         naam = (TextView)findViewById(R.id.userName);
-        naam.setText(settings.getString(mailaddr,""));
+        naam.setText(settings.getString(mailaddr,"User"));    //second arg gives default val in case key absent
 
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
 
@@ -241,7 +262,23 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
 
     //sign out method
     public void signOut() {
-        auth.signOut();
+        final ProgressDialog pd = new ProgressDialog(this);
+        pd.setMessage("Signing out");
+        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        pd.show();
+        pd.setCancelable(false);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Thread.sleep(1000);
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+                pd.dismiss();
+                auth.signOut();
+            }
+        }).start();
     }
 
     @Override
@@ -256,5 +293,17 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
         if (authListener != null) {
             auth.removeAuthStateListener(authListener);
         }
+    }
+
+    @Override
+    public void onPostCreate(Bundle savedInstanceState){
+        super.onPostCreate(savedInstanceState);
+        actionBarDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig){
+        super.onConfigurationChanged(newConfig);
+        actionBarDrawerToggle.onConfigurationChanged(newConfig);
     }
 }

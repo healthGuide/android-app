@@ -70,7 +70,7 @@ public class signup extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String name = inputName.getText().toString().trim();
+                final String name = inputName.getText().toString().trim();
                 final String email = inputEmail.getText().toString().trim();
                 final String password = inputPassword.getText().toString().trim();
                 String repass = inputrePassword.getText().toString().trim();
@@ -105,9 +105,7 @@ public class signup extends AppCompatActivity {
                 }
 
                 SharedPreferences settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-                SharedPreferences.Editor editor = settings.edit();
-                editor.putString(email,name);
-                editor.apply();
+                final SharedPreferences.Editor editor = settings.edit();
 
                 progressBar.setVisibility(View.VISIBLE);
                 //create user
@@ -129,6 +127,8 @@ public class signup extends AppCompatActivity {
                                         Snackbar.make(coordinatorLayout, "Request FAILED. Try again.", Snackbar.LENGTH_LONG).show();
                                     }
                                 } else {
+                                    editor.putString(email,name);
+                                    editor.apply();
                                     Toast.makeText(signup.this, "WELCOME to healthGuide", Toast.LENGTH_SHORT).show();
                                     startActivity(new Intent(signup.this, MainActivity.class));
                                     finish();

@@ -11,6 +11,10 @@ public class checkrecorddata {
      String glucoreading;
     String othercm;
 
+    public checkrecorddata(){
+        //default constructor for calls to DataSnapshot
+    }
+
     public String getdt() {
         return dt;
     }

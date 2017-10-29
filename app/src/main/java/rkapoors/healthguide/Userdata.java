@@ -3,9 +3,6 @@ package rkapoors.healthguide;
 /**
  * Created by KAPOOR's on 03-10-2017.
  */
-import com.google.firebase.database.IgnoreExtraProperties;
-
-@IgnoreExtraProperties
 public class Userdata {
 
     public String time;
