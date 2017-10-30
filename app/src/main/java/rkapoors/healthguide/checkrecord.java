@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -20,8 +19,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class checkrecord extends AppCompatActivity {
     FirebaseDatabase database;
@@ -33,6 +37,8 @@ public class checkrecord extends AppCompatActivity {
 
     String uidofuser="";
     RelativeLayout relativeLayout;
+
+    Date fromtithi, totithi, firebasetithi;
 
     int flag=0;
 
@@ -52,6 +58,14 @@ public class checkrecord extends AppCompatActivity {
         frdt.setText(getIntent().getStringExtra("fromdate"));
         todt.setText(getIntent().getStringExtra("todate"));
 
+        final DateFormat df = new SimpleDateFormat("dd-MM-yyyy",Locale.US);
+        try {
+            fromtithi = df.parse(frdt.getText().toString());
+            totithi = df.parse(todt.getText().toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) uidofuser = user.getUid();
 
@@ -65,20 +79,27 @@ public class checkrecord extends AppCompatActivity {
                 list = new ArrayList<checkrecorddata>();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     String tithi = ds.getKey();
-                    for (DataSnapshot dts : ds.getChildren()) {
-                        checkrecorddata value = dts.getValue(checkrecorddata.class);
-                        checkrecorddata temp = new checkrecorddata();
-                        String samay = value.gettm();
-                        String kab = value.getcomment();
-                        String kitnamed = value.getothercm();
-                        String kitnival = value.getglucoreading();
-                        temp.setdt(tithi);
-                        temp.settm(samay);
-                        temp.setcomment(kab);
-                        temp.setothercm(kitnamed);
-                        temp.setglucoreading(kitnival);
-                        list.add(temp);
-                        flag=1;
+                    try {
+                        firebasetithi = df.parse(tithi);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    if(firebasetithi.compareTo(fromtithi)>=0 && firebasetithi.compareTo(totithi)<=0) {
+                        for (DataSnapshot dts : ds.getChildren()) {
+                            checkrecorddata value = dts.getValue(checkrecorddata.class);
+                            checkrecorddata temp = new checkrecorddata();
+                            String samay = value.gettm();
+                            String kab = value.getcomment();
+                            String kitnamed = value.getothercm();
+                            String kitnival = value.getglucoreading();
+                            temp.setdt(tithi);
+                            temp.settm(samay);
+                            temp.setcomment(kab);
+                            temp.setothercm(kitnamed);
+                            temp.setglucoreading(kitnival);
+                            list.add(temp);
+                            flag = 1;
+                        }
                     }
                 }
             }
