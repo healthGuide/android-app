@@ -115,7 +115,7 @@ public class newrecord extends AppCompatActivity {
                 date.setTimeZone(TimeZone.getTimeZone("GMT+5:30"));
                 tm = date.format(currentLocalTime);
 
-                final Userdata uservals = new Userdata(tm,comm,glucoval,dosageval);
+                final checkrecorddata uservals = new checkrecorddata(tm,comm,glucoval,dosageval);
 
                 //Donot use email id for child   as characters . * ,   etc. are not allowed for database reference
                 DatabaseReference temp = mFirebaseDatabase.child("users").child(uidofuser).child(dt);

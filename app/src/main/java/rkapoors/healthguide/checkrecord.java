@@ -1,6 +1,7 @@
 package rkapoors.healthguide;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,15 +29,28 @@ public class checkrecord extends AppCompatActivity {
     List<checkrecorddata> list;
     RecyclerView recycle;
     Button ftbt;
+    TextView frdt,todt;
 
     String uidofuser="";
+    RelativeLayout relativeLayout;
+
+    int flag=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkrecord);
+
+        setTitle("Records");
+
         recycle = (RecyclerView) findViewById(R.id.cardView);
         ftbt = (Button)findViewById(R.id.fetchbt);
+        frdt = (TextView)findViewById(R.id.fttv);
+        todt = (TextView)findViewById(R.id.tttv);
+        relativeLayout = (RelativeLayout)findViewById(R.id.rellayout);
+
+        frdt.setText(getIntent().getStringExtra("fromdate"));
+        todt.setText(getIntent().getStringExtra("todate"));
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) uidofuser = user.getUid();
@@ -62,6 +78,7 @@ public class checkrecord extends AppCompatActivity {
                         temp.setothercm(kitnamed);
                         temp.setglucoreading(kitnival);
                         list.add(temp);
+                        flag=1;
                     }
                 }
             }
@@ -69,18 +86,22 @@ public class checkrecord extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Failed to read value
-                Log.w("Hello", "Failed to read value.", databaseError.toException());
+                Snackbar.make(relativeLayout,"Connection Lost. Try Again.",Snackbar.LENGTH_LONG).show();
             }
         });
 
         ftbt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(flag==1){
                 recycleadapter recycadp = new recycleadapter(list,checkrecord.this);
                 RecyclerView.LayoutManager recyclayout = new LinearLayoutManager(checkrecord.this);
                 recycle.setLayoutManager(recyclayout);
                 recycle.setItemAnimator( new DefaultItemAnimator());
-                recycle.setAdapter(recycadp);
+                recycle.setAdapter(recycadp);}
+                else{
+                    Snackbar.make(relativeLayout,"Check Connection or Constraints.",Snackbar.LENGTH_LONG).show();
+                }
             }
         });
     }

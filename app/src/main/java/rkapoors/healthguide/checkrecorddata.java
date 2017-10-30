@@ -5,14 +5,21 @@ package rkapoors.healthguide;
  */
 
 public class checkrecorddata {
-    String dt;
-   String tm;
-     String comment;
-     String glucoreading;
-    String othercm;
+     public String dt;
+     public String time;
+     public String comment;
+     public String value;
+     public String dosage;
 
     public checkrecorddata(){
         //default constructor for calls to DataSnapshot
+    }
+
+    public checkrecorddata(String time, String comment, String value, String dosage) {
+        this.time = time;
+        this.value = value;
+        this.comment=comment;
+        this.dosage=dosage;
     }
 
     public String getdt() {
@@ -23,10 +30,10 @@ public class checkrecorddata {
     }
 
     public String gettm(){
-        return tm;
+        return time;
     }
     public void settm(String tm){
-        this.tm=tm;
+        this.time=tm;
     }
 
     public String getcomment(){
@@ -37,16 +44,16 @@ public class checkrecorddata {
     }
 
     public String getglucoreading(){
-        return glucoreading;
+        return value;
     }
     public void setglucoreading(String gr){
-        this.glucoreading=gr;
+        this.value=gr;
     }
 
     public String getothercm(){
-        return othercm;
+        return dosage;
     }
     public void setothercm(String ocm){
-        this.othercm=ocm;
+        this.dosage=ocm;
     }
 }
