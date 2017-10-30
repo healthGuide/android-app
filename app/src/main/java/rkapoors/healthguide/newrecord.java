@@ -59,6 +59,10 @@ public class newrecord extends AppCompatActivity {
         mFirebaseDatabase = mFirebaseInstance.getReference();
 
         setTitle("New Record");
+       android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if(actionBar!=null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user!=null) {mailofuser=user.getEmail();uidofuser=user.getUid();}
@@ -128,6 +132,11 @@ public class newrecord extends AppCompatActivity {
                 Snackbar.make(coordinatorLayout,"Recorded Successfully",Snackbar.LENGTH_LONG).show();
             }
         });
+    }
 
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
     }
 }

@@ -2,6 +2,7 @@ package rkapoors.healthguide;
 
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -48,6 +49,10 @@ public class checkrecord extends AppCompatActivity {
         setContentView(R.layout.activity_checkrecord);
 
         setTitle("Records");
+        ActionBar actionBar =getSupportActionBar();
+        if(actionBar!=null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         recycle = (RecyclerView) findViewById(R.id.cardView);
         ftbt = (Button)findViewById(R.id.fetchbt);
@@ -125,5 +130,11 @@ public class checkrecord extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
     }
 }
