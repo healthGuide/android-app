@@ -2,7 +2,6 @@ package rkapoors.healthguide;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -23,6 +22,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class signup extends AppCompatActivity {
 
@@ -32,7 +34,8 @@ public class signup extends AppCompatActivity {
     private FirebaseAuth auth;
     private CoordinatorLayout coordinatorLayout;
 
-    public static final String PREFS_NAME = "MyApp_Settings";
+    FirebaseDatabase database;
+    DatabaseReference dbref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,9 @@ public class signup extends AppCompatActivity {
 
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
         if(!isConnected) Snackbar.make(coordinatorLayout,"Check Internet Connection",Snackbar.LENGTH_LONG).show();
+
+        database = FirebaseDatabase.getInstance();
+        dbref = database.getReference();
 
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
@@ -104,9 +110,6 @@ public class signup extends AppCompatActivity {
                     return;
                 }
 
-                SharedPreferences settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-                final SharedPreferences.Editor editor = settings.edit();
-
                 progressBar.setVisibility(View.VISIBLE);
                 //create user
                 auth.createUserWithEmailAndPassword(email, password)
@@ -127,8 +130,12 @@ public class signup extends AppCompatActivity {
                                         Snackbar.make(coordinatorLayout, "Request FAILED. Try again.", Snackbar.LENGTH_LONG).show();
                                     }
                                 } else {
-                                    editor.putString(email,name);
-                                    editor.apply();
+                                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                    if(user!=null){
+                                        DatabaseReference usernode =  dbref.child("users").child(user.getUid());
+                                        usernode.child("email").setValue(user.getEmail());
+                                        usernode.child("name").setValue(name);
+                                    }
                                     Toast.makeText(signup.this, "WELCOME to healthGuide", Toast.LENGTH_SHORT).show();
                                     startActivity(new Intent(signup.this, MainActivity.class));
                                     finish();

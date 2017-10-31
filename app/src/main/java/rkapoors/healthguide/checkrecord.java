@@ -76,7 +76,7 @@ public class checkrecord extends AppCompatActivity {
 
         database=FirebaseDatabase.getInstance();
         databaseReference=database.getReference();
-        databaseReference.child("users").child(uidofuser).addValueEventListener(new ValueEventListener() {
+        databaseReference.child("users").child(uidofuser).child("records").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again

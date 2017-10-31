@@ -37,6 +37,11 @@ import android.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity implements OnTabChangeListener, OnPageChangeListener {
 
@@ -56,7 +61,8 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
     private DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
 
-    public static final String PREFS_NAME = "MyApp_Settings";
+    FirebaseDatabase database;
+    DatabaseReference dbref;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -69,6 +75,9 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
         myToolbar.setTitleTextColor(android.graphics.Color.WHITE);
 
         drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);
+
+        database=FirebaseDatabase.getInstance();
+        dbref=database.getReference();
 
         final ActionBar actionBar = getSupportActionBar();
         if(actionBar!=null){
@@ -102,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
         auth = FirebaseAuth.getInstance();
 
         //get current user
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -117,14 +126,24 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
             }
         };
 
-        String mailaddr="";
-        if(user!=null) mailaddr=user.getEmail();
+        String mailaddr="",useruid="";
+        if(user!=null) {mailaddr=user.getEmail();useruid=user.getUid();}
         maildesc = (TextView)findViewById(R.id.useremail);
         maildesc.setText(mailaddr);
 
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         naam = (TextView)findViewById(R.id.userName);
-        naam.setText(settings.getString(mailaddr,"User"));    //second arg gives default val in case key absent
+        dbref.child("users").child(useruid).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String username = dataSnapshot.getValue(String.class);
+                naam.setText(username);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
 
@@ -275,8 +294,8 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
                 }catch(Exception e){
                     e.printStackTrace();
                 }
-                pd.dismiss();
                 auth.signOut();
+                pd.dismiss();
             }
         }).start();
     }

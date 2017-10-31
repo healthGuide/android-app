@@ -74,7 +74,7 @@ public class login extends AppCompatActivity {
         if(!isConnected) Snackbar.make(coordinatorLayout,"Check Internet Connection",Snackbar.LENGTH_LONG).show();
 
         settings=getSharedPreferences(USERNAME,0);
-        history = new HashSet<String>(settings.getStringSet(SEARCHHISTORY, new HashSet<String>()));
+        history = new HashSet<String>(settings.getStringSet(SEARCHHISTORY, new HashSet<String>()));     //key, default value
         setautocompletesource();
 
         inputEmail.setOnKeyListener(new View.OnKeyListener() {
@@ -112,8 +112,8 @@ public class login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String email = inputEmail.getText().toString();
-                final String password = inputPassword.getText().toString();
+                String email = inputEmail.getText().toString().trim();
+                final String password = inputPassword.getText().toString().trim();
 
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), 0);
@@ -169,7 +169,7 @@ public class login extends AppCompatActivity {
     }
     private void saveprefs()
     {
-        settings=getSharedPreferences(USERNAME,0);
+        settings=getSharedPreferences(USERNAME,0);                 //name of sharedPreference object, mode 0 : accessible by app
         SharedPreferences.Editor editor=settings.edit();
         editor.putStringSet(SEARCHHISTORY,history);
         editor.apply();
