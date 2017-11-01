@@ -36,6 +36,12 @@ public class changepassword extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_changepassword);
 
+        setTitle("Security");
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if(actionBar!=null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         changepassbtn = (Button)findViewById(R.id.btn_change_password);
         newpass = (EditText)findViewById(R.id.newpassword);
         oldpass = (EditText)findViewById(R.id.oldpassword);
@@ -110,5 +116,11 @@ public class changepassword extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
     }
 }

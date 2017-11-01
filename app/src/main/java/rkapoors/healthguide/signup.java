@@ -42,6 +42,8 @@ public class signup extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
+        setTitle("Sign up");
+
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
         ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);

@@ -24,7 +24,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class resetpassword extends AppCompatActivity {
 
     private EditText inputEmail;
-    private Button btnReset, btnBack;
+    private Button btnReset;
     private FirebaseAuth auth;
     private ProgressBar progressBar;
     private CoordinatorLayout coordinatorLayout;
@@ -34,9 +34,14 @@ public class resetpassword extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resetpassword);
 
+        setTitle("Security");
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if(actionBar!=null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         inputEmail = (EditText) findViewById(R.id.email);
         btnReset = (Button) findViewById(R.id.btn_reset_password);
-        btnBack = (Button) findViewById(R.id.btn_back);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
@@ -47,14 +52,6 @@ public class resetpassword extends AppCompatActivity {
         if(!isConnected) Snackbar.make(coordinatorLayout,"Check Internet Connection",Snackbar.LENGTH_LONG).show();
 
         auth = FirebaseAuth.getInstance();
-
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(resetpassword.this,login.class));
-                finish();
-            }
-        });
 
         btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +83,12 @@ public class resetpassword extends AppCompatActivity {
                         });
             }
         });
+    }
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
     }
 
 }

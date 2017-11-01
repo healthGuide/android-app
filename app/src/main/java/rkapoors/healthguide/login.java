@@ -59,6 +59,8 @@ public class login extends AppCompatActivity {
         // set the view now
         setContentView(R.layout.activity_login);
 
+        setTitle("Login");
+
         inputEmail = (AutoCompleteTextView) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
@@ -104,7 +106,6 @@ public class login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(login.this, resetpassword.class));
-                finish();
             }
         });
 
