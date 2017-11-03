@@ -8,9 +8,11 @@
 
     <ImageButton
         android:id="@+id/alertb"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/alert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/alertbutton"
+        android:layout_centerInParent="true"
+        android:background="@null"
         />
 
     <TextView
@@ -19,8 +21,18 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="39dp"
+        android:layout_marginBottom="30dp"
         android:text="hold button for 3 sec"
         android:textColor="#f00"/>
+    
+    <ImageButton
+        android:id="@+id/cbt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/contact"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:padding="5dp"
+        android:background="@null"/>
 
 </RelativeLayout>

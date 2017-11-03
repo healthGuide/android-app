@@ -52,25 +52,20 @@ public class MySampleFragment3 extends Fragment {
         //String sampleText = getArguments().getString("bString");      GET from args
 
         final ImageButton alertb = (ImageButton) mView.findViewById(R.id.alertb);
+        final ImageButton contactb = (ImageButton) mView.findViewById(R.id.cbt);
+
+        contactb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "Add contacts activity here", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         alertb.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(final View v, MotionEvent event) {
 
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-
-                   /* countDownTimer = new CountDownTimer(3000, 1000)
-                    {
-                        public void onFinish() {
-                            Toast.makeText(getActivity(), "SMS with LOCATION will be sent", Toast.LENGTH_SHORT).show();
-                        }
-
-                        public void onTick(long millisUntilFinished) {
-                            tmtv.setText("" + millisUntilFinished / 1000);
-                        }
-                    };
-                    countDownTimer.start();*/
-
                     isLongPress = true;
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
