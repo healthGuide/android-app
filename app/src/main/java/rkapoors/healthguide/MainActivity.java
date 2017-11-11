@@ -282,7 +282,7 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
     //sign out method
     public void signOut() {
         final ProgressDialog pd = new ProgressDialog(this);
-        pd.setMessage("Signing out");
+        pd.setMessage("Signing out...");
         pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         pd.show();
         pd.setCancelable(false);

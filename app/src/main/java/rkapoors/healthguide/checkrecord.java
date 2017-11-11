@@ -1,6 +1,9 @@
 package rkapoors.healthguide;
 
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -40,6 +43,7 @@ public class checkrecord extends AppCompatActivity {
     RelativeLayout relativeLayout;
 
     Date fromtithi, totithi, firebasetithi;
+    DateFormat df;
 
     int flag=0;
 
@@ -63,7 +67,7 @@ public class checkrecord extends AppCompatActivity {
         frdt.setText(getIntent().getStringExtra("fromdate"));
         todt.setText(getIntent().getStringExtra("todate"));
 
-        final DateFormat df = new SimpleDateFormat("dd-MM-yyyy",Locale.US);
+        df = new SimpleDateFormat("dd-MM-yyyy",Locale.US);
         try {
             fromtithi = df.parse(frdt.getText().toString());
             totithi = df.parse(todt.getText().toString());
@@ -76,45 +80,9 @@ public class checkrecord extends AppCompatActivity {
 
         database=FirebaseDatabase.getInstance();
         databaseReference=database.getReference();
-        databaseReference.child("users").child(uidofuser).child("records").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                list = new ArrayList<checkrecorddata>();
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    String tithi = ds.getKey();
-                    try {
-                        firebasetithi = df.parse(tithi);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    if(firebasetithi.compareTo(fromtithi)>=0 && firebasetithi.compareTo(totithi)<=0) {
-                        for (DataSnapshot dts : ds.getChildren()) {
-                            checkrecorddata value = dts.getValue(checkrecorddata.class);
-                            checkrecorddata temp = new checkrecorddata();
-                            String samay = value.gettm();
-                            String kab = value.getcomment();
-                            String kitnamed = value.getothercm();
-                            String kitnival = value.getglucoreading();
-                            temp.setdt(tithi);
-                            temp.settm(samay);
-                            temp.setcomment(kab);
-                            temp.setothercm(kitnamed);
-                            temp.setglucoreading(kitnival);
-                            list.add(temp);
-                            flag = 1;
-                        }
-                    }
-                }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Failed to read value
-                Snackbar.make(relativeLayout,"Connection Lost. Try Again.",Snackbar.LENGTH_LONG).show();
-            }
-        });
+        fetchrecord task = new fetchrecord(checkrecord.this);
+        task.execute();
 
         ftbt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,6 +98,83 @@ public class checkrecord extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private class fetchrecord extends AsyncTask<Void, Void, Void>{
+        private ProgressDialog pd;
+
+        public fetchrecord(checkrecord activity){
+            pd = new ProgressDialog(activity);
+        }
+
+        @Override
+        protected void onPreExecute(){
+            pd.setMessage("Fetching records...");
+            pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            pd.setCancelable(false);
+            pd.show();
+        }
+
+        @Override
+        protected void onPostExecute(Void result){
+            super.onPostExecute(result);
+            Handler handler = new Handler();
+
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    pd.dismiss();
+                }
+            },1000);    //show for atlest 1000 msec
+        }
+
+        @Override
+        protected Void doInBackground(Void... params){
+            try{
+                databaseReference.child("users").child(uidofuser).child("records").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // This method is called once with the initial value and again
+                        // whenever data at this location is updated.
+                        list = new ArrayList<checkrecorddata>();
+                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                            String tithi = ds.getKey();
+                            try {
+                                firebasetithi = df.parse(tithi);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            if(firebasetithi.compareTo(fromtithi)>=0 && firebasetithi.compareTo(totithi)<=0) {
+                                for (DataSnapshot dts : ds.getChildren()) {
+                                    checkrecorddata value = dts.getValue(checkrecorddata.class);
+                                    checkrecorddata temp = new checkrecorddata();
+                                    String samay = value.gettm();
+                                    String kab = value.getcomment();
+                                    String kitnamed = value.getothercm();
+                                    String kitnival = value.getglucoreading();
+                                    temp.setdt(tithi);
+                                    temp.settm(samay);
+                                    temp.setcomment(kab);
+                                    temp.setothercm(kitnamed);
+                                    temp.setglucoreading(kitnival);
+                                    list.add(temp);
+                                    flag = 1;
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Failed to read value
+                        Snackbar.make(relativeLayout,"Connection Lost. Try Again.",Snackbar.LENGTH_LONG).show();
+                    }
+                });
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
+            return null;
+        }
     }
 
     @Override
