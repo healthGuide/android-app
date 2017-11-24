@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
         mViewPager.setAdapter(pageAdapter);
         mViewPager.setOnPageChangeListener(MainActivity.this);
 
-        String[] data={"New record","","","Change password","Log out"};
+        String[] data={"Schedule","Notifications","Records","Emergency"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data);
 
         final ListView navList = (ListView) findViewById(R.id.navList);
@@ -167,14 +167,39 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
 
                 switch(pos){
                     case 0:
-                        Intent nra=new Intent(MainActivity.this,newrecord.class);
-                        startActivity(nra);
+                        drawerLayout.closeDrawers();
+                        mViewPager.setCurrentItem(0);
+                        break;
+                    case 1:
+                        drawerLayout.closeDrawers();
+                        mViewPager.setCurrentItem(1);
+                        break;
+                    case 2:
+                        drawerLayout.closeDrawers();
+                        mViewPager.setCurrentItem(2);
                         break;
                     case 3:
+                        drawerLayout.closeDrawers();
+                        mViewPager.setCurrentItem(3);
+                        break;
+                }
+            }
+        });
+
+        String[] data2={"Change password","Log out"};
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data2);
+        final ListView navList2 = (ListView) findViewById(R.id.navList2);
+        navList2.setAdapter(adapter2);
+        navList2.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int pos,long id){
+
+                switch(pos){
+                    case 0:
                         Intent changepass=new Intent(MainActivity.this,changepassword.class);
                         startActivity(changepass);
                         break;
-                    case 4:
+                    case 1:
                         signOut();
                         break;
                 }
