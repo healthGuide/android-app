@@ -84,7 +84,7 @@ public class login extends AppCompatActivity {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if((event.getAction()==KeyEvent.ACTION_DOWN)&&(keyCode==KeyEvent.KEYCODE_ENTER))
                 {
-                    addsearchinput(inputEmail.getText().toString());
+                    addsearchinput(inputEmail.getText().toString().trim());
                     return true;
                 }
                 return false;
@@ -105,7 +105,9 @@ public class login extends AppCompatActivity {
         btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(login.this, resetpassword.class));
+                Intent resetint = new Intent(login.this, resetpassword.class);
+                resetint.putExtra("usermail",inputEmail.getText().toString().trim());
+                startActivity(resetint);
             }
         });
 
@@ -113,7 +115,7 @@ public class login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String email = inputEmail.getText().toString().trim();
+                final String email = inputEmail.getText().toString().trim();
                 final String password = inputPassword.getText().toString().trim();
 
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -144,7 +146,7 @@ public class login extends AppCompatActivity {
                                     // there was an error
                                     Snackbar.make(coordinatorLayout, "AUTHENTICATION failed", Snackbar.LENGTH_LONG).show();
                                 } else {
-                                    history.add(inputEmail.getText().toString());
+                                    history.add(email);
                                     Intent intent = new Intent(login.this, MainActivity.class);
                                     startActivity(intent);
                                     finish();

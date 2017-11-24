@@ -88,11 +88,13 @@ public class checkrecord extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(flag==1){
-                recycleadapter recycadp = new recycleadapter(list,checkrecord.this);
-                RecyclerView.LayoutManager recyclayout = new LinearLayoutManager(checkrecord.this);
-                recycle.setLayoutManager(recyclayout);
-                recycle.setItemAnimator( new DefaultItemAnimator());
-                recycle.setAdapter(recycadp);}
+                    recycleadapter recycadp = new recycleadapter(list,checkrecord.this);
+                    recycadp.notifyDataSetChanged();
+                    RecyclerView.LayoutManager recyclayout = new LinearLayoutManager(checkrecord.this);
+                    recycle.setLayoutManager(recyclayout);
+                    recycle.setItemAnimator( new DefaultItemAnimator());
+                    recycle.setAdapter(recycadp);
+                }
                 else{
                     Snackbar.make(relativeLayout,"Check Connection or Constraints.",Snackbar.LENGTH_LONG).show();
                 }
@@ -109,7 +111,7 @@ public class checkrecord extends AppCompatActivity {
 
         @Override
         protected void onPreExecute(){
-            pd.setMessage("Fetching records...");
+            pd.setMessage("Please wait a moment...");
             pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             pd.setCancelable(false);
             pd.show();
@@ -123,8 +125,20 @@ public class checkrecord extends AppCompatActivity {
             handler.postDelayed(new Runnable() {
                 public void run() {
                     pd.dismiss();
+
+                    if(flag==1){
+                        recycleadapter recycadp = new recycleadapter(list,checkrecord.this);
+                        recycadp.notifyDataSetChanged();
+                        RecyclerView.LayoutManager recyclayout = new LinearLayoutManager(checkrecord.this);
+                        recycle.setLayoutManager(recyclayout);
+                        recycle.setItemAnimator( new DefaultItemAnimator());
+                        recycle.setAdapter(recycadp);
+                    }
+                    else{
+                        Snackbar.make(relativeLayout,"Check Connection or Constraints.",Snackbar.LENGTH_LONG).show();
+                    }
                 }
-            },1000);    //show for atlest 1000 msec
+            },500);    //show for atlest 500 msec
         }
 
         @Override

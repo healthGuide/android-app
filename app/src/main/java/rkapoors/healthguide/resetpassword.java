@@ -45,6 +45,8 @@ public class resetpassword extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
+        inputEmail.setText(getIntent().getStringExtra("usermail"));
+
         ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 

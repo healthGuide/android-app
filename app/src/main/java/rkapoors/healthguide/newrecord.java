@@ -117,7 +117,7 @@ public class newrecord extends AppCompatActivity {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if((event.getAction()==KeyEvent.ACTION_DOWN)&&(keyCode==KeyEvent.KEYCODE_ENTER))
                 {
-                    addsearchinput(doctoremail.getText().toString());
+                    addsearchinput(doctoremail.getText().toString().trim());
                     return true;
                 }
                 return false;
