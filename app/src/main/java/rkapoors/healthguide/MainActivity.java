@@ -19,6 +19,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.DrawerLayout;
@@ -156,8 +157,10 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
         mViewPager.setAdapter(pageAdapter);
         mViewPager.setOnPageChangeListener(MainActivity.this);
 
-        String[] data={"Schedule","Notifications","Records","Emergency"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data);
+        String[] text={"Schedule","Notifications","Records","Emergency"};
+        Integer[] imageId = {R.drawable.schedicon, R.drawable.notificon, R.drawable.recordico, R.drawable.emergicon};
+
+        Draweradapter adapter = new Draweradapter(MainActivity.this,text,imageId);
 
         final ListView navList = (ListView) findViewById(R.id.navList);
         navList.setAdapter(adapter);
@@ -187,7 +190,9 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
         });
 
         String[] data2={"Change password","Log out"};
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data2);
+        Integer[] imageId2 = {R.drawable.settings, R.drawable.logicon};
+
+        Draweradapter adapter2 = new Draweradapter(MainActivity.this,data2,imageId2);
         final ListView navList2 = (ListView) findViewById(R.id.navList2);
         navList2.setAdapter(adapter2);
         navList2.setOnItemClickListener(new AdapterView.OnItemClickListener(){
@@ -196,6 +201,7 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
 
                 switch(pos){
                     case 0:
+                        drawerLayout.closeDrawers();
                         Intent changepass=new Intent(MainActivity.this,changepassword.class);
                         startActivity(changepass);
                         break;
@@ -283,25 +289,32 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
 
     @Override
     public void onBackPressed() {
-        if (doubleBackToExitPressedOnce) {
-            super.onBackPressed();
-            return;
+
+        if(drawerLayout.isDrawerOpen(GravityCompat.START))
+        {
+            drawerLayout.closeDrawers();
         }
-
-        this.doubleBackToExitPressedOnce = true;
-
-        Snackbar snackbar=Snackbar.make(drawerLayout, "Tap back again to exit.", Snackbar.LENGTH_LONG);
-        View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(Color.WHITE);
-        snackbar.show();
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                doubleBackToExitPressedOnce=false;
+        else {
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                return;
             }
-        }, 2000);
+
+            this.doubleBackToExitPressedOnce = true;
+
+            Snackbar snackbar = Snackbar.make(drawerLayout, "Tap back again to exit.", Snackbar.LENGTH_LONG);
+            View sbView = snackbar.getView();
+            TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(Color.WHITE);
+            snackbar.show();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce = false;
+                }
+            }, 2000);
+        }
     }
 
     //sign out method
