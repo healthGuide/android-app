@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
     boolean doubleBackToExitPressedOnce = false;
     private TextView maildesc;
     TextView naam;
+    String useruid="";
 
     android.support.v7.widget.Toolbar myToolbar;
 
@@ -127,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
             }
         };
 
-        String mailaddr="",useruid="";
+        String mailaddr="";
         if(user!=null) {mailaddr=user.getEmail();useruid=user.getUid();}
         maildesc = (TextView)findViewById(R.id.useremail);
         maildesc.setText(mailaddr);
@@ -189,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
             }
         });
 
-        String[] data2={"Change password","Log out"};
+        String[] data2={"Settings","Log out"};
         Integer[] imageId2 = {R.drawable.settings, R.drawable.logicon};
 
         Draweradapter adapter2 = new Draweradapter(MainActivity.this,data2,imageId2);
@@ -201,9 +202,8 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
 
                 switch(pos){
                     case 0:
-                        drawerLayout.closeDrawers();
-                        Intent changepass=new Intent(MainActivity.this,changepassword.class);
-                        startActivity(changepass);
+                        Intent settings=new Intent(MainActivity.this,settings.class);
+                        startActivity(settings);
                         break;
                     case 1:
                         signOut();
@@ -362,5 +362,23 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
     public void onConfigurationChanged(Configuration newConfig){
         super.onConfigurationChanged(newConfig);
         actionBarDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        dbref.child("users").child(useruid).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String username = dataSnapshot.getValue(String.class);
+                naam.setText(username);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }
