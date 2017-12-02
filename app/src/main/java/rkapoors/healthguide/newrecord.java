@@ -1,19 +1,16 @@
 package rkapoors.healthguide;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -23,15 +20,16 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Locale;
-import java.util.Set;
 import java.util.TimeZone;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class newrecord extends AppCompatActivity {
 
@@ -40,7 +38,7 @@ public class newrecord extends AppCompatActivity {
     private String tm="";
     private String dt="";
     private String glucoval="";
-    private String dosageval="",doctorkimail="";
+    private String dosageval="";
 
     int selectedYear;
     int selectedMonth;
@@ -52,12 +50,6 @@ public class newrecord extends AppCompatActivity {
     private String readid;
     String mailofuser="";
     String uidofuser="";
-    AutoCompleteTextView doctoremail;
-
-    public static final String USERNAME = "MyApp_Settings";
-    public static final String SEARCHHISTORY="searchhistory";
-    SharedPreferences docmail;
-    Set<String> history;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,9 +77,20 @@ public class newrecord extends AppCompatActivity {
         final Button rbt=(Button)findViewById(R.id.rbt);
         final CoordinatorLayout coordinatorLayout = (CoordinatorLayout)findViewById(R.id.coordinatorLayout);
         final TextView mailuser = (TextView)findViewById(R.id.usermail);
-        doctoremail = (AutoCompleteTextView)findViewById(R.id.demail);
 
-        mailuser.setText(mailofuser);
+        mFirebaseDatabase.child("users").child(uidofuser).child("doctor").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String username = dataSnapshot.getValue(String.class);
+                if(username!=null)
+                mailuser.setText("Sharing with : "+username);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         ArrayAdapter<CharSequence> staticAdapter = ArrayAdapter
                 .createFromResource(this, R.array.comments, android.R.layout.simple_spinner_item);
@@ -108,22 +111,6 @@ public class newrecord extends AppCompatActivity {
             }
         });
 
-        docmail=getSharedPreferences(USERNAME,0);   //USERNAME specifies module of sharedPreference to be used , in private mode 0
-        history = new HashSet<String>(docmail.getStringSet(SEARCHHISTORY, new HashSet<String>()));     //key, default val
-        setautocompletesource();
-
-        doctoremail.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if((event.getAction()==KeyEvent.ACTION_DOWN)&&(keyCode==KeyEvent.KEYCODE_ENTER))
-                {
-                    addsearchinput(doctoremail.getText().toString().trim());
-                    return true;
-                }
-                return false;
-            }
-        });
-
         rbt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -133,12 +120,6 @@ public class newrecord extends AppCompatActivity {
 
                 glucoval=val.getText().toString().trim();
                 dosageval=dosageet.getText().toString().trim();
-                doctorkimail=doctoremail.getText().toString().trim();
-
-                if (TextUtils.isEmpty(doctorkimail)) {
-                    Snackbar.make(coordinatorLayout, "Enter doctor's email.", Snackbar.LENGTH_LONG).show();
-                    return;
-                }
 
                 if (TextUtils.isEmpty(glucoval)) {
                     Snackbar.make(coordinatorLayout, "Enter glucose reading.", Snackbar.LENGTH_LONG).show();
@@ -172,8 +153,6 @@ public class newrecord extends AppCompatActivity {
                 readid=temp.push().getKey();
                 temp.child(readid).setValue(uservals);
 
-                history.add(doctorkimail);
-
                 rbt.setEnabled(false);
                 rbt.setTextColor(Color.parseColor("#A9A9A9"));
                 Snackbar.make(coordinatorLayout,"Recorded Successfully",Snackbar.LENGTH_LONG).show();
@@ -185,31 +164,5 @@ public class newrecord extends AppCompatActivity {
     public boolean onSupportNavigateUp(){
         finish();
         return true;
-    }
-    private void setautocompletesource()
-    {
-        ArrayAdapter<String> adapter=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,history.toArray(new String[history.size()]));
-        doctoremail.setAdapter(adapter);
-    }
-    private void addsearchinput(String input)
-    {
-        if(!history.contains(input))
-        {
-            history.add(input);
-            setautocompletesource();
-        }
-    }
-    private void saveprefs()
-    {
-        docmail=getSharedPreferences(USERNAME,0);                 //name of sharedPreference module, mode 0 : accessible by app
-        SharedPreferences.Editor editor=docmail.edit();
-        editor.putStringSet(SEARCHHISTORY,history);              //SEARCHHISTORY is a key , history is value
-        editor.apply();
-    }
-    @Override
-    protected void onStop()
-    {
-        super.onStop();
-        saveprefs();
     }
 }

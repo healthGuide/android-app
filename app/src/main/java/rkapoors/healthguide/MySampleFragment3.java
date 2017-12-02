@@ -5,8 +5,8 @@ package rkapoors.healthguide;
  */
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.support.v4.app.Fragment;
@@ -15,13 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.Timer;
-import java.util.TimerTask;
-
-import static android.os.SystemClock.sleep;
 
 public class MySampleFragment3 extends Fragment {
 
@@ -57,7 +51,7 @@ public class MySampleFragment3 extends Fragment {
         contactb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "Add contacts activity here", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getActivity(),contacts.class));
             }
         });
 

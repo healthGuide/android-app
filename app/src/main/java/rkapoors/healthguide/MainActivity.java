@@ -203,6 +203,7 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
                 switch(pos){
                     case 0:
                         Intent settings=new Intent(MainActivity.this,settings.class);
+                        settings.putExtra("naam",naam.getText().toString());
                         startActivity(settings);
                         break;
                     case 1:

@@ -55,7 +55,8 @@
             android:name=".changepassword"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".settings"></activity>
+        <activity android:name=".settings" />
+        <activity android:name=".contacts"></activity>
     </application>
 
 </manifest>

@@ -161,15 +161,15 @@ public class checkrecord extends AppCompatActivity {
                                 for (DataSnapshot dts : ds.getChildren()) {
                                     checkrecorddata value = dts.getValue(checkrecorddata.class);
                                     checkrecorddata temp = new checkrecorddata();
-                                    String samay = value.gettm();
+                                    String samay = value.gettime();
                                     String kab = value.getcomment();
-                                    String kitnamed = value.getothercm();
-                                    String kitnival = value.getglucoreading();
+                                    String kitnamed = value.getdosage();
+                                    String kitnival = value.getvalue();
                                     temp.setdt(tithi);
-                                    temp.settm(samay);
+                                    temp.settime(samay);
                                     temp.setcomment(kab);
-                                    temp.setothercm(kitnamed);
-                                    temp.setglucoreading(kitnival);
+                                    temp.setdosage(kitnamed);
+                                    temp.setvalue(kitnival);
                                     list.add(temp);
                                     flag = 1;
                                 }
