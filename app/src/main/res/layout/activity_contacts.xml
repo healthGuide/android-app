@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+    android:id="@+id/contactview"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
@@ -7,12 +8,11 @@
 
     <Button
         android:id="@+id/contactbt"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Choose from Contacts"
         android:textSize="22sp"
         android:textStyle="bold"
-        android:background="@null"
         android:textColor="#000"
         android:layout_centerHorizontal="true"
         android:padding="15dp"
@@ -63,15 +63,37 @@
             android:textColorHint="#000" />
     </android.support.design.widget.TextInputLayout>
 
+    <Button
+        android:id="@+id/addbt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/phonelayout"
+        android:text="ADD"
+        android:textColor="#fff"
+        android:background="#f00"
+        android:textSize="18sp"
+        android:paddingTop="5dp"
+        android:layout_centerHorizontal="true"/>
+
     <TextView
         android:id="@+id/insttv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/phonelayout"
+        android:layout_below="@+id/addbt"
         android:layout_centerHorizontal="true"
-        android:textAlignment="center"
-        android:paddingTop="10dp"
-        android:text="Location will be shared with these contacts in case of emergency"/>
+        android:padding="5dp"
+        android:text="Location will be shared with contacts in emergency"/>
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/insttv"
+        android:choiceMode="singleChoice"
+        android:background="#ffffff"
+        android:divider="#d0d0d0"
+        android:dividerHeight="2dp"
+        />
 
 
 </RelativeLayout>

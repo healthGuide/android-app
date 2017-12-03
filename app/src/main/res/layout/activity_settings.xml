@@ -90,7 +90,7 @@
             android:id="@+id/desctxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" Records will be shared with healthGuide-Dr user"
+            android:text="   Records will be shared with healthGuide-Dr user"
             android:layout_below="@+id/sharetxt"/>
 
         <ListView

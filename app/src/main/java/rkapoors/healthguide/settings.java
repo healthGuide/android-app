@@ -61,9 +61,9 @@ public class settings extends AppCompatActivity {
         // Initialize with secondary app.
         FirebaseApp.initializeApp(getApplicationContext(), options, "secondary");
         // Retrieve secondary app.
-        FirebaseApp secondary = FirebaseApp.getInstance("secondary");
+        FirebaseApp secondapp = FirebaseApp.getInstance("secondary");
         // Get the database for the other app.
-        FirebaseDatabase secondaryDatabase = FirebaseDatabase.getInstance(secondary);
+        FirebaseDatabase secondaryDatabase = FirebaseDatabase.getInstance(secondapp);
 
         docdbref = secondaryDatabase.getReference();
 
