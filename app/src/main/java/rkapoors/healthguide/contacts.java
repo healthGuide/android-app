@@ -24,7 +24,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 public class contacts extends AppCompatActivity {
@@ -63,7 +66,14 @@ public class contacts extends AppCompatActivity {
 
         contacts=getSharedPreferences(USERNAME,0);                                         //get SharedPrefernces with USERNAME key and 0 mode
         history = new HashSet<String>(contacts.getStringSet(SEARCHHISTORY, new HashSet<String>()));     //key, default value
-        final ArrayAdapter<String> adapter=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,history.toArray(new String[history.size()]));
+        final ArrayList<String> contlist = new ArrayList<>();
+
+        Iterator iterator = history.iterator();
+        while (iterator.hasNext()){
+            contlist.add(iterator.next()+"");
+        }
+
+        final ArrayAdapter<String> adapter=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,contlist);
         lv.setAdapter(adapter);
 
         lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -80,11 +90,11 @@ public class contacts extends AppCompatActivity {
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog,int id) {
                                        history.remove(lv.getItemAtPosition(pos));
+                                        contlist.remove(pos);
                                         contacts=getSharedPreferences(USERNAME,0);                 //name of sharedPreference object, mode 0 : accessible by app
                                         SharedPreferences.Editor editor=contacts.edit();
                                         editor.putStringSet(SEARCHHISTORY,history);
                                         editor.apply();
-                                        lv.invalidateViews();
                                         adapter.notifyDataSetChanged();
                                         Snackbar.make(relativeLayout,"Deleted.",Snackbar.LENGTH_LONG).show();
                                     }
@@ -123,11 +133,11 @@ public class contacts extends AppCompatActivity {
                 if(!TextUtils.isEmpty(phoneedtv.getText().toString().trim()) && !TextUtils.isEmpty(nameedtv.getText().toString().trim())) {
                     newcontact = nameedtv.getText().toString().trim() + "\n" + phoneedtv.getText().toString().trim();
                     history.add(newcontact);
+                    contlist.add(newcontact);
                     contacts=getSharedPreferences(USERNAME,0);                 //name of sharedPreference object, mode 0 : accessible by app
                     SharedPreferences.Editor editor=contacts.edit();
                     editor.putStringSet(SEARCHHISTORY,history);
                     editor.apply();
-                    lv.invalidateViews();
                     adapter.notifyDataSetChanged();
                     /*
                     notifyDataSetChanged ()
@@ -135,6 +145,7 @@ public class contacts extends AppCompatActivity {
                         data has been changed and any View reflecting the
                         data set should refresh itself.
                  */
+                    phoneedtv.setText("");nameedtv.setText("");
                     Snackbar.make(relativeLayout,"Added.",Snackbar.LENGTH_LONG).show();
                 }
                 else

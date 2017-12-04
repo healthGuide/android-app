@@ -29,7 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class settings extends AppCompatActivity {
 
-    private DatabaseReference mFirebaseDatabase,docdbref;
+    private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
 
     RelativeLayout relativeLayout;
@@ -52,7 +52,7 @@ public class settings extends AppCompatActivity {
         mFirebaseInstance = FirebaseDatabase.getInstance();
         mFirebaseDatabase = mFirebaseInstance.getReference();
 
-        FirebaseOptions options = new FirebaseOptions.Builder()
+        /*FirebaseOptions options = new FirebaseOptions.Builder()
                 .setApplicationId("1:370731165765:android:3c833f6b71bf0fc7") // Required for Analytics.
                 .setApiKey("AIzaSyAJTKo5NR6VLegdwfM-nlxCcs9jefNNMEc") // Required for Auth.
                 .setDatabaseUrl("https://healthguide-dr.firebaseio.com") // Required for RTDB.
@@ -65,7 +65,7 @@ public class settings extends AppCompatActivity {
         // Get the database for the other app.
         FirebaseDatabase secondaryDatabase = FirebaseDatabase.getInstance(secondapp);
 
-        docdbref = secondaryDatabase.getReference();
+        docdbref = secondaryDatabase.getReference();*/
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user!=null) {mailofuser=user.getEmail();uidofuser=user.getUid();}
@@ -192,7 +192,7 @@ public class settings extends AppCompatActivity {
                                                     Snackbar.make(relativeLayout,"Doctor's email can't be empty",Snackbar.LENGTH_LONG).show();
                                                 }
                                                 else {
-                                                    docdbref.child("doctors").addValueEventListener(new ValueEventListener() {
+                                                    /*docdbref.child("doctors").addValueEventListener(new ValueEventListener() {
                                                         @Override
                                                         public void onDataChange(DataSnapshot dataSnapshot) {
                                                             for(DataSnapshot ds : dataSnapshot.getChildren()){
@@ -211,9 +211,9 @@ public class settings extends AppCompatActivity {
                                                         public void onCancelled(DatabaseError databaseError) {
 
                                                         }
-                                                    });
+                                                    });*/
                                                     if(flg==1){
-                                                        docdbref.child("doctors").child(uidofdoc).child("patients").child(uidofuser);
+                                                        //docdbref.child("doctors").child(uidofdoc).child("patients").child(uidofuser);
                                                     mFirebaseDatabase.child("users").child(uidofuser).child("doctor")
                                                             .setValue(userInput.getText().toString().trim());}
                                                     else{
