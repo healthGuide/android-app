@@ -17,15 +17,10 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class settings extends AppCompatActivity {
 
@@ -36,26 +31,24 @@ public class settings extends AppCompatActivity {
 
     String mailofuser="";
     String uidofuser="";
-    String uidofdoc="";
 
     TextView mailtv,nametv;
     final Context context = this;
-    int flg=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        relativeLayout = (RelativeLayout)findViewById(R.id.settingsview);
+        relativeLayout = (RelativeLayout) findViewById(R.id.settingsview);
 
         mFirebaseInstance = FirebaseDatabase.getInstance();
         mFirebaseDatabase = mFirebaseInstance.getReference();
 
         /*FirebaseOptions options = new FirebaseOptions.Builder()
-                .setApplicationId("1:370731165765:android:3c833f6b71bf0fc7") // Required for Analytics.
-                .setApiKey("AIzaSyAJTKo5NR6VLegdwfM-nlxCcs9jefNNMEc") // Required for Auth.
-                .setDatabaseUrl("https://healthguide-dr.firebaseio.com") // Required for RTDB.
+                .setApplicationId("") // Required for Analytics.
+                .setApiKey("") // Required for Auth.
+                .setDatabaseUrl("") // Required for RTDB.
                 .build();
 
         // Initialize with secondary app.
@@ -143,7 +136,7 @@ public class settings extends AppCompatActivity {
             }
         });
 
-        String[] data={"Update Doctor's email"};
+        String[] data={"Update Doctor's info"};
 
         Integer[] images={R.drawable.docrec};
 
@@ -157,82 +150,8 @@ public class settings extends AppCompatActivity {
 
                 switch(pos){
                     case 0:
-                        flg=0;
-                        LayoutInflater li = LayoutInflater.from(context);
-                        View promptsView = li.inflate(R.layout.prompts1, null);
-
-                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-
-                        // set prompts.xml to alertdialog builder
-                        alertDialogBuilder.setView(promptsView);
-
-                        final EditText userInput = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput);
-
-                        mFirebaseDatabase.child("users").child(uidofuser).child("doctor").addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                String username = dataSnapshot.getValue(String.class);
-                                userInput.setText(username);
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
-                        // set dialog message
-                        alertDialogBuilder
-                                .setCancelable(true)
-                                .setPositiveButton("SAVE",
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog,int id) {
-                                                // get user input and set it to result
-                                                // edit text
-                                                if(TextUtils.isEmpty(userInput.getText().toString().trim())){
-                                                    Snackbar.make(relativeLayout,"Doctor's email can't be empty",Snackbar.LENGTH_LONG).show();
-                                                }
-                                                else {
-                                                    /*docdbref.child("doctors").addValueEventListener(new ValueEventListener() {
-                                                        @Override
-                                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                                            for(DataSnapshot ds : dataSnapshot.getChildren()){
-                                                                uidofdoc=ds.getKey();
-                                                                for(DataSnapshot dts : ds.getChildren()) {
-                                                                    if (dts.getKey().equals("email") && dts.getValue().equals(userInput.getText().toString().trim())) {
-                                                                        flg = 1;
-                                                                        break;
-                                                                    }
-                                                                }
-                                                                if(flg==1) break;
-                                                            }
-                                                        }
-
-                                                        @Override
-                                                        public void onCancelled(DatabaseError databaseError) {
-
-                                                        }
-                                                    });*/
-                                                    if(flg==1){
-                                                        //docdbref.child("doctors").child(uidofdoc).child("patients").child(uidofuser);
-                                                    mFirebaseDatabase.child("users").child(uidofuser).child("doctor")
-                                                            .setValue(userInput.getText().toString().trim());}
-                                                    else{
-                                                        Snackbar.make(relativeLayout,"Doctor not registered with healthGuide-Dr",Snackbar.LENGTH_LONG).show();
-                                                    }
-                                                }
-                                            }
-                                        })
-                                .setNegativeButton("CANCEL",
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog,int id) {
-                                                dialog.cancel();
-                                            }
-                                        });
-
-                        // create alert dialog
-                        AlertDialog alertDialog = alertDialogBuilder.create();
-                        // show it
-                        alertDialog.show();
+                        Intent drintent = new Intent(settings.this,doctor.class);
+                        startActivity(drintent);
                         break;
                 }
             }

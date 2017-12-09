@@ -57,9 +57,14 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".settings" />
-        <activity android:name=".contacts"
+        <activity
+            android:name=".contacts"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".doctor"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

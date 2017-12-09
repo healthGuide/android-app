@@ -81,7 +81,7 @@ public class newrecord extends AppCompatActivity {
         mFirebaseDatabase.child("users").child(uidofuser).child("doctor").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String username = dataSnapshot.getValue(String.class);
+                String username = dataSnapshot.child("email").getValue(String.class);
                 if(username!=null)
                 mailuser.setText("Sharing with : "+username);
             }

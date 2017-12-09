@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout
     android:id="@+id/settingsview"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context="rkapoors.healthguide.settings">
 
     <RelativeLayout
@@ -60,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:textColor="#000"
-            android:padding="10dp"
+            android:padding="5dp"
             android:text="ACCOUNT"
             />
 
@@ -82,22 +83,15 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/list"
             android:textColor="#000"
-            android:padding="10dp"
+            android:padding="5dp"
             android:text="SHARE"
             />
-
-        <TextView
-            android:id="@+id/desctxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="   Records will be shared with healthGuide-Dr user"
-            android:layout_below="@+id/sharetxt"/>
 
         <ListView
             android:id="@+id/list1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/desctxt"
+            android:layout_below="@+id/sharetxt"
             android:choiceMode="singleChoice"
             android:background="#ffffff"
             android:divider="#a0a0a0"
@@ -111,7 +105,7 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/list1"
             android:textColor="#000"
-            android:padding="10dp"
+            android:padding="5dp"
             android:text="EMERGENCY"
             />
 

@@ -2,15 +2,18 @@
 
 package rkapoors.healthguide;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -40,6 +43,8 @@ public class contacts extends AppCompatActivity {
     String newcontact;
 
     final Context context = this;
+
+    public  static final int RequestPermissionCode  = 1 ;
 
     public static final String USERNAME="contacts";
     public static final String SEARCHHISTORY="contacthistory";
@@ -96,7 +101,7 @@ public class contacts extends AppCompatActivity {
                                         editor.putStringSet(SEARCHHISTORY,history);
                                         editor.apply();
                                         adapter.notifyDataSetChanged();
-                                        Snackbar.make(relativeLayout,"Deleted.",Snackbar.LENGTH_LONG).show();
+                                        //Snackbar.make(relativeLayout,"Deleted.",Snackbar.LENGTH_LONG).show();
                                     }
                                 })
                         .setNegativeButton("CANCEL",
@@ -115,9 +120,12 @@ public class contacts extends AppCompatActivity {
             }
         });
 
+        EnableRuntimePermission();
+
         choosebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                  Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
                 startActivityForResult(intent, 7);
             }
@@ -145,8 +153,7 @@ public class contacts extends AppCompatActivity {
                         data has been changed and any View reflecting the
                         data set should refresh itself.
                  */
-                    phoneedtv.setText("");nameedtv.setText("");
-                    Snackbar.make(relativeLayout,"Added.",Snackbar.LENGTH_LONG).show();
+                    nameedtv.setText("");phoneedtv.setText("");nameedtv.requestFocus();
                 }
                 else
                     Snackbar.make(relativeLayout,"Please fill in both fields.",Snackbar.LENGTH_LONG).show();
@@ -204,6 +211,39 @@ public class contacts extends AppCompatActivity {
                         }
 
                     }
+                }
+                break;
+        }
+    }
+
+    public void EnableRuntimePermission(){
+
+        if (ActivityCompat.shouldShowRequestPermissionRationale(contacts.this,Manifest.permission.READ_CONTACTS))
+        {
+            //Toast.makeText(contacts.this,"CONTACTS permission allows us to Access CONTACTS app", Toast.LENGTH_LONG).show();
+
+        } else {
+
+            ActivityCompat.requestPermissions(contacts.this,new String[]{Manifest.permission.READ_CONTACTS}, RequestPermissionCode);
+
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int RC, String per[], int[] PResult) {
+
+        switch (RC) {
+
+            case RequestPermissionCode:
+
+                if (PResult.length > 0 && PResult[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    //Toast.makeText(contacts.this,"Permission Granted, Now your application can access CONTACTS.", Toast.LENGTH_LONG).show();
+
+                } else {
+
+                    //Toast.makeText(contacts.this,"Permission Canceled, Now your application cannot access CONTACTS.", Toast.LENGTH_LONG).show();
+
                 }
                 break;
         }

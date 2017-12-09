@@ -124,8 +124,6 @@ public class checkrecord extends AppCompatActivity {
 
             handler.postDelayed(new Runnable() {
                 public void run() {
-                    pd.dismiss();
-
                     if(flag==1){
                         recycleadapter recycadp = new recycleadapter(list,checkrecord.this);
                         recycadp.notifyDataSetChanged();
@@ -137,6 +135,8 @@ public class checkrecord extends AppCompatActivity {
                     else{
                         Snackbar.make(relativeLayout,"Check Connection or Constraints.",Snackbar.LENGTH_LONG).show();
                     }
+
+                    pd.dismiss();
                 }
             },500);    //show for atlest 500 msec
         }
