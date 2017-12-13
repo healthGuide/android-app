@@ -133,7 +133,7 @@ public class newrecord extends AppCompatActivity {
 
                 Calendar c=Calendar.getInstance(TimeZone.getTimeZone("GMT+5:30"));
 
-                dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+                dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
                 selectedYear=c.get(Calendar.YEAR);
                 selectedMonth=c.get(Calendar.MONTH);
                 selectedDayOfMonth=c.get(Calendar.DAY_OF_MONTH);

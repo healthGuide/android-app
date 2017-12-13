@@ -54,7 +54,7 @@ public class MySampleFragment2 extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         Calendar c = Calendar.getInstance();
-        dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+        dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         selectedYear=c.get(Calendar.YEAR);
         selectedMonth=c.get(Calendar.MONTH);
         selectedDayOfMonth=c.get(Calendar.DAY_OF_MONTH);
@@ -78,7 +78,7 @@ public class MySampleFragment2 extends Fragment{
             @Override
             public void onClick(View view) {
                 Calendar newCalendar = Calendar.getInstance();
-                dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+                dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
                 datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         Calendar newDate = Calendar.getInstance();
@@ -96,7 +96,7 @@ public class MySampleFragment2 extends Fragment{
             @Override
             public void onClick(View view) {
                 Calendar newCalendar = Calendar.getInstance();
-                dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+                dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
                 datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         Calendar newDate = Calendar.getInstance();

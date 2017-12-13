@@ -94,10 +94,11 @@
     <Button
         android:layout_width="fill_parent"
         android:layout_height="60dp"
-        android:text="CHECK"
+        android:text="Check"
+        android:textAllCaps="false"
         android:id="@+id/chk"
         android:textStyle="bold"
-        android:textColor="#f00"
+        android:textColor="#000"
         android:background="@null"
         android:layout_marginBottom="20dp"
         android:textSize="24sp"

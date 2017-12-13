@@ -67,7 +67,7 @@ public class checkrecord extends AppCompatActivity {
         frdt.setText(getIntent().getStringExtra("fromdate"));
         todt.setText(getIntent().getStringExtra("todate"));
 
-        df = new SimpleDateFormat("dd-MM-yyyy",Locale.US);
+        df = new SimpleDateFormat("yyyy-MM-dd",Locale.US);
         try {
             fromtithi = df.parse(frdt.getText().toString());
             totithi = df.parse(todt.getText().toString());
