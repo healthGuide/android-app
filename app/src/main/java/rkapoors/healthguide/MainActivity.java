@@ -5,11 +5,10 @@ import java.util.List;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -17,24 +16,21 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.HorizontalScrollView;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -49,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
     MyPageAdapter pageAdapter;
     private ViewPager mViewPager;
     private TabHost mTabHost;
+
+    final Context context = this;
 
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
@@ -122,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
                 if (user == null) {
                     // user auth state is changed - user is null
                     // launch login activity
-                    startActivity(new Intent(MainActivity.this, signup.class));
+                    startActivity(new Intent(MainActivity.this, login.class));
                     finish();
                 }
             }
@@ -190,8 +188,8 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
             }
         });
 
-        String[] data2={"Settings","Log out"};
-        Integer[] imageId2 = {R.drawable.settings, R.drawable.logicon};
+        String[] data2={"Settings","Tutorial","About us","Log out"};
+        Integer[] imageId2 = {R.drawable.settings, R.drawable.tutorial, R.drawable.information, R.drawable.logicon};
 
         Draweradapter adapter2 = new Draweradapter(MainActivity.this,data2,imageId2);
         final ListView navList2 = (ListView) findViewById(R.id.navList2);
@@ -206,8 +204,38 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
                         settings.putExtra("naam",naam.getText().toString());
                         startActivity(settings);
                         break;
+                    case 3:
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+                        // set dialog message
+                        alertDialogBuilder
+                                .setTitle("Log out")
+                                .setMessage("Sure to Log out ?")
+                                .setCancelable(true)
+                                .setPositiveButton("Log out",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog,int id) {
+                                                 signOut();
+                                            }
+                                        })
+                                .setNegativeButton("Cancel",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog,int id) {
+                                                dialog.cancel();
+                                            }
+                                        });
+
+                        // create alert dialog
+                        AlertDialog alertDialog = alertDialogBuilder.create();
+                        // show it
+                        alertDialog.show();
+                        break;
                     case 1:
-                        signOut();
+                        Intent tut = new Intent(MainActivity.this,tutorial.class);
+                        startActivity(tut);
+                        break;
+                    case 2:
+                        Intent abt = new Intent(MainActivity.this,aboutus.class);
+                        startActivity(abt);
                         break;
                 }
             }

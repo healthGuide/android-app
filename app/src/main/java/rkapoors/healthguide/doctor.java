@@ -32,7 +32,7 @@ public class doctor extends AppCompatActivity {
     Button upbt;
 
     int flg;
-    String uidofuser="",uidofdoc="";
+    String uidofuser="",uidofdoc="",naamofuser="";
     String docmail="",mailofuser="",readid="";
 
     CoordinatorLayout coordinatorLayout;
@@ -57,6 +57,18 @@ public class doctor extends AppCompatActivity {
 
         database=FirebaseDatabase.getInstance();
         databaseReference=database.getReference();
+
+        databaseReference.child("users").child(uidofuser).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                naamofuser = dataSnapshot.child("name").getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         databaseReference.child("users").child(uidofuser).child("doctor").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -118,6 +130,7 @@ public class doctor extends AppCompatActivity {
                         readid = temp.push().getKey();
                         temp.child(readid).child("uid").setValue(uidofuser);
                         temp.child(readid).child("email").setValue(mailofuser);
+                        temp.child(readid).child("name").setValue(naamofuser);
 
                         databaseReference.child("users").child(uidofuser).child("doctor").child("uid").setValue(uidofdoc);
                         databaseReference.child("users").child(uidofuser).child("doctor").child("email").setValue(docmail);
@@ -130,7 +143,7 @@ public class doctor extends AppCompatActivity {
 
                     pd.dismiss();
                 }
-            },500);    //show for atlest 500 msec
+            },1000);    //show for atlest 1000 msec
         }
 
         @Override

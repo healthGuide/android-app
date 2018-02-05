@@ -13,7 +13,7 @@
         android:id="@+id/mytoolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#ff5733"
+        android:background="#ff0000"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
@@ -52,7 +52,7 @@
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#FF5733"
+                android:background="#FF0000"
                />
 </HorizontalScrollView>
 
@@ -85,8 +85,8 @@
     <RelativeLayout
         android:id="@+id/profileBox"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#f00"
+        android:layout_height="150dp"
+        android:background="@drawable/backimg"
         android:padding="8dp"
         >
 
@@ -135,7 +135,7 @@
             android:layout_below="@+id/navList"
             android:layout_width="280dp"
             android:layout_height="1dp"
-            android:background="#f0f0f0"/>
+            android:background="#cccccc"/>
 
         <ListView
             android:id="@+id/navList2"

@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="#ff5733"
+    android:background="@drawable/backimg"
     android:layout_gravity="center"
     tools:context="rkapoors.healthguide.signup">
 
@@ -36,7 +36,9 @@
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:textColorHint="#fff"
+            app:hintTextAppearance="@android:color/white">
 
             <EditText
                 android:id="@+id/username"
@@ -45,13 +47,16 @@
                 android:hint="name"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
-                android:textColor="#fff" />
+                android:textColor="#fff"
+                android:textColorHint="#fff"/>
 
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:textColorHint="#fff"
+            app:hintTextAppearance="@android:color/white">
 
             <EditText
                 android:id="@+id/email"
@@ -60,14 +65,18 @@
                 android:hint="email"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
-                android:textColor="#fff" />
+                android:textColor="#fff"
+                android:textColorHint="#fff"/>
 
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:passwordToggleEnabled="true">
+            android:textColorHint="#fff"
+            app:hintTextAppearance="@android:color/white"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@android:color/white">
 
             <EditText
                 android:id="@+id/password"
@@ -79,14 +88,18 @@
                 android:imeOptions="actionUnspecified"
                 android:inputType="textPassword"
                 android:maxLines="1"
-                android:textColor="#fff" />
+                android:textColor="#fff"
+                android:textColorHint="#fff"/>
 
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:passwordToggleEnabled="true">
+            android:textColorHint="#fff"
+            app:hintTextAppearance="@android:color/white"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@android:color/white">
 
             <EditText
                 android:id="@+id/repassword"
@@ -98,7 +111,8 @@
                 android:imeOptions="actionUnspecified"
                 android:inputType="textPassword"
                 android:maxLines="1"
-                android:textColor="#fff" />
+                android:textColor="#fff"
+                android:textColorHint="#fff"/>
 
         </android.support.design.widget.TextInputLayout>
 
