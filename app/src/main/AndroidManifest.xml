@@ -65,7 +65,6 @@
             android:name=".doctor"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".helpandsupport" />
         <activity android:name=".aboutus" />
         <activity android:name=".tutorial"></activity>
     </application>

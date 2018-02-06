@@ -156,8 +156,10 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
         mViewPager.setAdapter(pageAdapter);
         mViewPager.setOnPageChangeListener(MainActivity.this);
 
-        String[] text={"Schedule","Notifications","Records","Emergency"};
-        Integer[] imageId = {R.drawable.schedicon, R.drawable.notificon, R.drawable.recordico, R.drawable.emergicon};
+        String[] text={"Schedule","Notifications","Records","Emergency","_____________________________________",
+                "Settings","Tutorial","About us","Log out"};
+        Integer[] imageId = {R.drawable.schedicon, R.drawable.notificon, R.drawable.recordico, R.drawable.emergicon,0,
+                R.drawable.settings, R.drawable.tutorial, R.drawable.information, R.drawable.logicon};
 
         Draweradapter adapter = new Draweradapter(MainActivity.this,text,imageId);
 
@@ -184,27 +186,12 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
                         drawerLayout.closeDrawers();
                         mViewPager.setCurrentItem(3);
                         break;
-                }
-            }
-        });
-
-        String[] data2={"Settings","Tutorial","About us","Log out"};
-        Integer[] imageId2 = {R.drawable.settings, R.drawable.tutorial, R.drawable.information, R.drawable.logicon};
-
-        Draweradapter adapter2 = new Draweradapter(MainActivity.this,data2,imageId2);
-        final ListView navList2 = (ListView) findViewById(R.id.navList2);
-        navList2.setAdapter(adapter2);
-        navList2.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, final int pos,long id){
-
-                switch(pos){
-                    case 0:
+                    case 5:
                         Intent settings=new Intent(MainActivity.this,settings.class);
                         settings.putExtra("naam",naam.getText().toString());
                         startActivity(settings);
                         break;
-                    case 3:
+                    case 8:
                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
                         // set dialog message
                         alertDialogBuilder
@@ -214,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
                                 .setPositiveButton("Log out",
                                         new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog,int id) {
-                                                 signOut();
+                                                signOut();
                                             }
                                         })
                                 .setNegativeButton("Cancel",
@@ -229,11 +216,11 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
                         // show it
                         alertDialog.show();
                         break;
-                    case 1:
+                    case 6:
                         Intent tut = new Intent(MainActivity.this,tutorial.class);
                         startActivity(tut);
                         break;
-                    case 2:
+                    case 7:
                         Intent abt = new Intent(MainActivity.this,aboutus.class);
                         startActivity(abt);
                         break;
