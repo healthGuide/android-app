@@ -66,7 +66,16 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".aboutus" />
-        <activity android:name=".tutorial"></activity>
+        <activity android:name=".tutorial" />
+        <activity android:name=".hyperglycemia" />
+        <activity android:name=".hypoglycemia" />
+        <activity android:name=".fluctuation" />
+        <activity android:name=".diet" />
+        <activity android:name=".optimal" />
+        <activity android:name=".sites" />
+        <activity android:name=".storage" />
+        <activity android:name=".doctorvisit" />
+        <activity android:name=".monitor"></activity>
     </application>
 
 </manifest>

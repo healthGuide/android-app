@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/content"
-    android:background="#fff">
+    android:background="@drawable/recimg">
 
     <ImageView
         android:id="@+id/fromcalbt"

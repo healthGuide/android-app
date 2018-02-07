@@ -156,8 +156,8 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
         mViewPager.setAdapter(pageAdapter);
         mViewPager.setOnPageChangeListener(MainActivity.this);
 
-        String[] text={"Schedule","Notifications","Records","Emergency","_____________________________________",
-                "Settings","Tutorial","About us","Log out"};
+        String[] text={"Schedule","Notifications","Records","Emergency","_______________________________",
+                "Settings & Info","Tutorial","About us","Log out"};
         Integer[] imageId = {R.drawable.schedicon, R.drawable.notificon, R.drawable.recordico, R.drawable.emergicon,0,
                 R.drawable.settings, R.drawable.tutorial, R.drawable.information, R.drawable.logicon};
 

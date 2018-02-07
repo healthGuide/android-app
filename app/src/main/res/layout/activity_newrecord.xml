@@ -6,7 +6,8 @@
     android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="rkapoors.healthguide.newrecord">
+    tools:context="rkapoors.healthguide.newrecord"
+    android:background="@drawable/recimg">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -81,11 +82,19 @@
             />
     </android.support.design.widget.TextInputLayout>
 
+    <View
+        android:id="@+id/commview1"
+        android:layout_width="300dp"
+        android:layout_height="1dp"
+        android:background="#f00"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"
+        />
+
     <Button
         android:id="@+id/rbt"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_marginTop="20dp"
         android:text="RECORD"
         android:textSize="23sp"
         android:textStyle="bold"

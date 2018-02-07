@@ -87,17 +87,8 @@ public class checkrecord extends AppCompatActivity {
         ftbt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(flag==1){
-                    recycleadapter recycadp = new recycleadapter(list,checkrecord.this);
-                    recycadp.notifyDataSetChanged();
-                    RecyclerView.LayoutManager recyclayout = new LinearLayoutManager(checkrecord.this);
-                    recycle.setLayoutManager(recyclayout);
-                    recycle.setItemAnimator( new DefaultItemAnimator());
-                    recycle.setAdapter(recycadp);
-                }
-                else{
-                    Snackbar.make(relativeLayout,"Check Connection or Constraints.",Snackbar.LENGTH_LONG).show();
-                }
+                fetchrecord task = new fetchrecord(checkrecord.this);
+                task.execute();
             }
         });
     }
