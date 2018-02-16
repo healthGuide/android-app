@@ -14,6 +14,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -156,9 +157,9 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
         mViewPager.setAdapter(pageAdapter);
         mViewPager.setOnPageChangeListener(MainActivity.this);
 
-        String[] text={"Schedule","Notifications","Records","Emergency","_______________________________",
+        String[] text={"Schedule","Records","Emergency","_______________________________",
                 "Settings & Info","Tutorial","About us","Log out"};
-        Integer[] imageId = {R.drawable.schedicon, R.drawable.notificon, R.drawable.recordico, R.drawable.emergicon,0,
+        Integer[] imageId = {R.drawable.schedicon, R.drawable.recordico, R.drawable.emergicon,0,
                 R.drawable.settings, R.drawable.tutorial, R.drawable.information, R.drawable.logicon};
 
         Draweradapter adapter = new Draweradapter(MainActivity.this,text,imageId);
@@ -182,16 +183,12 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
                         drawerLayout.closeDrawers();
                         mViewPager.setCurrentItem(2);
                         break;
-                    case 3:
-                        drawerLayout.closeDrawers();
-                        mViewPager.setCurrentItem(3);
-                        break;
-                    case 5:
+                    case 4:
                         Intent settings=new Intent(MainActivity.this,settings.class);
                         settings.putExtra("naam",naam.getText().toString());
                         startActivity(settings);
                         break;
-                    case 8:
+                    case 7:
                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
                         // set dialog message
                         alertDialogBuilder
@@ -216,11 +213,11 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
                         // show it
                         alertDialog.show();
                         break;
-                    case 6:
+                    case 5:
                         Intent tut = new Intent(MainActivity.this,tutorial.class);
                         startActivity(tut);
                         break;
-                    case 7:
+                    case 6:
                         Intent abt = new Intent(MainActivity.this,aboutus.class);
                         startActivity(abt);
                         break;
@@ -271,12 +268,10 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
 
         // TODO Put here your Fragments
         MySampleFragment f1 = new MySampleFragment();
-        MySampleFragment1 f2 = new MySampleFragment1();
         MySampleFragment2 f3 = new MySampleFragment2();
         MySampleFragment3 f4 = new MySampleFragment3();
 
         fList.add(f1);
-        fList.add(f2);
         fList.add(f3);
         fList.add(f4);
 
@@ -289,7 +284,6 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
 
         // TODO Put here your Tabs
         MainActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("Tab1").setIndicator("Schedule"));
-        MainActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("Tab2").setIndicator("Notifications"));
         MainActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("Tab3").setIndicator("Records"));
         MainActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("Tab4").setIndicator("Emergency"));
 

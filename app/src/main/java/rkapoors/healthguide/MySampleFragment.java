@@ -4,7 +4,9 @@ package rkapoors.healthguide;
  * Created by KAPOOR's on 09-09-2017.
  */
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +40,16 @@ public class MySampleFragment extends Fragment {
 
         TextView txtSampleText = (TextView) mView.findViewById(R.id.txtViewSample);
         txtSampleText.setText(sampleText);
+
+        FloatingActionButton fab = (FloatingActionButton) mView.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Click action
+                Intent intent = new Intent(getActivity(), notification.class);
+                startActivity(intent);
+            }
+        });
 
         return mView;
     }

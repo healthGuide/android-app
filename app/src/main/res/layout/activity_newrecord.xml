@@ -57,7 +57,7 @@
         android:id="@+id/glucolevel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="2. glucose level"
+        android:hint="2. sugar level (mg/dL)"
         android:focusableInTouchMode="true"
         android:inputType="numberDecimal"
         android:textSize="20sp"
@@ -74,7 +74,7 @@
             android:id="@+id/others"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="3. dosage"
+            android:hint="3. insulin dosage (units)"
             android:focusableInTouchMode="true"
             android:inputType="textEmailAddress"
             android:textSize="20sp"
@@ -84,21 +84,22 @@
 
     <View
         android:id="@+id/commview1"
-        android:layout_width="300dp"
+        android:layout_width="200dp"
         android:layout_height="1dp"
         android:background="#f00"
+        android:layout_marginTop="60dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="40dp"
         />
 
     <Button
         android:id="@+id/rbt"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="RECORD"
+        android:text="Record"
         android:textSize="23sp"
         android:textStyle="bold"
         android:background="@null"
+        android:textAllCaps="false"
         android:textColor="#f00"/>
 </LinearLayout>
     </ScrollView>

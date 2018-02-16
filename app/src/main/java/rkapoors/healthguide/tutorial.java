@@ -21,9 +21,10 @@ public class tutorial extends AppCompatActivity {
         }
 
         String[] text={"Hyperglycemia (high blood sugar)","Hypoglycemia (low blood sugar)","Prevent low/high blood sugar level","Diet / Activity",
-                "Optimal blood sugar levels (mg/dL)","Insulin injection sites","Insulin storage","Visit to Doctor","Monitoring in follow up"};
-        Integer[] imageId = {R.drawable.uparrow,R.drawable.downarrow,R.drawable.updownarrow,R.drawable.diet,
-        R.drawable.correct,R.drawable.injection,R.drawable.storage,R.drawable.doctor,R.drawable.eye};
+                "Meal plan","Optimal blood sugar levels (mg/dL)","Insulin injection sites","Insulin storage","Visit to doctor","Monitoring in follow up",
+        "more info ?"};
+        Integer[] imageId = {R.drawable.uparrow,R.drawable.downarrow,R.drawable.updownarrow,R.drawable.diet,R.drawable.time,
+        R.drawable.correct,R.drawable.injection,R.drawable.storage,R.drawable.doctor,R.drawable.eye,R.drawable.information};
 
         Draweradapter adapter = new Draweradapter(tutorial.this,text,imageId);
 
@@ -47,19 +48,25 @@ public class tutorial extends AppCompatActivity {
                         startActivity(new Intent(tutorial.this,diet.class));
                         break;
                     case 4:
-                        startActivity(new Intent(tutorial.this,optimal.class));
+                        startActivity(new Intent(tutorial.this,mealplan.class));
                         break;
                     case 5:
-                        startActivity(new Intent(tutorial.this,sites.class));
+                        startActivity(new Intent(tutorial.this,optimal.class));
                         break;
                     case 6:
-                        startActivity(new Intent(tutorial.this,storage.class));
+                        startActivity(new Intent(tutorial.this,sites.class));
                         break;
                     case 7:
-                        startActivity(new Intent(tutorial.this,doctorvisit.class));
+                        startActivity(new Intent(tutorial.this,storage.class));
                         break;
                     case 8:
+                        startActivity(new Intent(tutorial.this,doctorvisit.class));
+                        break;
+                    case 9:
                         startActivity(new Intent(tutorial.this,monitor.class));
+                        break;
+                    case 10:
+                        startActivity(new Intent(tutorial.this,aboutus.class));
                         break;
                 }
             }

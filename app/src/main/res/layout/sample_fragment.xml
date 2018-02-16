@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fitsSystemWindows="true"
+    tools:context="rkapoors.healthguide.MySampleFragment"
+    android:background="@drawable/recimg"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/txtViewSample"
@@ -12,4 +16,13 @@
         android:layout_alignParentTop="true"
         android:text="" />
 
-</RelativeLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:background="#f00"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/notificon" />
+
+</android.support.design.widget.CoordinatorLayout>

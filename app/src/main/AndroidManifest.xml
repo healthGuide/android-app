@@ -75,7 +75,9 @@
         <activity android:name=".sites" />
         <activity android:name=".storage" />
         <activity android:name=".doctorvisit" />
-        <activity android:name=".monitor"></activity>
+        <activity android:name=".monitor" />
+        <activity android:name=".mealplan" />
+        <activity android:name=".notification"></activity>
     </application>
 
 </manifest>
