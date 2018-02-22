@@ -76,7 +76,7 @@
             android:layout_height="wrap_content"
             android:hint="3. insulin dosage (units)"
             android:focusableInTouchMode="true"
-            android:inputType="textEmailAddress"
+            android:inputType="numberDecimal"
             android:textSize="20sp"
             android:textColor="#f00"
             />

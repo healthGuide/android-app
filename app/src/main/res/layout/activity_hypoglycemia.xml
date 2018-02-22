@@ -1,9 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<ScrollView
     android:layout_height="match_parent"
-    tools:context="rkapoors.healthguide.hypoglycemia">
-
-</android.support.constraint.ConstraintLayout>
+    android:layout_width="match_parent"
+    android:background="@drawable/recimg"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Blood sugar less than 70mg/dl is called hypoglycemia. However, symptoms usually start below 60 mg/dl.\nIn a well controlled child Common Causes are:\n1.Missing or delaying meal/snacks.
+\n\n2. Giving more dose of insulin by drawing more in insulin syringe.
+\n\n3. Extra exercise.
+\n\n4. Injecting insulin deep in muscle (rapid absorption).
+\n\n5. Taking warm water bath immediately after taking insulin shot.\n\nSymptoms:\n1. feeling of hunger/nausea
+\n\n2. giddiness/shakiness
+\n\n3. pale/red face
+\n\n4. sweating/palpitations (feeling of heart beat)/ anxiety
+\n\n5. headache
+\n\n6. confusion
+\n\n7. drowsiness
+\n\n8. abnormal behavior - irritable/angry/cry
+\n\n9. double vision
+\n\n10. unconsciousness
+\n\n11. seizure
+\n\nSpecial features of night time hypoglycemia\n1. inability to sleep - feeling hungry, restless
+\n\n2. feeling tired on waking up
+\n\n3. waking up with rapid heartbeat, sweating, headache
+\n\n4. sleep walking
+\n\n5. waking up with confusion and loss of memory\n\nTreatment of hypoglycemia\n1. items which can be given in emergency are - sugar (3 tsf), honey (3 tsf), milk, juice.
+\n\n2. Inj. Glucagon should be given in two situations with hypoglycemia:\nWhen child is unconscious. ( dose of 30 units in insulin syringe of 100 units i.e 0.3ml for less than 6 yrs, 50 units (0.5ml) for 6-18 yrs and 100 units (1.0 ml) for greater than 18 yrs).
+\n\nWhen child cannot take orally because of vomiting or any other reason. (low dose glucagon i.e 1UNIT per yr of age).\n\nHow to prevent hypoglycemia?\n1. Giving extra snacks or decreasing insulin dose before heavy exercise.
+\n\n2. Not missing/delaying meals after insulin injection.
+\n\n3. Giving extra snacks if blood sugar is less than 120 mg/dl when going to bed.
+\n\n4. Not giving insulin immediately before bath with warm water (increases insulin absorptionand chances of hypoglycemia)
+\n\n5. Doing extra sugar checks during after exercises and whenever suspecting low sugar. "
+            android:textSize="16sp"
+            android:padding="5dp"
+            android:textColor="#444"/>
+    </RelativeLayout>
+</ScrollView>

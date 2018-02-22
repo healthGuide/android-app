@@ -1,9 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<ScrollView
     android:layout_height="match_parent"
-    tools:context="rkapoors.healthguide.sites">
+    android:layout_width="match_parent"
+    android:background="@drawable/recimg"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        >
+        <TextView
 
-</android.support.constraint.ConstraintLayout>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/sites"
+            android:textSize="16sp"
+            android:padding="5dp"
+            android:layout_below="@+id/siteimg"
+            android:textColor="#444"/>
+        <ImageView
+            android:id="@+id/siteimg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sitetv"
+            android:background="@null"
+            android:src="@drawable/site"/>
+        <TextView
+            android:id="@+id/sitetv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Steps of injection :\n1. Warm the vial keeping in the palms (if refrigerated).
+        \n\n2. Choose the site as per rotation plan. Relax the site (deep slow breathing will help).Lift up the skin with gentle pinch between thumb and index finger of opposite hand.
+        \n\n3. Needle should be inserted at 45 degree to skin and 90 degree if shorter needle i.e 8mm.Touch the tip of needle with skin and gently push the insulin in with pinch intact.
+        \n\n4. Wait for 5 to 10 seconds for insulin to spread and then remove needle slowly. Release pinch after removing the needle.
+        \n\n5. Put a dry cotton or finger over the site and press and gently rub for a few seconds.
+        \n\n6. Observe for any insulin leaking back.Observe for any blood or bruising of skin which means one needs to change to some other site which has more fat."
+            android:textSize="16sp"
+            android:textColor="#444"
+            android:padding="5dp"
+            />
+    </RelativeLayout>
+</ScrollView>

@@ -1,9 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<ScrollView
     android:layout_height="match_parent"
-    tools:context="rkapoors.healthguide.fluctuation">
-
-</android.support.constraint.ConstraintLayout>
+    android:layout_width="match_parent"
+    android:background="@drawable/recimg"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:id="@+id/inittv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="@string/fluctuation"
+            android:textSize="16sp"
+            android:textColor="#444"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/inittv"
+            android:text=" \n\nTo avoid fluctuations in sugars:\n1. Develop and follow a regular routine of meal timings (see section on diet) and activity.
+\n\n2. Anticipate situations where sugars might become high (eating out at parties/weddings, periods of low physical activity like vacations etc,) and low sugars (excessive physical activity, low intake) to adjust insulin dose accordingly.
+\n\n3. Do not change insulin dose based on a single abnormal record, especially when there are other known causes for the same."
+            android:textSize="16sp"
+            android:padding="5dp"
+            android:textColor="#444"
+            />
+    </RelativeLayout>
+</ScrollView>

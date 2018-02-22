@@ -1,9 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<ScrollView
     android:layout_height="match_parent"
-    tools:context="rkapoors.healthguide.doctorvisit">
-
-</android.support.constraint.ConstraintLayout>
+    android:layout_width="match_parent"
+    android:background="@drawable/recimg"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:id="@+id/inittv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/doctorvisit"
+            android:textSize="16sp"
+            android:padding="5dp"
+            android:textColor="#444"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\n\nPlease contact your doctor in the following situations:\n1. High blood sugars with positive urine ketones.
+\n\n2. Fever with vomiting, poor oral intake.
+\n\n3. Persistent low sugars.
+\n\n4. Low sugars with loss of consciousness/abnormal body movements.
+\n\n5. Whenever there is a doubt regarding any aspect of management."
+            android:layout_below="@+id/inittv"
+            android:textSize="16sp"
+            android:padding="5dp"
+            android:textColor="#444"/>
+    </RelativeLayout>
+</ScrollView>

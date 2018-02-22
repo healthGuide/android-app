@@ -3,6 +3,45 @@
     <string name="drawer_close">Close</string>
     <string name="drawer_open">Open</string>
     <string name="title_activity_newrecord">newrecord</string>
+    <string name="diet"></string>
+    <string name="doctorvisit">
+        Once a child is on a particular insulin regimen, sugars are stable and parents are confident, 3 monthly visits with HbA1c levels are sufficient.
+        More frequent visits may be necessary in the initial phase after diagnosis, when sugars are fluctuating and when insulin regimen is changed.
+    </string>
+    <string name="fluctuation">
+A very tight control of sugars is neither possible nor desirable, especially in younger children in whom there is a risk of brain damage because of low sugars.
+        In older children, mild to moderately low sugars occurring say 3-4 times in a month is an indicator of good control.
+    </string>
+    <string name="mealplan"></string>
+    <string name="monitor">
+        Weight and height of the child is checked every visit (3 monthly).
+        A child growing normally means diabetes control is fair to good. BP is monitored at least every year.
+        HbA1c is monitored every 3 monthly (it is not required to be done after fasting).
+        Thyroid function test and test for wheat allergy has to be done every year.
+        After 3-5 years of diagnosis of type 1 diabetes or after 11 yrs of age, screening tests for chronic complications of diabetes are to be done.
+        Screening for retinopathy should start from age 11 years and after two years diabetes duration.
+        Annual screening for microalbuminuria should start from age 11 years and after 5 years diabetes duration (24 hour urine collection for micro albumin).
+        Screening for fasting blood lipids should be performed when diabetes is diagnosed in children aged over 10 years.
+        If normal results are obtained, screening should be repeated every 5 years (if abnormal every year).
+        Peripheral and autonomic neuropathy should be assessed by history and physical examination from age 11 years with two years diabetes duration.
+    </string>
+    <string name="sites">
+        Insulin injection is given under the skin in the fat (subcutaneous).
+        It is absorbed fastest from abdomen followed by arms, thighs and buttocks in that order.
+        Also insulin is absorbed fast from the part which is being exercised (e.g. from thighs if someone starts walking/jogging after taking insulin shot in thigh).
+        Because of difference in absorption from different sites, a proper rotation plan for injection should be followed.
+        Generally one can use one site for 10 days with rotation within the site,so that in 30 days we rotate between 3 sites i.e.
+        arms (5 days on each side), abdomen (10 days, by rotation 1.5-2 inches away from umbilicus) and thighs (5 days on each side).
+        Rotation is important because insulin injection causes damage to the skin (lipodystrophy) if given at the same site over long period.
+        This will lead to poor absorption of insulin.
+    </string>
+    <string name="storage">
+        All insulin vials or pen injections which are currently in use (opened) can be safely kept at room temperature (below 30 degrees) for up to 1 month.
+        All sealed Insulin vials or pen refills/cartridges kept for backup should be stored in fridge at 2-8 degrees (lower shelf or door of fridge) i.e. they should never be frozen (if frozen, one has to discard).
+        During journey by train or bus, they can easily be kept in a bag at cool dry space without excesses of temperature (not near engines of bus/car).
+        There is no need to keep icepacks until there are very high temperatures.
+    </string>
+
     <string-array name="comments">
         <item>before Breakfast</item>
         <item>after Breakfast</item>

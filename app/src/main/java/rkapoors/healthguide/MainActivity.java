@@ -157,9 +157,9 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
         mViewPager.setAdapter(pageAdapter);
         mViewPager.setOnPageChangeListener(MainActivity.this);
 
-        String[] text={"Schedule","Records","Emergency","_______________________________",
+        String[] text={"Schedule","Notifications","Records","Emergency","_______________________________",
                 "Settings & Info","Tutorial","About us","Log out"};
-        Integer[] imageId = {R.drawable.schedicon, R.drawable.recordico, R.drawable.emergicon,0,
+        Integer[] imageId = {R.drawable.schedicon, R.drawable.notificon,R.drawable.recordico, R.drawable.emergicon,0,
                 R.drawable.settings, R.drawable.tutorial, R.drawable.information, R.drawable.logicon};
 
         Draweradapter adapter = new Draweradapter(MainActivity.this,text,imageId);
@@ -176,19 +176,22 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
                         mViewPager.setCurrentItem(0);
                         break;
                     case 1:
-                        drawerLayout.closeDrawers();
-                        mViewPager.setCurrentItem(1);
+                        startActivity(new Intent(MainActivity.this,notification.class));
                         break;
                     case 2:
                         drawerLayout.closeDrawers();
+                        mViewPager.setCurrentItem(1);
+                        break;
+                    case 3:
+                        drawerLayout.closeDrawers();
                         mViewPager.setCurrentItem(2);
                         break;
-                    case 4:
+                    case 5:
                         Intent settings=new Intent(MainActivity.this,settings.class);
                         settings.putExtra("naam",naam.getText().toString());
                         startActivity(settings);
                         break;
-                    case 7:
+                    case 8:
                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
                         // set dialog message
                         alertDialogBuilder
@@ -213,11 +216,11 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
                         // show it
                         alertDialog.show();
                         break;
-                    case 5:
+                    case 6:
                         Intent tut = new Intent(MainActivity.this,tutorial.class);
                         startActivity(tut);
                         break;
-                    case 6:
+                    case 7:
                         Intent abt = new Intent(MainActivity.this,aboutus.class);
                         startActivity(abt);
                         break;

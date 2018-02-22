@@ -1,9 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<ScrollView
     android:layout_height="match_parent"
-    tools:context="rkapoors.healthguide.hyperglycemia">
-
-</android.support.constraint.ConstraintLayout>
+    android:layout_width="match_parent"
+    android:background="@drawable/recimg"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Any sugar level more than 200mg/dl in a diabetic child should be taken as high and acted upon.\nCommon causes are:\n1. intake of sugar containing snacks/foods (after attending birth day/ marriage party).
+             \n2. missing insulin dose.
+             \n\n3. inter-current infections.
+             \n\n4. stress (exams, menses etc).
+             \n\n5. puberty.
+             \n\n6. wrong assessment of insulin dosage.
+            \n\nSymptoms\n1. excessive thirst.
+\n\n2. frequent and night time urination
+\n\n3. excessive hunger
+\n\n4. weakness\n\nTreatment of hyperglycemia\nIf blood sugar is more than 200mg/dl (150-180 for older children for tighter control) any time, extra dose of short acting insulin should be given (even if insulin dose is
+not due otherwise at that time). Extra dose required is 1 unit for each 50mg (100 mg for children less than 5 years) increase in blood sugar above 200mg/dl."
+            android:textSize="17sp"
+            android:padding="5dp"
+            android:textColor="#444"/>
+    </RelativeLayout>
+</ScrollView>
