@@ -11,13 +11,13 @@
         android:orientation="vertical"
         >
         <TextView
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/sites"
             android:textSize="16sp"
             android:padding="5dp"
             android:layout_below="@+id/siteimg"
+            android:layout_marginTop="-30dp"
             android:textColor="#444"/>
         <ImageView
             android:id="@+id/siteimg"
@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/sitetv"
             android:background="@null"
+            android:layout_marginTop="-30dp"
             android:src="@drawable/site"/>
         <TextView
             android:id="@+id/sitetv"

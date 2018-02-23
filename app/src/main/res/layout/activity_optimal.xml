@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<ScrollView
     android:layout_height="match_parent"
-    tools:context="rkapoors.healthguide.optimal">
-
-</android.support.constraint.ConstraintLayout>
+    android:layout_width="match_parent"
+    android:background="@drawable/recimg"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1. Morning fasting/Before meals\n 90 - 145 (mg/dL)
+            \n\n2. After meal\n 90 - 180 (mg/dL)
+            \n\n3. Bed time\n 120 - 180 (mg/dL)
+            \n\n4. Night time\n 80 - 162 (mg/dL)"
+            android:textSize="17sp"
+            android:padding="5dp"
+            android:textColor="#444"/>
+    </RelativeLayout>
+</ScrollView>

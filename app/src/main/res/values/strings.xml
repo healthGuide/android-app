@@ -3,7 +3,19 @@
     <string name="drawer_close">Close</string>
     <string name="drawer_open">Open</string>
     <string name="title_activity_newrecord">newrecord</string>
-    <string name="diet"></string>
+    <string name="diet">
+        We should not restrict diet for these children, rather we should give normal healthy diet with lot of variety and match it with insulin dose.
+        Carb exchanges as advised by dietician are very important to have variety in meals.
+        Foods rich in sugars and fat should be restricted.
+        These include chocolates, pastries, ice cream, sweet biscuits, fried items, chips and carbonated beverages like pepsi, cola etc.
+        Encourage intake of fibre rich foods like raw vegetables, fruits and whole grains.Having a regular diet schedule helps in sugar control.
+        It is important to remember that occasional excesses are allowed, as in parties and weddings, provided the meal and insulin are planned so that the child does not become rebellious and start eating stealthily.
+    </string>
+    <string name="act">
+        Physical activity is an important part of the treatment of diabetes.
+        Regular physical activity helps in improving sugar control, physical fitness, muscle strength and psychological well being of the child.
+        Activity consumes sugar and thus low sugar is a frequent consequence.
+    </string>
     <string name="doctorvisit">
         Once a child is on a particular insulin regimen, sugars are stable and parents are confident, 3 monthly visits with HbA1c levels are sufficient.
         More frequent visits may be necessary in the initial phase after diagnosis, when sugars are fluctuating and when insulin regimen is changed.
@@ -12,7 +24,10 @@
 A very tight control of sugars is neither possible nor desirable, especially in younger children in whom there is a risk of brain damage because of low sugars.
         In older children, mild to moderately low sugars occurring say 3-4 times in a month is an indicator of good control.
     </string>
-    <string name="mealplan"></string>
+    <string name="mealplan">
+        Meal plan for different age groups for different meals are suggested in the diet chart attached.
+        Modifications can be done seeing the options available for same amount of carb containing exchanges.
+    </string>
     <string name="monitor">
         Weight and height of the child is checked every visit (3 monthly).
         A child growing normally means diabetes control is fair to good. BP is monitored at least every year.
