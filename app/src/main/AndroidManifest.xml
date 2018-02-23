@@ -77,7 +77,8 @@
         <activity android:name=".doctorvisit" />
         <activity android:name=".monitor" />
         <activity android:name=".mealplan" />
-        <activity android:name=".notification"></activity>
+        <activity android:name=".notification" />
+        <activity android:name=".rewards"></activity>
     </application>
 
 </manifest>
