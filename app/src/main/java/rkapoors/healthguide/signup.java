@@ -137,6 +137,8 @@ public class signup extends AppCompatActivity {
                                         DatabaseReference usernode =  dbref.child("users").child(user.getUid());
                                         usernode.child("email").setValue(user.getEmail());
                                         usernode.child("name").setValue(name);
+                                        usernode.child("rewards").child("lastrecorded").setValue("0");
+                                        usernode.child("rewards").child("counter").setValue("0");
                                     }
                                     Toast.makeText(signup.this, "WELCOME to healthGuide", Toast.LENGTH_SHORT).show();
                                     startActivity(new Intent(signup.this, MainActivity.class));

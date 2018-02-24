@@ -1,7 +1,10 @@
 package rkapoors.healthguide;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -44,12 +48,19 @@ public class newrecord extends AppCompatActivity {
     int selectedMonth;
     int selectedDayOfMonth;
     private SimpleDateFormat dateFormatter;
+    int intfirebasecounter;
 
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
     private String readid;
-    String mailofuser="";
+    String mailofuser="",firebaselastrecorded="",firebasecounter="";
     String uidofuser="";
+
+    Date curdate,lastdate;
+    Button rbt;
+    CoordinatorLayout coordinatorLayout;
+
+    int flg=0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,8 +85,8 @@ public class newrecord extends AppCompatActivity {
         final Spinner spinner= (Spinner)findViewById(R.id.comspinner);
         final EditText val=(EditText)findViewById(R.id.glucolevel);
         final EditText dosageet = (EditText)findViewById(R.id.others);
-        final Button rbt=(Button)findViewById(R.id.rbt);
-        final CoordinatorLayout coordinatorLayout = (CoordinatorLayout)findViewById(R.id.coordinatorLayout);
+        rbt=(Button)findViewById(R.id.rbt);
+        coordinatorLayout = (CoordinatorLayout)findViewById(R.id.coordinatorLayout);
         final TextView mailuser = (TextView)findViewById(R.id.usermail);
 
         mFirebaseDatabase.child("users").child(uidofuser).child("doctor").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -145,19 +156,103 @@ public class newrecord extends AppCompatActivity {
                 date.setTimeZone(TimeZone.getTimeZone("GMT+5:30"));
                 tm = date.format(currentLocalTime);
 
-                final checkrecorddata uservals = new checkrecorddata(tm,comm,glucoval,dosageval);
-
-                //Donot use email id for child   as characters . * ,   etc. are not allowed for database reference
-                DatabaseReference temp = mFirebaseDatabase.child("users").child(uidofuser).child("records").child(dt);
-
-                readid=temp.push().getKey();
-                temp.child(readid).setValue(uservals);
-
-                rbt.setEnabled(false);
-                rbt.setTextColor(Color.parseColor("#A9A9A9"));
-                Snackbar.make(coordinatorLayout,"Recorded Successfully",Snackbar.LENGTH_LONG).show();
+                fetchrecord task = new fetchrecord(newrecord.this);
+                task.execute();
             }
         });
+    }
+
+    private class fetchrecord extends AsyncTask<Void, Void, Void> {
+        private ProgressDialog pd;
+
+        public fetchrecord(newrecord activity){
+            pd = new ProgressDialog(activity);
+        }
+
+        @Override
+        protected void onPreExecute(){
+            pd.setMessage("Please wait a moment...");
+            pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            pd.setCancelable(false);
+            pd.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params){
+            try{
+                DatabaseReference rewardref = mFirebaseDatabase.child("users").child(uidofuser).child("rewards");
+
+                rewardref.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        firebaselastrecorded = dataSnapshot.child("lastrecorded").getValue(String.class);
+                        firebasecounter = dataSnapshot.child("counter").getValue(String.class);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+                if(!firebaselastrecorded.equals("0")){
+                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd",Locale.US);
+                    try {
+                        curdate = df.parse(dt);
+                        lastdate = df.parse(firebaselastrecorded);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                intfirebasecounter = Integer.parseInt(firebasecounter);
+
+                if(firebaselastrecorded.equals("0") || curdate.compareTo(lastdate)==1){
+                    intfirebasecounter+=1;
+                    String fvalcounter = intfirebasecounter+"";
+                    rewardref.child("counter").setValue(fvalcounter);
+                    rewardref.child("lastrecorded").setValue(dt);
+                    flg=1;
+                }
+                else if(curdate.compareTo(lastdate)>=2){
+                    rewardref.child("counter").setValue("0");
+                    rewardref.child("lastrecorded").setValue(dt);
+                    flg=1;
+                }
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result){
+            super.onPostExecute(result);
+            Handler handler = new Handler();
+
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if(flg==1){
+
+                        final checkrecorddata uservals = new checkrecorddata(tm,comm,glucoval,dosageval);
+
+                        //Donot use email id for child   as characters . * ,   etc. are not allowed for database reference
+                        DatabaseReference temp = mFirebaseDatabase.child("users").child(uidofuser).child("records").child(dt);
+                        readid=temp.push().getKey();
+                        temp.child(readid).setValue(uservals);
+
+                        rbt.setEnabled(false);
+                        rbt.setTextColor(Color.parseColor("#A9A9A9"));
+                        Snackbar.make(coordinatorLayout,"Recorded Successfully",Snackbar.LENGTH_LONG).show();
+                    }
+                    else Snackbar.make(coordinatorLayout,"Something went wrong. Try again.",Snackbar.LENGTH_LONG).show();
+
+                    pd.dismiss();
+                }
+            },1000);
+        }
     }
 
     @Override
