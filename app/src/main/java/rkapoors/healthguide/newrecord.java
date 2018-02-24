@@ -212,13 +212,12 @@ public class newrecord extends AppCompatActivity {
                     String fvalcounter = intfirebasecounter+"";
                     rewardref.child("counter").setValue(fvalcounter);
                     rewardref.child("lastrecorded").setValue(dt);
-                    flg=1;
                 }
                 else if(curdate.compareTo(lastdate)>=2){
                     rewardref.child("counter").setValue("0");
                     rewardref.child("lastrecorded").setValue(dt);
-                    flg=1;
                 }
+                flg=1;
             }
             catch(Exception e){
                 e.printStackTrace();
@@ -237,7 +236,6 @@ public class newrecord extends AppCompatActivity {
                     if(flg==1){
 
                         final checkrecorddata uservals = new checkrecorddata(tm,comm,glucoval,dosageval);
-
                         //Donot use email id for child   as characters . * ,   etc. are not allowed for database reference
                         DatabaseReference temp = mFirebaseDatabase.child("users").child(uidofuser).child("records").child(dt);
                         readid=temp.push().getKey();
@@ -251,7 +249,7 @@ public class newrecord extends AppCompatActivity {
 
                     pd.dismiss();
                 }
-            },1000);
+            },1500);
         }
     }
 

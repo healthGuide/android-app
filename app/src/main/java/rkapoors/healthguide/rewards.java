@@ -103,8 +103,8 @@ public class rewards extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         String valoocounter = dataSnapshot.child("counter").getValue(String.class);
-                        count.setText(valoocounter);
                         flg=1;
+                        count.setText(valoocounter);
                     }
 
                     @Override
@@ -146,7 +146,7 @@ public class rewards extends AppCompatActivity {
 
                     pd.dismiss();
                 }
-            },1000);
+            },1500);
         }
     }
 
