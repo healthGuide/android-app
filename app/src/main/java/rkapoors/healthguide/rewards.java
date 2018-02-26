@@ -1,6 +1,9 @@
 package rkapoors.healthguide;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -23,7 +26,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class rewards extends AppCompatActivity {
     ImageView bronze, silver, gold;
@@ -31,8 +37,17 @@ public class rewards extends AppCompatActivity {
 
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
-    String mailofuser="",uidofuser="";
+    String mailofuser="",uidofuser="",firebaselastrecorded="",valoocounter="";
     int flg=0;
+
+    private String dt="";
+    int selectedYear;
+    int selectedMonth;
+    int selectedDayOfMonth;
+    private SimpleDateFormat dateFormatter;
+
+    Date curdate,lastdate;
+    DatabaseReference rewardref;
 
     ScrollView vw;
 
@@ -67,18 +82,50 @@ public class rewards extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        rewardref = mFirebaseDatabase.child("users").child(uidofuser).child("rewards");
+
+        Calendar c=Calendar.getInstance(TimeZone.getTimeZone("GMT+5:30"));
+
+        dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        selectedYear=c.get(Calendar.YEAR);
+        selectedMonth=c.get(Calendar.MONTH);
+        selectedDayOfMonth=c.get(Calendar.DAY_OF_MONTH);
+        c.set(selectedYear,selectedMonth,selectedDayOfMonth);
+        dt=dateFormatter.format(c.getTime());
+
         FloatingActionButton bt = (FloatingActionButton)findViewById(R.id.refreshbt);
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                flg=0;
-                fetchrecord task = new fetchrecord(rewards.this);
-                task.execute();
+
+                ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+                boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+                if(!isConnected)
+                {
+                    Snackbar.make(vw, "Check Internet Connection", Snackbar.LENGTH_LONG).show();
+                }
+                else {
+                    flg=0;
+                    fetchrecord task = new fetchrecord(rewards.this);
+                    task.execute();
+                }
             }
         });
 
-        fetchrecord task = new fetchrecord(rewards.this);
-        task.execute();
+        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        if(!isConnected)
+        {
+            Snackbar.make(vw, "Check Internet Connection", Snackbar.LENGTH_LONG).show();
+        }
+        else {
+            fetchrecord task = new fetchrecord(rewards.this);
+            task.execute();
+        }
     }
 
     private class fetchrecord extends AsyncTask<Void, Void, Void> {
@@ -99,12 +146,11 @@ public class rewards extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... params){
             try{
-                mFirebaseDatabase.child("users").child(uidofuser).child("rewards").addListenerForSingleValueEvent(new ValueEventListener() {
+                rewardref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        String valoocounter = dataSnapshot.child("counter").getValue(String.class);
-                        flg=1;
-                        count.setText(valoocounter);
+                        valoocounter = dataSnapshot.child("counter").getValue(String.class);
+                        firebaselastrecorded = dataSnapshot.child("lastrecorded").getValue(String.class);
                     }
 
                     @Override
@@ -112,10 +158,13 @@ public class rewards extends AppCompatActivity {
 
                     }
                 });
+
+                flg=1;
             }
             catch(Exception e){
                 e.printStackTrace();
             }
+
             return null;
         }
 
@@ -128,6 +177,25 @@ public class rewards extends AppCompatActivity {
                 @Override
                 public void run() {
                     if(flg==1) {
+
+                        if(!firebaselastrecorded.equals("0")) {
+                            DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+                            try {
+                                curdate = df.parse(dt);
+                                lastdate = df.parse(firebaselastrecorded);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+
+                            if (curdate.compareTo(lastdate) >= 2) {
+                                count.setText("0");
+                                rewardref.child("counter").setValue("0");
+                                Snackbar.make(vw, "Progress lost.\nRecords were not made daily.", Snackbar.LENGTH_LONG).show();
+                            }
+                            else count.setText(valoocounter);
+                        }
+                        else count.setText("0");
+
                         int dayscount = Integer.parseInt(count.getText().toString());
                         if (dayscount >= 60) {
                             bronze.setAlpha(1.0f);
@@ -146,7 +214,7 @@ public class rewards extends AppCompatActivity {
 
                     pd.dismiss();
                 }
-            },1500);
+            },5000);
         }
     }
 

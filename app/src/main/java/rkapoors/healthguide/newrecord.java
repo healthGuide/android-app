@@ -3,6 +3,8 @@ package rkapoors.healthguide;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
@@ -50,7 +52,7 @@ public class newrecord extends AppCompatActivity {
     private SimpleDateFormat dateFormatter;
     int intfirebasecounter;
 
-    private DatabaseReference mFirebaseDatabase;
+    private DatabaseReference mFirebaseDatabase,rewardref;
     private FirebaseDatabase mFirebaseInstance;
     private String readid;
     String mailofuser="",firebaselastrecorded="",firebasecounter="";
@@ -103,6 +105,8 @@ public class newrecord extends AppCompatActivity {
             }
         });
 
+        rewardref = mFirebaseDatabase.child("users").child(uidofuser).child("rewards");
+
         ArrayAdapter<CharSequence> staticAdapter = ArrayAdapter
                 .createFromResource(this, R.array.comments, android.R.layout.simple_spinner_item);
 
@@ -149,15 +153,26 @@ public class newrecord extends AppCompatActivity {
                 selectedMonth=c.get(Calendar.MONTH);
                 selectedDayOfMonth=c.get(Calendar.DAY_OF_MONTH);
                 c.set(selectedYear,selectedMonth,selectedDayOfMonth);
-                dt=dateFormatter.format(c.getTime());;
+                dt=dateFormatter.format(c.getTime());
 
                 Date currentLocalTime = c.getTime();
                 DateFormat date = new SimpleDateFormat("hh:mm a");
                 date.setTimeZone(TimeZone.getTimeZone("GMT+5:30"));
                 tm = date.format(currentLocalTime);
 
-                fetchrecord task = new fetchrecord(newrecord.this);
-                task.execute();
+                ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+                boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+                if(!isConnected)
+                {
+                    Snackbar.make(coordinatorLayout, "Check Internet Connection", Snackbar.LENGTH_LONG).show();
+                }
+                else {
+                    flg=0;
+                    fetchrecord task = new fetchrecord(newrecord.this);
+                    task.execute();
+                }
             }
         });
     }
@@ -180,8 +195,6 @@ public class newrecord extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... params){
             try{
-                DatabaseReference rewardref = mFirebaseDatabase.child("users").child(uidofuser).child("rewards");
-
                 rewardref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -195,28 +208,6 @@ public class newrecord extends AppCompatActivity {
                     }
                 });
 
-                if(!firebaselastrecorded.equals("0")){
-                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd",Locale.US);
-                    try {
-                        curdate = df.parse(dt);
-                        lastdate = df.parse(firebaselastrecorded);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                intfirebasecounter = Integer.parseInt(firebasecounter);
-
-                if(firebaselastrecorded.equals("0") || curdate.compareTo(lastdate)==1){
-                    intfirebasecounter+=1;
-                    String fvalcounter = intfirebasecounter+"";
-                    rewardref.child("counter").setValue(fvalcounter);
-                    rewardref.child("lastrecorded").setValue(dt);
-                }
-                else if(curdate.compareTo(lastdate)>=2){
-                    rewardref.child("counter").setValue("0");
-                    rewardref.child("lastrecorded").setValue(dt);
-                }
                 flg=1;
             }
             catch(Exception e){
@@ -235,6 +226,29 @@ public class newrecord extends AppCompatActivity {
                 public void run() {
                     if(flg==1){
 
+                        if(!firebaselastrecorded.equals("0")){
+                            DateFormat df = new SimpleDateFormat("yyyy-MM-dd",Locale.US);
+                            try {
+                                curdate = df.parse(dt);
+                                lastdate = df.parse(firebaselastrecorded);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        intfirebasecounter = Integer.parseInt(firebasecounter);
+
+                        if(firebaselastrecorded.equals("0") || curdate.compareTo(lastdate)==1){
+                            intfirebasecounter+=1;
+                            String fvalcounter = intfirebasecounter+"";
+                            rewardref.child("counter").setValue(fvalcounter);
+                            rewardref.child("lastrecorded").setValue(dt);
+                        }
+                        else if(curdate.compareTo(lastdate)>=2){
+                            rewardref.child("counter").setValue("1");
+                            rewardref.child("lastrecorded").setValue(dt);
+                        }
+
                         final checkrecorddata uservals = new checkrecorddata(tm,comm,glucoval,dosageval);
                         //Donot use email id for child   as characters . * ,   etc. are not allowed for database reference
                         DatabaseReference temp = mFirebaseDatabase.child("users").child(uidofuser).child("records").child(dt);
@@ -249,7 +263,7 @@ public class newrecord extends AppCompatActivity {
 
                     pd.dismiss();
                 }
-            },1500);
+            },5000);
         }
     }
 

@@ -129,7 +129,7 @@ public class checkrecord extends AppCompatActivity {
 
                     pd.dismiss();
                 }
-            },500);    //show for atlest 500 msec
+            },3000);    //show for atlest 500 msec
         }
 
         @Override
