@@ -40,13 +40,13 @@ public class rewards extends AppCompatActivity {
     String mailofuser="",uidofuser="",firebaselastrecorded="",valoocounter="";
     int flg=0;
 
-    private String dt="";
+    private String dt="", prevdt="";
     int selectedYear;
     int selectedMonth;
     int selectedDayOfMonth;
     private SimpleDateFormat dateFormatter;
 
-    Date curdate,lastdate;
+    Date curdate,lastdate,prevcurdate;
     DatabaseReference rewardref;
 
     ScrollView vw;
@@ -92,6 +92,10 @@ public class rewards extends AppCompatActivity {
         selectedDayOfMonth=c.get(Calendar.DAY_OF_MONTH);
         c.set(selectedYear,selectedMonth,selectedDayOfMonth);
         dt=dateFormatter.format(c.getTime());
+
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+5:30"));
+        cal.add(Calendar.DATE,-1);
+        prevdt = dateFormatter.format(cal.getTime());
 
         FloatingActionButton bt = (FloatingActionButton)findViewById(R.id.refreshbt);
         bt.setOnClickListener(new View.OnClickListener() {
@@ -182,17 +186,20 @@ public class rewards extends AppCompatActivity {
                             DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
                             try {
                                 curdate = df.parse(dt);
+                                prevcurdate = df.parse(prevdt);
                                 lastdate = df.parse(firebaselastrecorded);
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
 
-                            if (curdate.compareTo(lastdate) >= 2) {
+                            if (curdate.compareTo(lastdate)==0 || prevcurdate.compareTo(lastdate)==0) {
+                                count.setText(valoocounter);
+                            }
+                            else {
                                 count.setText("0");
                                 rewardref.child("counter").setValue("0");
                                 Snackbar.make(vw, "Progress lost.\nRecords were not made daily.", Snackbar.LENGTH_LONG).show();
                             }
-                            else count.setText(valoocounter);
                         }
                         else count.setText("0");
 

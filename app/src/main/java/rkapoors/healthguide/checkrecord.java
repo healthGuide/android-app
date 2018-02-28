@@ -1,9 +1,11 @@
 package rkapoors.healthguide;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -91,6 +93,15 @@ public class checkrecord extends AppCompatActivity {
                 task.execute();
             }
         });
+
+        FloatingActionButton fbt = (FloatingActionButton)findViewById(R.id.grbt);
+        fbt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent gract = new Intent(checkrecord.this,grview.class);
+                startActivity(gract);
+            }
+        });
     }
 
     private class fetchrecord extends AsyncTask<Void, Void, Void>{
@@ -129,7 +140,7 @@ public class checkrecord extends AppCompatActivity {
 
                     pd.dismiss();
                 }
-            },3000);    //show for atlest 500 msec
+            },5000);    //show for atlest 500 msec
         }
 
         @Override

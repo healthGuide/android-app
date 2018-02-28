@@ -78,7 +78,8 @@
         <activity android:name=".monitor" />
         <activity android:name=".mealplan" />
         <activity android:name=".notification" />
-        <activity android:name=".rewards"></activity>
+        <activity android:name=".rewards" />
+        <activity android:name=".grview"></activity>
     </application>
 
 </manifest>

@@ -42,7 +42,7 @@ public class newrecord extends AppCompatActivity {
     private String comments[]={"before Breakfast","after Breakfast","before Lunch","after Lunch","before Dinner","after Dinner"};
     private String comm="";
     private String tm="";
-    private String dt="";
+    private String dt="",prevdt="";
     private String glucoval="";
     private String dosageval="";
 
@@ -58,7 +58,7 @@ public class newrecord extends AppCompatActivity {
     String mailofuser="",firebaselastrecorded="",firebasecounter="";
     String uidofuser="";
 
-    Date curdate,lastdate;
+    Date curdate,lastdate,prevcurdate;
     Button rbt;
     CoordinatorLayout coordinatorLayout;
 
@@ -160,6 +160,10 @@ public class newrecord extends AppCompatActivity {
                 date.setTimeZone(TimeZone.getTimeZone("GMT+5:30"));
                 tm = date.format(currentLocalTime);
 
+                Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+5:30"));
+                cal.add(Calendar.DATE,-1);
+                prevdt = dateFormatter.format(cal.getTime());
+
                 ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 
@@ -230,6 +234,7 @@ public class newrecord extends AppCompatActivity {
                             DateFormat df = new SimpleDateFormat("yyyy-MM-dd",Locale.US);
                             try {
                                 curdate = df.parse(dt);
+                                prevcurdate = df.parse(prevdt);
                                 lastdate = df.parse(firebaselastrecorded);
                             } catch (ParseException e) {
                                 e.printStackTrace();
@@ -238,13 +243,16 @@ public class newrecord extends AppCompatActivity {
 
                         intfirebasecounter = Integer.parseInt(firebasecounter);
 
-                        if(firebaselastrecorded.equals("0") || curdate.compareTo(lastdate)==1){
+                        if(firebaselastrecorded.equals("0") || prevcurdate.compareTo(lastdate)==0){
                             intfirebasecounter+=1;
                             String fvalcounter = intfirebasecounter+"";
                             rewardref.child("counter").setValue(fvalcounter);
                             rewardref.child("lastrecorded").setValue(dt);
                         }
-                        else if(curdate.compareTo(lastdate)>=2){
+                        else if (curdate.compareTo(lastdate)==0){
+
+                        }
+                        else{
                             rewardref.child("counter").setValue("1");
                             rewardref.child("lastrecorded").setValue(dt);
                         }
