@@ -2,6 +2,9 @@ package rkapoors.healthguide;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
@@ -33,7 +36,7 @@ public class doctor extends AppCompatActivity {
 
     int flg;
     String uidofuser="",uidofdoc="",naamofuser="";
-    String docmail="",mailofuser="",readid="";
+    String docmail="",mailofuser="",readid="",curdoc="";
 
     CoordinatorLayout coordinatorLayout;
 
@@ -73,7 +76,7 @@ public class doctor extends AppCompatActivity {
         databaseReference.child("users").child(uidofuser).child("doctor").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String curdoc = dataSnapshot.child("email").getValue(String.class);
+                curdoc = dataSnapshot.child("email").getValue(String.class);
                 if(curdoc!=null) mail.setText(curdoc);
             }
 
@@ -97,8 +100,25 @@ public class doctor extends AppCompatActivity {
                     Snackbar.make(coordinatorLayout,"Doctor's email can't be empty",Snackbar.LENGTH_LONG).show();
                     return;
                 }
-                fetchrecord task = new fetchrecord(doctor.this);
-                task.execute();
+                if(curdoc.equals(docmail))
+                {
+                    Snackbar.make(coordinatorLayout,"Already sharing with "+docmail,Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+
+                ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+                boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+                if(!isConnected)
+                {
+                    Snackbar.make(coordinatorLayout, "Check Internet Connection", Snackbar.LENGTH_LONG).show();
+                }
+                else
+                {
+                    fetchrecord task = new fetchrecord(doctor.this);
+                    task.execute();
+                }
             }
         });
     }
@@ -135,6 +155,8 @@ public class doctor extends AppCompatActivity {
                         databaseReference.child("users").child(uidofuser).child("doctor").child("uid").setValue(uidofdoc);
                         databaseReference.child("users").child(uidofuser).child("doctor").child("email").setValue(docmail);
 
+                        upbt.setEnabled(false);
+                        upbt.setTextColor(Color.parseColor("#A9A9A9"));
                         Snackbar.make(coordinatorLayout,"Updated Successfully.",Snackbar.LENGTH_LONG).show();
                     }
                     else{
@@ -143,7 +165,7 @@ public class doctor extends AppCompatActivity {
 
                     pd.dismiss();
                 }
-            },1000);    //show for atlest 1000 msec
+            },5000);    //show for atlest 5000 msec
         }
 
         @Override

@@ -2,12 +2,14 @@ package rkapoors.healthguide;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -34,6 +36,8 @@ import java.util.TimeZone;
 public class rewards extends AppCompatActivity {
     ImageView bronze, silver, gold;
     TextView count,btv,stv,gtv;
+
+    final Context context = this;
 
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
@@ -115,6 +119,29 @@ public class rewards extends AppCompatActivity {
                     fetchrecord task = new fetchrecord(rewards.this);
                     task.execute();
                 }
+            }
+        });
+
+        FloatingActionButton infobt = (FloatingActionButton)findViewById(R.id.infobt);
+        infobt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+                // set dialog message
+                alertDialogBuilder
+                        .setTitle("healthGuide rewards")
+                        .setMessage("1. score = consecutive days for which records are made.\n\n2. A miss will lead to loss of progress.")
+                        .setCancelable(true)
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                // show it
+                alertDialog.show();
             }
         });
 
@@ -204,15 +231,15 @@ public class rewards extends AppCompatActivity {
                         else count.setText("0");
 
                         int dayscount = Integer.parseInt(count.getText().toString());
-                        if (dayscount >= 60) {
+                        if (dayscount >= 30) {
                             bronze.setAlpha(1.0f);
                             btv.setVisibility(View.INVISIBLE);
                         }
-                        if (dayscount >= 120) {
+                        if (dayscount >= 45) {
                             silver.setAlpha(1.0f);
                             stv.setVisibility(View.INVISIBLE);
                         }
-                        if (dayscount >= 180) {
+                        if (dayscount >= 60) {
                             gold.setAlpha(1.0f);
                             gtv.setVisibility(View.INVISIBLE);
                         }

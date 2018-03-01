@@ -79,7 +79,9 @@
         <activity android:name=".mealplan" />
         <activity android:name=".notification" />
         <activity android:name=".rewards" />
-        <activity android:name=".grview"></activity>
+        <activity
+            android:name=".grview"
+            android:screenOrientation="landscape"/>
     </application>
 
 </manifest>
