@@ -126,6 +126,26 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
         //get current user
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
+        dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+5:30"));
+        cal.add(Calendar.DATE,-61);
+        prevdt = dateFormatter.format(cal.getTime());
+
+        df = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        try {
+            prevdate = df.parse(prevdt);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        String mailaddr="";
+        if(user!=null) {
+            mailaddr=user.getEmail();useruid=user.getUid();
+            temp = dbref.child("users").child(useruid).child("records");
+            fetchrecord task = new fetchrecord(MainActivity.this);
+            task.execute();
+        }
+
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -139,12 +159,8 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
             }
         };
 
-        String mailaddr="";
-        if(user!=null) {mailaddr=user.getEmail();useruid=user.getUid();}
         maildesc = (TextView)findViewById(R.id.useremail);
         maildesc.setText(mailaddr);
-
-        temp = dbref.child("users").child(useruid).child("records");
 
         naam = (TextView)findViewById(R.id.userName);
         dbref.child("users").child(useruid).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -246,20 +262,6 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
             }
         });
 
-        dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+5:30"));
-        cal.add(Calendar.DATE,-61);
-        prevdt = dateFormatter.format(cal.getTime());
-
-        df = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        try {
-            prevdate = df.parse(prevdt);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        fetchrecord task = new fetchrecord(MainActivity.this);
-        task.execute();
     }
 
     private class fetchrecord extends AsyncTask<Void, Void, Void> {
@@ -286,7 +288,7 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
                 public void run() {
                     pd.dismiss();
                 }
-            },8000);    //show for atlest 7000 msec
+            },5000);    //show for atlest 5000 msec
         }
 
         @Override
