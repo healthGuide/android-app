@@ -99,6 +99,7 @@ public class checkrecord extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent gract = new Intent(checkrecord.this,grview.class);
+                gract.putExtra("patientuid",uidofuser);
                 startActivity(gract);
             }
         });

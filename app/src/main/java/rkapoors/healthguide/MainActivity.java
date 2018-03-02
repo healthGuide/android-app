@@ -1,7 +1,14 @@
 package rkapoors.healthguide;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -11,6 +18,7 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -55,7 +63,8 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
     boolean doubleBackToExitPressedOnce = false;
     private TextView maildesc;
     TextView naam;
-    String useruid="";
+    String useruid="",prevdt="";
+    Date prevdate, nodedate;
 
     android.support.v7.widget.Toolbar myToolbar;
 
@@ -63,7 +72,10 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
     ActionBarDrawerToggle actionBarDrawerToggle;
 
     FirebaseDatabase database;
-    DatabaseReference dbref;
+    DatabaseReference dbref,temp;
+
+    private SimpleDateFormat dateFormatter;
+    DateFormat df;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -131,6 +143,8 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
         if(user!=null) {mailaddr=user.getEmail();useruid=user.getUid();}
         maildesc = (TextView)findViewById(R.id.useremail);
         maildesc.setText(mailaddr);
+
+        temp = dbref.child("users").child(useruid).child("records");
 
         naam = (TextView)findViewById(R.id.userName);
         dbref.child("users").child(useruid).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -231,7 +245,84 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
                 }
             }
         });
+
+        dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+5:30"));
+        cal.add(Calendar.DATE,-61);
+        prevdt = dateFormatter.format(cal.getTime());
+
+        df = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        try {
+            prevdate = df.parse(prevdt);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        fetchrecord task = new fetchrecord(MainActivity.this);
+        task.execute();
     }
+
+    private class fetchrecord extends AsyncTask<Void, Void, Void> {
+        private ProgressDialog pd;
+
+        public fetchrecord(MainActivity activity){
+            pd = new ProgressDialog(activity);
+        }
+
+        @Override
+        protected void onPreExecute(){
+            pd.setMessage("Loading...");
+            pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            pd.setCancelable(false);
+            pd.show();
+        }
+
+        @Override
+        protected void onPostExecute(Void result){
+            super.onPostExecute(result);
+            Handler handler = new Handler();
+
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    pd.dismiss();
+                }
+            },8000);    //show for atlest 7000 msec
+        }
+
+        @Override
+        protected Void doInBackground(Void... params){
+            try{
+                temp.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for(DataSnapshot ds : dataSnapshot.getChildren())
+                        {
+                            try {
+                                nodedate = df.parse(ds.getKey());
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+
+                            if(prevdate.compareTo(nodedate)>=0)
+                            {
+                                ds.getRef().setValue(null);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
     // Method to add a TabHost
     private static void AddTab(MainActivity activity, TabHost tabHost, TabHost.TabSpec tabSpec) {
         tabSpec.setContent(new MyTabFactory(activity));

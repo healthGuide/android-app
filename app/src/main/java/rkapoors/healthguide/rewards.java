@@ -130,7 +130,7 @@ public class rewards extends AppCompatActivity {
                 // set dialog message
                 alertDialogBuilder
                         .setTitle("healthGuide rewards")
-                        .setMessage("1. score = consecutive days for which records are made.\n\n2. A miss will lead to loss of progress.")
+                        .setMessage("score = consecutive days for which records are made.\n\nA miss will lead to loss of progress.")
                         .setCancelable(true)
                         .setPositiveButton("OK",
                                 new DialogInterface.OnClickListener() {
