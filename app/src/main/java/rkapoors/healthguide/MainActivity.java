@@ -63,8 +63,7 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
     boolean doubleBackToExitPressedOnce = false;
     private TextView maildesc;
     TextView naam;
-    String useruid="",prevdt="";
-    Date prevdate, nodedate;
+    String useruid="";
 
     android.support.v7.widget.Toolbar myToolbar;
 
@@ -72,10 +71,7 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
     ActionBarDrawerToggle actionBarDrawerToggle;
 
     FirebaseDatabase database;
-    DatabaseReference dbref,temp;
-
-    private SimpleDateFormat dateFormatter;
-    DateFormat df;
+    DatabaseReference dbref;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -126,26 +122,6 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
         //get current user
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+5:30"));
-        cal.add(Calendar.DATE,-61);
-        prevdt = dateFormatter.format(cal.getTime());
-
-        df = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        try {
-            prevdate = df.parse(prevdt);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        String mailaddr="";
-        if(user!=null) {
-            mailaddr=user.getEmail();useruid=user.getUid();
-            temp = dbref.child("users").child(useruid).child("records");
-            fetchrecord task = new fetchrecord(MainActivity.this);
-            task.execute();
-        }
-
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -158,6 +134,11 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
                 }
             }
         };
+
+        String mailaddr="";
+        if(user!=null) {
+            mailaddr=user.getEmail();useruid=user.getUid();
+        }
 
         maildesc = (TextView)findViewById(R.id.useremail);
         maildesc.setText(mailaddr);
@@ -263,68 +244,6 @@ public class MainActivity extends AppCompatActivity implements OnTabChangeListen
         });
 
     }
-
-    private class fetchrecord extends AsyncTask<Void, Void, Void> {
-        private ProgressDialog pd;
-
-        public fetchrecord(MainActivity activity){
-            pd = new ProgressDialog(activity);
-        }
-
-        @Override
-        protected void onPreExecute(){
-            pd.setMessage("Loading...");
-            pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            pd.setCancelable(false);
-            pd.show();
-        }
-
-        @Override
-        protected void onPostExecute(Void result){
-            super.onPostExecute(result);
-            Handler handler = new Handler();
-
-            handler.postDelayed(new Runnable() {
-                public void run() {
-                    pd.dismiss();
-                }
-            },5000);    //show for atlest 5000 msec
-        }
-
-        @Override
-        protected Void doInBackground(Void... params){
-            try{
-                temp.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for(DataSnapshot ds : dataSnapshot.getChildren())
-                        {
-                            try {
-                                nodedate = df.parse(ds.getKey());
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-
-                            if(prevdate.compareTo(nodedate)>=0)
-                            {
-                                ds.getRef().setValue(null);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-            }
-            catch(Exception e){
-                e.printStackTrace();
-            }
-            return null;
-        }
-    }
-
     // Method to add a TabHost
     private static void AddTab(MainActivity activity, TabHost tabHost, TabHost.TabSpec tabSpec) {
         tabSpec.setContent(new MyTabFactory(activity));

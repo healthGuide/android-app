@@ -29,7 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 public class doctor extends AppCompatActivity {
 
     FirebaseDatabase database;
-    DatabaseReference databaseReference;
+    DatabaseReference databaseReference,temp;
 
     EditText mail;
     Button upbt;
@@ -100,7 +100,7 @@ public class doctor extends AppCompatActivity {
                     Snackbar.make(coordinatorLayout,"Doctor's email can't be empty",Snackbar.LENGTH_LONG).show();
                     return;
                 }
-                if(curdoc.equals(docmail))
+                if(curdoc!=null && curdoc.equals(docmail))
                 {
                     Snackbar.make(coordinatorLayout,"Already sharing with "+docmail,Snackbar.LENGTH_LONG).show();
                     return;
@@ -146,7 +146,8 @@ public class doctor extends AppCompatActivity {
             handler.postDelayed(new Runnable() {
                 public void run() {
                     if(flg==1){
-                        DatabaseReference temp = databaseReference.child("doctors").child(uidofdoc).child("patients");
+                        temp = databaseReference.child("doctors").child(uidofdoc).child("patients");
+
                         readid = temp.push().getKey();
                         temp.child(readid).child("uid").setValue(uidofuser);
                         temp.child(readid).child("email").setValue(mailofuser);

@@ -60,7 +60,7 @@ public class grview extends AppCompatActivity {
         database= FirebaseDatabase.getInstance();
         databaseReference=database.getReference();
         recref = databaseReference.child("users").child(patientuid).child("records");
-        recquery = recref.orderByKey().limitToLast(10);              //last 10 days
+        recquery = recref.orderByKey().limitToLast(8);              //last 8 days
 
         series = new ValueLineSeries();
         series.setColor(0xFF56B7F1);
@@ -121,9 +121,9 @@ public class grview extends AppCompatActivity {
 
                         for(DataSnapshot ds : dataSnapshot.getChildren())
                         {
-                            tithi.add(ds.getKey());
                             for(DataSnapshot dts : ds.getChildren())
                             {
+                                tithi.add(ds.getKey());
                                 val.add(dts.child("value").getValue(String.class));
                             }
                         }
