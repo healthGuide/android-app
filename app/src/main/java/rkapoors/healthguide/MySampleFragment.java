@@ -11,35 +11,32 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Switch;
 import android.widget.TextView;
 
 public class MySampleFragment extends Fragment {
 
     private static View mView;
-
-    /*CONSTRUCTOR
-
-    public static final MySampleFragment newInstance(String sampleText) {
-        MySampleFragment f = new MySampleFragment();
-
-        Bundle b = new Bundle();
-        b.putString("bString", sampleText);
-        f.setArguments(b);
-
-        return f;
-    }*/
+    TextView ftv, rtv, mexctv, eexctv;
+    Switch morinstv,aftinstv,niginstv, btv;
+    Button sbt;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         mView = inflater.inflate(R.layout.sample_fragment, container, false);
 
-        //String sampleText = getArguments().getString("bString");      GET from args
+        ftv = (TextView)mView.findViewById(R.id.ftv);
+        rtv = (TextView)mView.findViewById(R.id.rtv);
+        mexctv = (TextView)mView.findViewById(R.id.mexctv);
+        morinstv = (Switch) mView.findViewById(R.id.morinstv);
+        aftinstv = (Switch) mView.findViewById(R.id.aftinstv);
+        eexctv = (TextView) mView.findViewById(R.id.eexctv);
+        niginstv = (Switch) mView.findViewById(R.id.niginstv);
+        btv = (Switch) mView.findViewById(R.id.btv);
 
-        String sampleText = "Schedule fragment";
-
-        TextView txtSampleText = (TextView) mView.findViewById(R.id.txtViewSample);
-        txtSampleText.setText(sampleText);
+        sbt = (Button)mView.findViewById(R.id.sbt);
 
         FloatingActionButton fab = (FloatingActionButton) mView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -48,6 +45,13 @@ public class MySampleFragment extends Fragment {
                 // Click action
                 Intent intent = new Intent(getActivity(), notification.class);
                 startActivity(intent);
+            }
+        });
+
+        sbt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
 
