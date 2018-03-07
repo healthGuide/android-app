@@ -186,7 +186,7 @@ public class rewards extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-
+                        Snackbar.make(vw,"Something went wrong. Try again.",Snackbar.LENGTH_LONG).show();
                     }
                 });
 
