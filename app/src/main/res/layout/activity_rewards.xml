@@ -99,6 +99,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
             android:background="#000"
+            android:layout_margin="@dimen/fab_margin"
             android:src="@drawable/refresh"/>
 
         <android.support.design.widget.FloatingActionButton
@@ -107,6 +108,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_below="@+id/refreshbt"
+            android:layout_margin="@dimen/fab_margin"
             android:background="#000"
             android:src="@drawable/infoimg"/>
 

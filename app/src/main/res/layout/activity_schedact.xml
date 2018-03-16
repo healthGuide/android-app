@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/schedlayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#fff"
+    >
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/ftv"
+                android:padding="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#333"
+                android:textSize="18sp"
+                android:text="fasting sugar level check ?" />
+
+            <RadioGroup
+                android:id="@+id/frg"
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ftv"
+                android:background="#eee">
+
+                <RadioButton
+                    android:id="@+id/fybt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Yes"
+                    android:textSize="15sp"
+                    android:textColor="#000"
+                    android:textAllCaps="false"
+                    />
+
+                <RadioButton
+                    android:id="@+id/fnbt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No"
+                    android:textSize="15sp"
+                    android:textColor="#000"
+                    android:textAllCaps="false"
+                    />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/rtv"
+                android:padding="8dp"
+                android:layout_below="@+id/frg"
+                android:textColor="#333"
+                android:textSize="18sp"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="record made ?" />
+
+            <RadioGroup
+                android:id="@+id/rrg"
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rtv"
+                android:background="#eee">
+
+                <RadioButton
+                    android:id="@+id/rybt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Yes"
+                    android:textSize="15sp"
+                    android:textColor="#000"
+                    android:textAllCaps="false"
+                    />
+
+                <RadioButton
+                    android:id="@+id/rnbt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No"
+                    android:textSize="15sp"
+                    android:textColor="#000"
+                    android:textAllCaps="false"
+                    />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/mexctv"
+                android:padding="8dp"
+                android:layout_below="@+id/rrg"
+                android:textColor="#333"
+                android:textSize="18sp"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="morning exercise ?" />
+
+            <RadioGroup
+                android:id="@+id/mexcrg"
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/mexctv"
+                android:background="#eee">
+
+                <RadioButton
+                    android:id="@+id/meybt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Yes"
+                    android:textSize="15sp"
+                    android:textColor="#000"
+                    android:textAllCaps="false"
+                    />
+
+                <RadioButton
+                    android:id="@+id/menbt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No"
+                    android:textSize="15sp"
+                    android:textColor="#000"
+                    android:textAllCaps="false"
+                    />
+
+            </RadioGroup>
+
+            <Switch
+                android:id="@+id/morinstv"
+                android:padding="8dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/mexcrg"
+                android:textColor="#333"
+                android:textSize="18sp"
+                android:layout_width="match_parent"
+                android:gravity="start"
+                android:textOff="NA"
+                android:textOn="Yes"
+                android:textAllCaps="false"
+                android:layout_height="wrap_content"
+                android:text="morning insulin dosage ?" />
+
+            <Switch
+                android:id="@+id/aftinstv"
+                android:padding="8dp"
+                android:layout_below="@+id/morinstv"
+                android:textColor="#333"
+                android:textSize="18sp"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:textOff="NA"
+                android:textOn="Yes"
+                android:textAllCaps="false"
+                android:text="afternoon insulin dosage ?" />
+
+            <TextView
+                android:id="@+id/eexctv"
+                android:padding="8dp"
+                android:layout_below="@+id/aftinstv"
+                android:textColor="#333"
+                android:textSize="18sp"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="evening exercise ?" />
+
+            <RadioGroup
+                android:id="@+id/eexcrg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/eexctv"
+                android:padding="10dp"
+                android:background="#eee">
+
+                <RadioButton
+                    android:id="@+id/eexcybt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Yes"
+                    android:textSize="15sp"
+                    android:textColor="#000"
+                    android:textAllCaps="false"
+                    />
+
+                <RadioButton
+                    android:id="@+id/eexcnbt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No"
+                    android:textSize="15sp"
+                    android:textColor="#000"
+                    android:textAllCaps="false"
+                    />
+
+            </RadioGroup>
+
+            <Switch
+                android:id="@+id/niginstv"
+                android:padding="8dp"
+                android:layout_below="@+id/eexcrg"
+                android:textColor="#333"
+                android:textSize="18sp"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:gravity="start"
+                android:layout_height="wrap_content"
+                android:textOff="NA"
+                android:textOn="Yes"
+                android:textAllCaps="false"
+                android:text="night-time insulin dosage ?" />
+
+            <Switch
+                android:id="@+id/btv"
+                android:padding="8dp"
+                android:layout_below="@+id/niginstv"
+                android:textColor="#333"
+                android:textSize="18sp"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:gravity="start"
+                android:layout_height="wrap_content"
+                android:textOff="NA"
+                android:textOn="Yes"
+                android:textAllCaps="false"
+                android:text="bedtime sugar level check ?" />
+
+            <Button
+                android:id="@+id/sbt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Submit"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="8dp"
+                android:textAllCaps="false"
+                android:background="#f00"
+                android:textColor="#fff"
+                android:textSize="20sp"
+                android:textAlignment="center"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/btv"
+                />
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

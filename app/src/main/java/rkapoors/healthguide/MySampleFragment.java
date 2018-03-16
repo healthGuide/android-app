@@ -11,32 +11,35 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Switch;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 public class MySampleFragment extends Fragment {
 
     private static View mView;
-    TextView ftv, rtv, mexctv, eexctv;
-    Switch morinstv,aftinstv,niginstv, btv;
-    Button sbt;
+    ImageView img;
+
+    public MySampleFragment(){
+
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         mView = inflater.inflate(R.layout.sample_fragment, container, false);
 
-        ftv = (TextView)mView.findViewById(R.id.ftv);
-        rtv = (TextView)mView.findViewById(R.id.rtv);
-        mexctv = (TextView)mView.findViewById(R.id.mexctv);
-        morinstv = (Switch) mView.findViewById(R.id.morinstv);
-        aftinstv = (Switch) mView.findViewById(R.id.aftinstv);
-        eexctv = (TextView) mView.findViewById(R.id.eexctv);
-        niginstv = (Switch) mView.findViewById(R.id.niginstv);
-        btv = (Switch) mView.findViewById(R.id.btv);
-
-        sbt = (Button)mView.findViewById(R.id.sbt);
+        img = (ImageView)mView.findViewById(R.id.schedimg);
+        img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent schedlist = new Intent(getActivity(),schedact.class);
+                startActivity(schedlist);
+            }
+        });
 
         FloatingActionButton fab = (FloatingActionButton) mView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -48,12 +51,6 @@ public class MySampleFragment extends Fragment {
             }
         });
 
-        sbt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
 
         return mView;
     }

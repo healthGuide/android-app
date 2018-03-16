@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/content"
+    android:background="@drawable/recimg">
+
+    <ImageView
+        android:id="@+id/fromcalbt"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/calendar"
+        android:layout_toStartOf="@+id/frombt"
+        android:layout_marginTop="15dp"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/frombt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose Date"
+        android:layout_marginTop="40dp"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:layout_centerHorizontal="true"
+        android:clickable="true"
+        android:focusable="true"
+        />
+
+    <TextView
+        android:id="@+id/fromdt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:padding="10dp"
+        android:layout_marginTop="70dp"
+        android:textStyle="italic"
+        android:textSize="18sp"
+        android:textColor="#000"
+        />
+
+    <ImageView
+        android:id="@+id/tocalbt"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/calendar"
+        android:layout_below="@+id/fromcalbt"
+        android:layout_toStartOf="@+id/tobt"
+        android:layout_marginTop="15dp"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/tobt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose Date"
+        android:layout_marginTop="60dp"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/frombt"
+        android:clickable="true"
+        android:focusable="true"
+        />
+
+    <TextView
+        android:id="@+id/todt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="60dp"
+        android:textStyle="italic"
+        android:textSize="18sp"
+        android:padding="10dp"
+        android:layout_below="@+id/fromdt"
+        android:textColor="#000"
+        />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:text="NEW RECORD"
+        android:id="@+id/nr"
+        android:textStyle="bold|italic"
+        android:textSize="22sp"
+        android:background="@null"
+        android:textColor="#f00"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="30dp" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:text="Check"
+        android:textAllCaps="false"
+        android:id="@+id/chk"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:background="@null"
+        android:layout_marginBottom="30dp"
+        android:textSize="24sp"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/nr" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_below="@+id/chk"
+        android:layout_width="300dp"
+        android:layout_height="1dp"
+        android:background="#f00"
+        android:layout_centerHorizontal="true"/>
+
+
+</RelativeLayout>
