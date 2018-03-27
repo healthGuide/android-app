@@ -51,6 +51,7 @@
                 android:inputType="textEmailAddress"
                 android:textColor="#fff"
                 android:textColorHint="#fff"
+                android:completionThreshold="1"
                 />
         </android.support.design.widget.TextInputLayout>
 
