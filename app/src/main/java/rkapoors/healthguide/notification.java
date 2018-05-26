@@ -39,7 +39,7 @@ public class notification extends AppCompatActivity {
     ArrayList<String> messagelist;
     ArrayAdapter<String> adapter;
 
-    String disp = "",prevdt="", uidofuser="";
+    String prevdt="", uidofuser="";
     RelativeLayout relativeLayout;
 
     Date firebasetithi, prevdate;
@@ -66,10 +66,6 @@ public class notification extends AppCompatActivity {
         lst = (ListView)findViewById(R.id.msglist);
         relativeLayout = (RelativeLayout)findViewById(R.id.layout);
 
-        messagelist = new ArrayList<>();
-        adapter=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,messagelist);
-        lst.setAdapter(adapter);
-
         dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+5:30"));
         cal.add(Calendar.DATE,-8);              //go back 8 days
@@ -92,7 +88,6 @@ public class notification extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 flag=0;
-                messagelist = new ArrayList<>();
                 fetchrecord task = new fetchrecord(notification.this);
                 task.execute();
             }
@@ -118,9 +113,10 @@ public class notification extends AppCompatActivity {
         protected Void doInBackground(Void... params){
             try{
 
-                databaseReference.child("users").child(uidofuser).child("notifs").addListenerForSingleValueEvent(new ValueEventListener() {
+                databaseReference.child("users").child(uidofuser).child("notifs").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        messagelist = new ArrayList<>();
                         for(DataSnapshot ds : dataSnapshot.getChildren()){
                             String tithi = ds.getKey();
                             try {
@@ -135,10 +131,11 @@ public class notification extends AppCompatActivity {
 
                             else{
                                 for(DataSnapshot dts : ds.getChildren()){
-                                    messagelist.add(tithi+"\n\n"+dts.child("msg").getValue(String.class));
+                                    messagelist.add("\n"+tithi+"\n\n"+dts.child("msg").getValue(String.class));
                                 }
                             }
                         }
+                        flag=1;
                     }
 
                     @Override
@@ -146,7 +143,6 @@ public class notification extends AppCompatActivity {
                         Snackbar.make(relativeLayout,"Connection Lost. Try Again.",Snackbar.LENGTH_LONG).show();
                     }
                 });
-                flag=1;
             }
             catch(Exception e){
                 e.printStackTrace();
@@ -162,6 +158,8 @@ public class notification extends AppCompatActivity {
             handler.postDelayed(new Runnable() {
                 public void run() {
                     if(flag==1){
+                        adapter=new ArrayAdapter<>(notification.this,android.R.layout.simple_list_item_1,messagelist);
+                        lst.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
                         if(messagelist.size()==0){
                             Snackbar.make(relativeLayout,"No new notifications.",Snackbar.LENGTH_LONG).show();
